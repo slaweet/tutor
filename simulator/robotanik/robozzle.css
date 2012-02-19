@@ -1,0 +1,64 @@
+#menu { text-align: center; }
+#loginBar { position: absolute; top: 20px; right: 80px; }					
+#robozzle { font: 25px/25px; font-family: Calibri, Arial CE, sans-serif; width: 780px; min-height: 780px; 
+    background: #eee; padding: 5px 10px 20px; margin: auto; border: 4px solid #aaa;
+   -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none;
+   -ms-user-select: none; -o-user-select: none; user-select: none; }
+#robozzle h2, #robozzle h3 { color: black; text-align: center; padding: 0px; margin: 0px; }
+#robozzle h2 { font-size: 25px; line-height: 30px; }
+#robozzle h3 { font-size: 15px; line-height: 20px; }
+#robozzle table { border-collapse: collapse; table-layout: fixed; margin: auto; border:0px }
+#robozzle td { padding: 0px; }
+#board td, #boardEdit td,  #robot { width: 40px; height: 40px; 
+    background: url(images/board.png) no-repeat; }
+#boardwrapper { position: relative; }
+
+#stackwrapper { position: relative; float: left; width: 143px; height: 715px;}
+#stack { float: left; width: 115px; height: 715px; border: 4px solid #aaa; border-top: 0; margin: 0px 10px 10px; }
+#fadeout { position:absolute; right:14; width: 30; height: 715px;
+    background: url(images/fadeout.png) repeat-y;  }
+#stack div { height: 30px; padding: 0 0 5px 5px; }
+#stack span { float: left;}
+
+#drag    { position: fixed; display: none; padding-left: 30px; }
+#animate, 
+#robot   { position: absolute; display:none;}
+
+#program { display: block; padding: 10px; float: left; }
+#program div, 
+#resources div { display:block; font-size: 25px; height:34px;}
+#program div div { float:left; border: 2px solid #eee; height:30px;}
+.pravidla span, 
+#program span, 
+#resources span, 
+#stack span, 
+#drag, 
+#drag span, 
+#animate span { width: 30px; height: 30px; cursor: pointer; float:left;
+    background:url(images/resources.png) no-repeat;  }
+#program span { color: black; text-align: center; }
+#resources span, 
+#program span { border: 2px solid #eee;}
+#program span.highlighted {border: 2px solid #f00;}
+#program span:hover, 
+#program span.active, 
+#resources span:hover {border: 2px solid #aaa;}
+
+#resources  { float: left; margin-left: 35px; padding: 10px;}
+#resources span span, 
+#controls span { position: relative; float:right; background: #bbb; top: 19px; width: 13px; height: 13px;
+    text-align: center; font-size: 13px; line-height: 12px; font-weight: normal; display:none; }
+#controls { float: right; padding: 10px; font-size: 15px; font-weight: bold; }
+#controls a { display: block; width: 75px; height: 30px; margin-bottom: 5px; vertical-align: bottom;
+    background-image: url(images/buttons.png); }
+#runPuzzle { background-position:0px 0px; }
+#runPuzzle:hover { background-position:-75px 0px; }
+#runPuzzle:active { background-position:-150px 0px; }
+#stepPuzzle { background-position:0px -30px; }
+#stepPuzzle:hover { background-position:-75px -30px; }
+#stepPuzzle:active { background-position:-150px -30px; }
+#resetPuzzle { background-position:0px -60px; }
+#resetPuzzle:hover { background-position:-75px -60px; }
+#resetPuzzle:active { background-position:-150px -60px; }
+a:active, a:focus { outline: none; color: 'black'; }		
+.pravidla span {display: inline-block; float:none; cursor: default;} 
