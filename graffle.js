@@ -277,11 +277,13 @@ Raphael.fn.cardClone = function (card) {
     text.toFront();
     rect.text = text;
     //debug(card.name)
+    /*
     for (var i in card.points) {
         if(card.points[i].name != 'out' && card.points[i].connectedTo) {
             card.points[i].connectedTo.clone.hide();
         }
     }
+    */
     if(card.points.out && card.points.out.connection) {
         card.points.out.clone = rect;
         rect.path = card.points.out.connection.line;
@@ -351,10 +353,16 @@ Raphael.fn.card = function (name, arity) {
             elem.attr(att);
     },
     onMove = function (dx, dy) {
-            if(this.ox + dx < 0 || this.ox + dx + this.width > HOLDER_WIDTH
-               || this.oy + dy < 0 || this.oy + dy + CARD_HEIGHT > HOLDER_HEIGHT
-               ||this.oy + dy < CARD_HEIGHT + 20  &&  this.ox + dx + this.width > HOLDER_WIDTH - CONTROLS_WIDTH)
-                return;
+            if(this.ox + dx < 0 )
+                dx = -this.ox;
+            else if (this.ox + dx + this.width > HOLDER_WIDTH)
+                dx = HOLDER_WIDTH - this.width - this.ox;
+            if (this.oy + dy < 0)
+                dy = -this.oy;
+            else if (this.oy + dy + CARD_HEIGHT > HOLDER_HEIGHT)
+                dy = HOLDER_HEIGHT - CARD_HEIGHT - this.oy;
+            if (this.oy + dy < CARD_HEIGHT + 20  &&  this.ox + dx + this.width > HOLDER_WIDTH - CONTROLS_WIDTH)
+                dy = CARD_HEIGHT + 20 -this.oy;
             move(dx, dy, this);
             move(dx, dy, this.text);
             move(dx, dy, this.bg);
@@ -511,11 +519,12 @@ var r,
         'PI': 'Math.PI', 
         '|x|': 'Math.abs(x)', 
         'x^y': 'Math.pow(x, y)',
-        'log(x)': 'Math.log(x)',
-        'sin(x)': 'Math.sin(x)',
-        'cos(x)': 'Math.cos(x)',
+        'log_x(y)': 'Checker.log(x, y)',
+        'sin(x)': 'Checker.roundNumber(Math.sin(x),3)',
+        'cos(x)': 'Checker.roundNumber(Math.cos(x),3)',
         'x or y': 'x||y',
         'x and y': 'x&&y',
+        'x xor y': 'x!=y',
         'not x': '!x',
         },
     inVars = {'in': 'x', 'in2': 'y'},
@@ -617,6 +626,7 @@ var r,
         jseval: function(exp) {
             try {
                 var ret = eval(exp);
+                //debug(exp);
             } catch(e) {
                // var ret = 'chyba';
                 var ret = e.message;
@@ -653,6 +663,9 @@ var r,
         },
         parseName: function(name) {
             return functions[name] ? functions[name] : (name.singleEquals() ? name.replace('=', ' == ') : name);
+        },
+        log: function(base, val) {
+            return Math.log(val) / Math.log(base);
         }
     },
 
