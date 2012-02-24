@@ -1,6 +1,8 @@
 /*
-// Author: Vít Stanislav<slaweet@mail.muni.cz> 
-// Year: 2012
+* Author: Vít Stanislav<slaweet@mail.muni.cz> 
+* Year: 2012
+* compatibility: Mozilla Firefox, Opera, Google Chrome, Safari, Microsoft Internet Explorer 9
+* works, but slowly: MSIE 8
 */
 
 /*
@@ -143,8 +145,8 @@ var Evaluator = {
         'sqrt(x)': 'Math.sqrt(x)', 
         'x^y': 'Math.pow(x,y)',
         'log_x(y)': 'Evaluator.log(x,y)',
-        'sin(x)': 'Evaluator.roundNumber(Math.sin(x),3)',
-        'cos(x)': 'Evaluator.roundNumber(Math.cos(x),3)',
+        'sin(x)': 'Evaluator.sin(x)',
+        'cos(x)': 'Evaluator.cos(x)',
         'x or y': 'x||y',
         'x and y': 'x&&y',
         'x xor y': 'x!=y',
@@ -161,10 +163,11 @@ var Evaluator = {
             if(!CardManager.cards[i].points.out || !CardManager.cards[i].points.out.connectedTo)
                 this.roots.push(CardManager.cards[i]);
         }
-        
+        this.solution = ''
         for (var i = 0; i < this.roots.length; i++) {
-            this.exp += ' && ' + this.parseCard(this.roots[i]);
+            this.solution += ",'" + this.parseCard(this.roots[i]) + "'";
         }
+        this.solution = '[' + this.solution.substring(1) + ']';
         
         //debug(this.exp);
         CloneManager.clear();
@@ -174,8 +177,14 @@ var Evaluator = {
         for (var i = 0; i < this.roots.length; i++) {
             success = success && this.succ(this.roots[i].exp);
         }
-        if(success)
-            alert('Správně!!');
+        if(success) {
+            //alert('Správně!!');
+            var q = "session_id="+id_game+"&session_hash="+check_hash+"&move=solution:"+this.solution;
+            sendDataToInterface(q);		
+            q = "session_id="+id_game+"&session_hash="+check_hash+"&win=1";
+            sendDataToInterface(q);
+            after_win();
+        }
     },
     
     succ: function(exp) {
@@ -225,10 +234,16 @@ var Evaluator = {
         return exp;
     },
     parseName: function(name) {
-        return this.functions[name] ? this.functions[name] : (name.singleEquals() ? name.replace('=', ' == ') : name);
+        return this.functions[name] ? this.functions[name] : (name.singleEquals() ? name.replace('=', '==') : name);
     },
     log: function(base, val) {
         return Math.log(val) / Math.log(base);
+    },
+    cos: function(x) {
+        return this.roundNumber(Math.cos(x),10);
+    }
+    sin: function(x) {
+        return this.roundNumber(Math.sin(x),10);
     }
 }
 
@@ -445,7 +460,7 @@ Raphael.fn.slider = function (x, y) {
         if(!this.inDrag)
             this.animate({fill: '#aaa', stroke: '#aaa',}, 200);
     },  
-    attr = {fill: '#aaa', stroke: '#aaa', "fill-opacity": .0, "stroke-width": 2},
+    attr = {fill: '#aaa', stroke: '#aaa', "fill-opacity": .0, "stroke-width": 3},
     color = '#26bf00',
     slider = this.circle(x + 50, y + 2, 8); 
     slider.x = x;
@@ -483,7 +498,7 @@ Raphael.fn.playButton = function (x, y) {
     button.pause = this.set();
     button.pause.push(button.pause1, button.pause2);
     button.push(button.rect, button.pause, button.play);
-    button.attr({fill: color, stroke: '#aaa', "fill-opacity": .0, "stroke-width": 2});
+    button.attr({fill: color, stroke: '#aaa', "fill-opacity": .0, "stroke-width": 3});
     button.rect.hover(hoverIn, hoverOut);
     button.rect.click(function() {
             if(button.play.node.style.display !== "none") {
@@ -669,7 +684,7 @@ Raphael.fn.card = function (position, name, arity) {
     var card = this.rect(x, y, width, CARD_HEIGHT, 2);
     text.attr({"x": x + width/2});
     bg.attr({fill: '#333', "fill-opacity": .8});
-    card.attr({fill: color, stroke: color, "fill-opacity": .1, "stroke-width": 2, cursor: "move"});
+    card.attr({fill: color, stroke: color, "fill-opacity": .1, "stroke-width": 3, cursor: "move"});
         
     card.bg = bg;
     card.text = text;
@@ -724,7 +739,7 @@ Raphael.fn.connectPoint = function (card, name) {
                 x = this.attr('cx'),
                 y = this.attr('cy'); 
 
-                if( Math.abs(x - px) < 15 && Math.abs(y - py) < 15 ) {
+                if( Math.abs(x - px) < 18 && Math.abs(y - py) < 18 ) {
                     if((this.connectedTo.name == 'out') != (p.name == 'out') && this.connectedTo.card != p.card) {
                         if(p.connection)
                             p.connection.remove();
@@ -757,18 +772,18 @@ Raphael.fn.connectPoint = function (card, name) {
         }
     },
     hoverIn = function() {
-        this.animate({"r": 8}, 100);
+        this.animate({"r": 12}, 100);
     },
     hoverOut = function() {
         if(!this.removed)
-            this.animate({"r": 4}, 100); 
+            this.animate({"r": 6}, 100); 
     },
 
     ratio = {'in': (card.points.in2 ? 4 : 2), 'out': 2, 'in2': (4/3)},
     x = card.attr('x') + (card.width / ratio[name]),
     y = card.attr('y') + ((name == 'out') ? CARD_HEIGHT : 0),
     color = card.attr('fill'),
-    point = this.circle(x, y, 4);
+    point = this.circle(x, y, 6);
 
     point.attr({fill: color, stroke: color, "fill-opacity": 1, "stroke-width": 2, cursor: "hand"});
     point.name = name;
