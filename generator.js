@@ -1,6 +1,20 @@
 function $(id) {return document.getElementById(id)}; 
 
 var Generator = {
+    bools: ['true', 'false'],
+	vars: ['x', 'y'],
+	oppBoxs: [
+        'x+y', 'x-y', 'x*y', 'x/y', 'x^y','|x|', 'log_x(y)', 'sin(x)', 'cos(x)',
+        'x or y', 'x and y', 'not x', 'x==y', 'x!=y', 'x<=y', 'x>=y', 'x>y', 'x<y'
+    ],
+	types: {
+        'x+y': ['num','num'], 'x-y': ['num','num'], 'x*y': ['num','num'], 'x/y': ['num','num'],
+        'x^y': ['num','num'], '|x|': ['num','num'], 'log_x(y)': ['num','num'], 
+        'sin(x)': ['pinum','num'], 'cos(x)': ['pinum','num'],
+        'x or y': ['bool','bool'], 'x and y': ['bool','bool'], 'not x': ['bool','bool'],
+        'x==y': ['num','bool'], 'x!=y': ['num','bool'], 'x<=y': ['num','bool'], 
+        'x>=y': ['num','bool'], 'x>y': ['num','bool'], 'x<y': ['num','bool']
+    },
 	parseForm: function() {
 		this.from = parseInt($('from').value); 
 		this.to = parseInt($('to').value); 
@@ -38,7 +52,7 @@ var Generator = {
             this.cards.push(task);
         else
             this.cards.unshift(task);
-        task = Checker.parseName(task);
+        task = Evaluator.parseName(task);
         for (var i in this.vars) {
             if(task.indexOf(this.vars[i]) != -1)
                 task = task.replace(this.vars[i], this.task(type));
@@ -97,16 +111,6 @@ var Generator = {
         }
         $('gen').innerHTML = 'Generovat' ; 
     }, 
-    bools: ['true', 'false'],
-	vars: ['x', 'y'],
-	oppBoxs: ['x+y', 'x-y', 'x*y', 'x/y', 'x^y','|x|', 'log_x(y)', 'sin(x)', 'cos(x)',
-        'x or y', 'x and y', 'not x', 'x==y', 'x!=y', 'x<=y', 'x>=y', 'x>y', 'x<y'],
-	types: {'x+y': ['num','num'], 'x-y': ['num','num'], 'x*y': ['num','num'], 'x/y': ['num','num'],
-        'x^y': ['num','num'], '|x|': ['num','num'], 'log_x(y)': ['num','num'], 
-        'sin(x)': ['pinum','num'], 'cos(x)': ['pinum','num'],
-        'x or y': ['bool','bool'], 'x and y': ['bool','bool'], 'not x': ['bool','bool'],
-        'x==y': ['num','bool'], 'x!=y': ['num','bool'], 'x<=y': ['num','bool'], 
-        'x>=y': ['num','bool'], 'x>y': ['num','bool'], 'x<y': ['num','bool']},
 }
 window.onload = function () {
     for (var i = 0; i < Generator.oppBoxs.length; i++) {

@@ -1,3 +1,7 @@
+/*
+// Author: Vít Stanislav<slaweet@mail.muni.cz> 
+// Year: 2012
+*/
 
 /*
 //damn MSIE
@@ -9,8 +13,256 @@ const CARD_HEIGHT = 40;
 var HOLDER_WIDTH = 640;
 var HOLDER_HEIGHT = 480;
 var CARD_HEIGHT = 40;
-var CONTROLS_WIDTH = 240;
+var CONTROLS_WIDTH = 245;
+var CONTROLS_HEIGHT = 65;
 var SLIDER_WIDTH = 120;
+
+var r;
+
+// Manager of cards. 
+
+var CardManager = {
+    nextPosition: [
+         {x:10, y:80},
+         {x:10, y:240},
+        {x:10, y:400}
+    ],
+    init: function(names) {
+        this.generateColors();
+        this.loadCards(names);
+        var c = r.controls();
+        this.playButton = c.playButton;
+        this.slider = c.slider;
+        this.centerCards()
+    },
+    getColor: function(name, arity) {
+        switch (arity) {
+            case 0:
+            case -1:
+                return this.colors[arity];
+            case -2:
+                return this.colors[arity -1];
+            case 1:
+                if (name.contains(['sin', 'cos']))
+                    return this.colors['goniometric'];
+                else if(name.contains(['|','sqrt']))
+                    return this.colors[2];
+                else 
+                    return this.colors['pred'];
+            case 2:
+                if (name.contains(['and', 'or', 'not', '=', '<', '>']))
+                    return this.colors['bool'];
+                else
+                    return this.colors[2];
+        }
+    },
+    generateColors: function() {
+        this.colors = {};
+        this.colors[-1] = Raphael.getColor();
+        this.colors['goniometric'] = Raphael.getColor();
+        //this.colors[-1] = colors[-2];
+        this.colors[2] = Raphael.getColor();
+        this.colors[1] = Raphael.getColor();
+        this.colors[0] = Raphael.getColor();
+        this.colors[3] = Raphael.getColor();
+        this.colors['bool'] = Raphael.getColor();
+        this.colors['pred'] = Raphael.getColor();//just to skip one ugly color :)
+        this.colors['pred'] = Raphael.getColor();
+    },
+
+    updateNextPosition: function(card, group) {
+        this.nextPosition[group] = {x: card.attr('x') + card.attr('width') + 40, y: card.attr('y')};
+    },
+    arityToGroup: function(arity) {
+        return arity < 0 ? 2 : (arity > 0 ? 1 : 0);
+    },
+    loadCards: function(names) {
+        this.cards = [];
+        for (var i = 0; i < names.length; i++) {
+            var arity = 0;
+            if(names[i].indexOf('x') != -1){
+                arity += 1;
+                if(names[i].indexOf('y') != -1)
+                    arity += 1;
+                if(names[i].singleEquals())
+                    arity = arity * (-1);
+            }
+            var group = this.arityToGroup(arity)
+            this.cards.push(r.card(this.nextPosition[group], names[i], arity));
+            this.updateNextPosition(this.cards[this.cards.length -1], group);
+        }
+    },
+    centerCards: function() {
+        this.shift = [];
+        for (var i = this.cards.length - 1; i >= 0; i--) {
+            var card = this.cards[i];
+            for (var j = 0; j <= 2; j++) {
+                if (this.nextPosition[j].y == card.attr('y')) {
+                    if(!this.shift[j])
+                        this.shift[j] = (HOLDER_WIDTH - (card.attr('x') + card.width)) / 2;
+                    card.startMove();
+                    card.onMove(this.shift[j], 0);
+                    card.stopMove();
+                }
+            }
+        }
+
+    }
+
+}
+
+// function to distinguish between root cards (contains single '=') and other cards with '='
+
+String.prototype.singleEquals = function () {
+    return this.indexOf('=') != -1 
+                && this.indexOf('==') == -1 && this.indexOf('>=') == -1 
+                && this.indexOf('<=') == -1 && this.indexOf('!=') == -1;
+}
+
+String.prototype.contains = function (strings) {
+    var ret = false
+    for(var i = 0; i < strings.length; i++)
+        ret = ret || this.indexOf(strings[i]) != -1; 
+    return ret;
+}
+
+// Building and evaluating results
+
+var Evaluator = {
+    results: {},
+    queue: [],
+    inVars: {'in': 'x', 'in2': 'y'},
+
+    // Replacement patterns for evaluating result
+    functions: {
+        'π': 'Math.PI', 
+        'PI': 'Math.PI', 
+        'x div y': 'Math.floor(x/y)',
+        'x mod y': 'x%y',
+        '|x|': 'Math.abs(x)', 
+        'sqrt(x)': 'Math.sqrt(x)', 
+        'x^y': 'Math.pow(x,y)',
+        'log_x(y)': 'Evaluator.log(x,y)',
+        'sin(x)': 'Evaluator.roundNumber(Math.sin(x),3)',
+        'cos(x)': 'Evaluator.roundNumber(Math.cos(x),3)',
+        'x or y': 'x||y',
+        'x and y': 'x&&y',
+        'x xor y': 'x!=y',
+        'not x': '!x',
+    },
+    clearQueue: function() {
+        this.queue = [];
+    },
+
+    makeQueue: function() {
+        this.clearQueue();
+        this.roots = [];
+        for (var i = 0; i < CardManager.cards.length; i++) {
+            if(!CardManager.cards[i].points.out || !CardManager.cards[i].points.out.connectedTo)
+                this.roots.push(CardManager.cards[i]);
+        }
+        
+        for (var i = 0; i < this.roots.length; i++) {
+            this.exp += ' && ' + this.parseCard(this.roots[i]);
+        }
+        
+        //debug(this.exp);
+        CloneManager.clear();
+    },
+    animationDone: function() {
+        var success = true;
+        for (var i = 0; i < this.roots.length; i++) {
+            success = success && this.succ(this.roots[i].exp);
+        }
+        if(success)
+            alert('Správně!!');
+    },
+    
+    succ: function(exp) {
+        return (lang == 'haskell')
+            ? this.results[exp] == 'True'
+            : this.results[exp] === true
+    },
+    eval: function(exp) {
+        if(lang == 'haskell')
+            Haskell.eval(exp);
+        else
+            this.jseval(exp);
+    },
+    jseval: function(exp) {
+        try {
+            var ret = eval(exp);
+            //debug(exp);
+        } catch(e) {
+            var ret = '-';
+           // var ret = e.message;
+        } finally {
+            if(this.isNumber(ret))
+                ret = this.roundNumber(ret, 3)
+            this.results[exp] = ret;
+        }
+    },
+    isNumber: function(n) {
+      return !isNaN(parseFloat(n)) && isFinite(n);
+    },
+    roundNumber: function (number, digits) {
+        var multiple = Math.pow(10, digits);
+        var rndedNum = Math.round(number * multiple) / multiple;
+        return rndedNum;
+    },
+    parseCard: function(card) {
+        var exp = '(' + this.parseName(card.name) + ')';
+        for (var i in card.points) {
+            if(card.points[i].name != 'out' && card.points[i].connectedTo) {
+                exp = exp.replace(this.inVars[card.points[i].name], this.parseCard(card.points[i].connectedTo.card));
+            }
+        }
+        card.exp = exp;
+        this.queue.push(card);
+
+        if(!this.results.hasOwnProperty(exp))
+            this.eval(exp);
+        return exp;
+    },
+    parseName: function(name) {
+        return this.functions[name] ? this.functions[name] : (name.singleEquals() ? name.replace('=', ' == ') : name);
+    },
+    log: function(base, val) {
+        return Math.log(val) / Math.log(base);
+    }
+}
+
+// Manager of cards clones (cards for animation)
+
+var CloneManager = {
+        clear: function() {
+            this.animPos = 0;
+            for (var i = 0; i < CardManager.cards.length; i++) {
+                if(CardManager.cards[i].points.out && CardManager.cards[i].points.out.clone.type)
+                    CardManager.cards[i].points.out.clone.hide();
+                else if(CardManager.cards[i].clone && CardManager.cards[i].clone.type) {
+                    CardManager.cards[i].clone.hide();
+                }
+            }
+            CardManager.playButton.stop();
+            //this.queue = [];
+        },
+
+        animate: function() {
+            if(Evaluator.queue.length > 0) {
+                if(this.animPos == 0)
+                    this.clone = r.cardClone(Evaluator.queue.shift());
+                else
+                    this.clone.moveTo(this.animPos);
+                this.animPos = 0;
+            } else {
+                CardManager.playButton.stop();
+                Evaluator.animationDone();
+            }
+        }
+    }
+
+// The white line between two cards.
 
 Raphael.fn.connection = function (obj1, obj2, line, bg) {
     if (obj1.line && obj1.from && obj1.to) {
@@ -121,9 +373,10 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
         return ret;
     }
 };
-Raphael.el.is_visible = function() {
-    return (this.node.style.display !== "none");
-}
+/*
+
+// Speedometer-like element to control animation speed (drag'n'drop is not working yet)
+
 Raphael.fn.speedMeter = function (x, y) {
     var start = function () {
         this.attr({'cursor': 'move'});
@@ -166,6 +419,10 @@ Raphael.fn.speedMeter = function (x, y) {
     meter.drag(move, start, up);
     return meter;
 }
+*/
+
+// Slider element to control animation speed
+
 Raphael.fn.slider = function (x, y) {
     var start = function () {
         this.attr({'cursor': 'move'});
@@ -205,7 +462,10 @@ Raphael.fn.slider = function (x, y) {
     }
     return slider;
 }
-Raphael.fn.button = function (x, y) {
+
+// Play/pause button to control the animation 
+
+Raphael.fn.playButton = function (x, y) {
     var hoverIn = function() {
             button.animate({stroke: color,"fill-opacity": .3}, 200);
             button.attr({'cursor': 'pointer'});
@@ -216,19 +476,19 @@ Raphael.fn.button = function (x, y) {
     },    
     color = '#26bf00',
     button = this.set();
-    button.pause1 = this.rect(x + 32.5,y + 20, 10, CARD_HEIGHT/2, 1).hide(),
-    button.pause2 = this.rect(x + 47.5,y + 20, 10, CARD_HEIGHT/2, 1).hide(),
-    button.play = this.path("M"+ (x + 37.5) +","+ (y + 20) +"l20 10,-20 10z")
-    button.rect = this.rect(x + 10, y + 10, 70, CARD_HEIGHT, 2),
+    button.pause1 = this.rect(x + 22.5, y + 10, 10, CARD_HEIGHT/2, 1).hide(),
+    button.pause2 = this.rect(x + 37.5, y + 10, 10, CARD_HEIGHT/2, 1).hide(),
+    button.play = this.path("M"+ (x + 27.5) +","+ (y + 10) +"l20 10,-20 10z")
+    button.rect = this.rect(x, y, 70, CARD_HEIGHT, 2),
     button.pause = this.set();
     button.pause.push(button.pause1, button.pause2);
     button.push(button.rect, button.pause, button.play);
     button.attr({fill: color, stroke: '#aaa', "fill-opacity": .0, "stroke-width": 2});
     button.rect.hover(hoverIn, hoverOut);
     button.rect.click(function() {
-            if(button.play.is_visible()) {
-                if(Checker.stack.length == 0) 
-                    Checker.check();
+            if(button.play.node.style.display !== "none") {
+                if(Evaluator.queue.length == 0) 
+                    Evaluator.makeQueue();
                 button.start();
             } else {
                 button.stop();
@@ -236,10 +496,10 @@ Raphael.fn.button = function (x, y) {
     });
     button.start = function() {
         this.paused = false;
-        Clones.animate();
         this.play.hide();
         this.pause1.show();
         this.pause2.show();
+        CloneManager.animate();
     }
     button.stop = function() {
         this.paused = true;
@@ -247,33 +507,33 @@ Raphael.fn.button = function (x, y) {
         this.pause1.hide();
         this.pause2.hide();
     }
-    button.ready = function(isReady) {
-        this.isReady = isReady;
-        this.stop();
-    }
     return button;
 };
 
+// Rectangle in upper right corner with play/pause button and speed slider
+
 Raphael.fn.controls = function () {
-    var x = HOLDER_WIDTH - CONTROLS_WIDTH + 5,
-        y =  -5,
-        controls = this.rect(x, y, CONTROLS_WIDTH, CARD_HEIGHT + 20, 10);
+    var x = HOLDER_WIDTH - CONTROLS_WIDTH + 10,
+        y =  -10,
+        controls = this.rect(x, y, CONTROLS_WIDTH, CONTROLS_HEIGHT, 10);
     controls.attr({stroke: '#aaa', "stroke-width": 5});
-    controls.button = this.button(x, y);
+    controls.playButton = this.playButton(x + 10, y + 15);
     //controls.slider = this.speedMeter(x + 160, y + 50);
-    controls.slider = this.slider(x + 100, y + 30);
+    controls.slider = this.slider(x + 100, y + 35);
     return controls;
 };
+
+// Small card for the animation 
 
 Raphael.fn.cardClone = function (card) {
     var x = card.attr('x'),
     y = card.attr('y'),
     color = card.attr('fill'),
-    text = this.text(x + card.attr('width') / 2, y + CARD_HEIGHT, !card.points.in ? card.name : Checker.results[card.exp]);
+    text = this.text(x + card.attr('width') / 2, y + CARD_HEIGHT, !card.points['in'] ? card.name : Evaluator.results[card.exp]);
     text.attr({"font-size": 15, 'fill': color});
     var width = text.getBBox()['width'] + 15,
         rect = this.rect(text.attr('x'), y + CARD_HEIGHT, 1, 1, 2);
-    rect.attr({stroke: color,'fill': '#333', "fill-opacity": .8});
+    rect.attr({stroke: color,'fill': '#333', "fill-opacity": .8, "stroke-width": 2});
     text.toFront();
     rect.text = text;
     //debug(card.name)
@@ -293,7 +553,7 @@ Raphael.fn.cardClone = function (card) {
     }
     //text.attr({"x": x + width/2});
     rect.hide = function(){
-        var time =  1000 / Checker.slider.speed();
+        var time =  1000 / CardManager.slider.speed();
         this.text.animate({"font-size": 1}, time)
         this.animate({x: this.text.attr('x'), y:  this.text.attr('y'), width: 1, height: 1}, time, function(){
             this.text.remove();
@@ -301,37 +561,39 @@ Raphael.fn.cardClone = function (card) {
         });
     }
     text.attr({"font-size": 1});
-    var time =  1000 / Checker.slider.speed();
+    var time =  1000 / CardManager.slider.speed();
     text.animate({"font-size": 15}, time)
     rect.animate({x: text.attr('x') - width/2, y: y + CARD_HEIGHT * 3/4, width: width, height: CARD_HEIGHT / 2}, time, function(){this.moveTo(0)});
     rect.moveTo = function(length){
         if(!this.path) {
-            if(!Checker.button.paused) 
-                Clones.animate();
+            if(!CardManager.playButton.paused) 
+                CloneManager.animate();
             return;
         }
         var p = this.path.getPointAtLength(length),
             a = Raphael.animation({x: p.x, y: p.y},2);
         this.text.animate(a);
         this.animateWith(this.text, a, {x: p.x - this.attr('width') / 2, y: p.y - this.attr('height') / 2}, 2, function(){
-            if(!Checker.button.paused) {
+            if(!CardManager.playButton.paused) {
                 if(length < this.pathLength)
-                    this.moveTo(length + Checker.slider.speed())
+                    this.moveTo(length + CardManager.slider.speed())
                 else {
-                    Clones.animPos = 0;
-                    Clones.animate();
+                    CloneManager.animPos = 0;
+                    CloneManager.animate();
                 }
             } else {
-                Clones.animPos = length + Checker.slider.speed();
+                CloneManager.animPos = length + CardManager.slider.speed();
             }
         });
     } 
     return rect;
-
 }
-Raphael.fn.card = function (name, arity) {
+
+// Card element with operation name ('5', 'x+y', 'x=6'...) and connect points (in, in2, out).
+
+Raphael.fn.card = function (position, name, arity) {
     var start = function () {
-        Clones.clear();
+        CloneManager.clear();
         if(this.g)
             this.g.remove();
         this.inDrag = true;
@@ -361,8 +623,8 @@ Raphael.fn.card = function (name, arity) {
                 dy = -this.oy;
             else if (this.oy + dy + CARD_HEIGHT > HOLDER_HEIGHT)
                 dy = HOLDER_HEIGHT - CARD_HEIGHT - this.oy;
-            if (this.oy + dy < CARD_HEIGHT + 20  &&  this.ox + dx + this.width > HOLDER_WIDTH - CONTROLS_WIDTH)
-                dy = CARD_HEIGHT + 20 -this.oy;
+            if (this.oy + dy < CONTROLS_HEIGHT  &&  this.ox + dx + this.width > HOLDER_WIDTH - CONTROLS_WIDTH)
+                dy = CONTROLS_HEIGHT -this.oy;
             move(dx, dy, this);
             move(dx, dy, this.text);
             move(dx, dy, this.bg);
@@ -376,7 +638,7 @@ Raphael.fn.card = function (name, arity) {
     up = function () {
         this.animate({"fill-opacity": .0}, 200);
         this.inDrag = false;
-        Checker.stack = [];
+        Evaluator.clearQueue();
     },
     hoverIn = function() {
         if(!this.inDrag)
@@ -387,13 +649,20 @@ Raphael.fn.card = function (name, arity) {
             this.animate({"fill-opacity": .0}, 200);
     },
 
-    color = colors[arity],
+    color = CardManager.getColor(name,arity),
     shift = (arity < 0 ? 3 : arity),
-    y = Math.floor((Math.random() + shift) * (HOLDER_HEIGHT - CARD_HEIGHT) / (shift > 1 ? 4 : 2 + shift)),
+    //y = Math.floor((Math.random() + shift) * (HOLDER_HEIGHT - CARD_HEIGHT) / (shift > 1 ? 4 : 2 + shift)),
+    y = position.y,
     text = this.text(0, y + CARD_HEIGHT/2, name);
     text.attr({"font-size": 30, 'fill': color});
     var width = text.getBBox()['width'] + 15;
-    var x = Math.floor(Math.random() * (HOLDER_WIDTH - width - (y < CARD_HEIGHT + 20 ? CONTROLS_WIDTH : 0))),
+    //var x = Math.floor(Math.random() * (HOLDER_WIDTH - width - (y < CONTROLS_HEIGHT ? CONTROLS_WIDTH : 0))),
+    if(position.x + width > HOLDER_WIDTH) {
+        y = y + CONTROLS_HEIGHT;
+        text.attr({'y': y + CARD_HEIGHT / 2});
+        position.x = 10;
+    }
+    var x = position.x,
         bg = this.rect(x, y, width, CARD_HEIGHT, 2);
     text.toFront();
 
@@ -407,6 +676,9 @@ Raphael.fn.card = function (name, arity) {
     card.name = name;
     card.width = width;
     card.color = color;
+    card.startMove = start;
+    card.onMove = onMove;
+    card.stopMove = up;
 
     var pointKeys = []; 
     if(Math.abs(arity) >= 2) 
@@ -424,9 +696,11 @@ Raphael.fn.card = function (name, arity) {
     return card;
 };
 
+// One connect point (in, in2, out) of a specific card
+
 Raphael.fn.connectPoint = function (card, name) {
      var start = function () {
-        Clones.clear();
+        CloneManager.clear();
         var newPoint = r.connectPoint(this.card, this.name);
         this.card.points[this.name] = newPoint; 
         this.ox = this.attr("cx");
@@ -442,9 +716,9 @@ Raphael.fn.connectPoint = function (card, name) {
         r.safari();
     },
     up = function () {
-        for(var i in Checker.cards)
-            for(var j in Checker.cards[i].points) {
-                var p = Checker.cards[i].points[j],
+        for(var i in CardManager.cards)
+            for(var j in CardManager.cards[i].points) {
+                var p = CardManager.cards[i].points[j],
                 px = p.attr('cx'),
                 py = p.attr('cy'),
                 x = this.attr('cx'),
@@ -458,7 +732,7 @@ Raphael.fn.connectPoint = function (card, name) {
                         this.connection.remove();
                         r.connection(p, to); 
                         this.remove();
-                        Checker.stack = [];
+                        Evaluator.clearQueue();
                     } else {
                         this.rollBack();
                     }
@@ -505,171 +779,10 @@ Raphael.fn.connectPoint = function (card, name) {
     return point;
 };
 
-String.prototype.singleEquals = function () {
-    return this.indexOf('=') != -1 
-                && this.indexOf('==') == -1 && this.indexOf('>=') == -1 
-                && this.indexOf('<=') == -1 && this.indexOf('!=') == -1;
-}
 
-var el;
-var r,
-    colors = [],
-    functions = {
-        'π': 'Math.PI', 
-        'PI': 'Math.PI', 
-        '|x|': 'Math.abs(x)', 
-        'x^y': 'Math.pow(x, y)',
-        'log_x(y)': 'Checker.log(x, y)',
-        'sin(x)': 'Checker.roundNumber(Math.sin(x),3)',
-        'cos(x)': 'Checker.roundNumber(Math.cos(x),3)',
-        'x or y': 'x||y',
-        'x and y': 'x&&y',
-        'x xor y': 'x!=y',
-        'not x': '!x',
-        },
-    inVars = {'in': 'x', 'in2': 'y'},
+// Just one function for debuging
 
-    Clones = {
-        clear: function() {
-            this.animPos = 0;
-            for (var i = 0; i < Checker.cards.length; i++) {
-                if(Checker.cards[i].points.out && Checker.cards[i].points.out.clone.type)
-                    Checker.cards[i].points.out.clone.hide();
-                else if(Checker.cards[i].clone && Checker.cards[i].clone.type) {
-                    Checker.cards[i].clone.hide();
-                }
-            }
-            Checker.button.ready(false);
-            this.stack = [];
-        },
-
-        animate: function() {
-            if(Checker.stack.length > 0) {
-                if(this.animPos == 0)
-                    this.clone = r.cardClone(Checker.stack.shift());
-                else
-                    this.clone.moveTo(this.animPos);
-                this.animPos = 0;
-            } else {
-                Checker.button.ready(false);
-                Checker.animationDone();
-            }
-        }
-    },
-
-    Checker = {
-        results: {},
-        stack: [],
-        init: function(names) {
-            this.cards = this.loadCards(names);
-            var c = r.controls();
-            this.button = c.button;
-            this.slider = c.slider;
-        },
-
-        loadCards: function(names) {
-            var cards = [];
-             colors[-2] = Raphael.getColor();
-             colors[-1] = Raphael.getColor();//just to skip one ugly color :)
-             colors[-1] = colors[-2];
-             colors[1] = Raphael.getColor();
-             colors[2] = Raphael.getColor();
-             colors[0] = Raphael.getColor();
-            for (var i = 0; i < names.length; i++) {
-                var arity = 0;
-                if(names[i].indexOf('x') != -1){
-                    arity += 1;
-                    if(names[i].indexOf('y') != -1)
-                        arity += 1;
-                    if(names[i].singleEquals())
-                        arity = arity * (-1);
-                }
-                cards.push(r.card(names[i], arity));
-            }
-            return cards;
-        },
-
-        check: function() {
-            this.stack = [];
-            this.roots = [];
-            for (var i = 0; i < this.cards.length; i++) {
-                if(!this.cards[i].points.out || !this.cards[i].points.out.connectedTo)
-                    this.roots.push(this.cards[i]);
-            }
-            for (var i = 0; i < this.roots.length; i++) {
-                this.exp += ' && ' + this.parseCard(this.roots[i], true);
-            }
-            //debug(this.exp);
-            Clones.clear();
-            Checker.button.ready(this.areAllConnected())
-        },
-        animationDone: function() {
-            var success = true;
-            for (var i = 0; i < this.roots.length; i++) {
-                success = success && this.succ(this.roots[i].exp);
-            }
-            if(success)
-                alert('Správně!!');
-        },
-        
-        succ: function(exp) {
-            return (lang == 'haskell')
-                ? this.results[exp] == 'True'
-                : this.results[exp] === true
-        },
-        eval: function(exp) {
-            if(lang == 'haskell')
-                Haskell.eval(exp);
-            else
-                this.jseval(exp);
-        },
-        jseval: function(exp) {
-            try {
-                var ret = eval(exp);
-                //debug(exp);
-            } catch(e) {
-               // var ret = 'chyba';
-                var ret = e.message;
-            } finally {
-                if(this.isNumber(ret))
-                    ret = this.roundNumber(ret, 3)
-                this.results[exp] = ret;
-            }
-        },
-        isNumber: function(n) {
-          return !isNaN(parseFloat(n)) && isFinite(n);
-        },
-        roundNumber: function (number, digits) {
-            var multiple = Math.pow(10, digits);
-            var rndedNum = Math.round(number * multiple) / multiple;
-            return rndedNum;
-        },
-        areAllConnected: function() {
-            return (this.cards.length == this.stack.length);
-        },
-        parseCard: function(card) {
-            var exp = '(' + this.parseName(card.name) + ')';
-            for (var i in card.points) {
-                if(card.points[i].name != 'out' && card.points[i].connectedTo) {
-                    exp = exp.replace(inVars[card.points[i].name], this.parseCard(card.points[i].connectedTo.card));
-                }
-            }
-            card.exp = exp;
-            this.stack.push(card);
-
-            if(!this.results.hasOwnProperty(exp))
-                this.eval(exp);
-            return exp;
-        },
-        parseName: function(name) {
-            return functions[name] ? functions[name] : (name.singleEquals() ? name.replace('=', ' == ') : name);
-        },
-        log: function(base, val) {
-            return Math.log(val) / Math.log(base);
-        }
-    },
-
-    debug = function(object) {
+var debug = function(object) {
         var al;
         if(typeof object == "string")
             al = object;
