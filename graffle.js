@@ -24,7 +24,7 @@ var r;
 // Manager of cards. 
 
 var CardManager = {
-    nextPosition: [
+    nextCardPosition: [
          {x:10, y:80},
          {x:10, y:240},
         {x:10, y:400}
@@ -37,43 +37,41 @@ var CardManager = {
         this.slider = c.slider;
         this.centerCards()
     },
+    generateColors: function() {
+        this.colors = {};
+        this.colors['result'] = Raphael.getColor();
+        this.colors['goniometric'] = Raphael.getColor();
+        this.colors['arithmetic'] = Raphael.getColor();
+        Raphael.getColor();//just to skip one ugly color :)
+        this.colors['const'] = Raphael.getColor();
+        Raphael.getColor();
+        this.colors['bool'] = Raphael.getColor();
+        Raphael.getColor();
+        this.colors['pred'] = Raphael.getColor();
+    },
     getColor: function(name, arity) {
         switch (arity) {
             case 0:
+                return this.colors['const'];
             case -1:
-                return this.colors[arity];
             case -2:
-                return this.colors[arity -1];
+                return this.colors['result'];
             case 1:
                 if (name.contains(['sin', 'cos']))
                     return this.colors['goniometric'];
                 else if(name.contains(['|','sqrt']))
-                    return this.colors[2];
+                    return this.colors['arithmetic'];
                 else 
                     return this.colors['pred'];
             case 2:
                 if (name.contains(['and', 'or', 'not', '=', '<', '>']))
                     return this.colors['bool'];
                 else
-                    return this.colors[2];
+                    return this.colors['arithmetic'];
         }
     },
-    generateColors: function() {
-        this.colors = {};
-        this.colors[-1] = Raphael.getColor();
-        this.colors['goniometric'] = Raphael.getColor();
-        //this.colors[-1] = colors[-2];
-        this.colors[2] = Raphael.getColor();
-        this.colors[1] = Raphael.getColor();
-        this.colors[0] = Raphael.getColor();
-        this.colors[3] = Raphael.getColor();
-        this.colors['bool'] = Raphael.getColor();
-        this.colors['pred'] = Raphael.getColor();//just to skip one ugly color :)
-        this.colors['pred'] = Raphael.getColor();
-    },
-
     updateNextPosition: function(card, group) {
-        this.nextPosition[group] = {x: card.attr('x') + card.attr('width') + 40, y: card.attr('y')};
+        this.nextCardPosition[group] = {x: card.attr('x') + card.attr('width') + 40, y: card.attr('y')};
     },
     arityToGroup: function(arity) {
         return arity < 0 ? 2 : (arity > 0 ? 1 : 0);
@@ -90,27 +88,25 @@ var CardManager = {
                     arity = arity * (-1);
             }
             var group = this.arityToGroup(arity)
-            this.cards.push(r.card(this.nextPosition[group], names[i], arity));
+            this.cards.push(r.card(this.nextCardPosition[group], names[i], arity));
             this.updateNextPosition(this.cards[this.cards.length -1], group);
         }
     },
     centerCards: function() {
-        this.shift = [];
+        var shift = [];
         for (var i = this.cards.length - 1; i >= 0; i--) {
             var card = this.cards[i];
             for (var j = 0; j <= 2; j++) {
-                if (this.nextPosition[j].y == card.attr('y')) {
-                    if(!this.shift[j])
-                        this.shift[j] = (HOLDER_WIDTH - (card.attr('x') + card.width)) / 2;
+                if (this.nextCardPosition[j].y == card.attr('y')) {
+                    if(!shift[j])
+                        shift[j] = (HOLDER_WIDTH - (card.attr('x') + card.width)) / 2;
                     card.startMove();
-                    card.onMove(this.shift[j], 0);
+                    card.onMove(shift[j], 0);
                     card.stopMove();
                 }
             }
         }
-
     }
-
 }
 
 // function to distinguish between root cards (contains single '=') and other cards with '='
@@ -241,7 +237,7 @@ var Evaluator = {
     },
     cos: function(x) {
         return this.roundNumber(Math.cos(x),10);
-    }
+    },
     sin: function(x) {
         return this.roundNumber(Math.sin(x),10);
     }
@@ -665,7 +661,7 @@ Raphael.fn.card = function (position, name, arity) {
     },
 
     color = CardManager.getColor(name,arity),
-    shift = (arity < 0 ? 3 : arity),
+    //shift = (arity < 0 ? 3 : arity),
     //y = Math.floor((Math.random() + shift) * (HOLDER_HEIGHT - CARD_HEIGHT) / (shift > 1 ? 4 : 2 + shift)),
     y = position.y,
     text = this.text(0, y + CARD_HEIGHT/2, name);
@@ -772,7 +768,7 @@ Raphael.fn.connectPoint = function (card, name) {
         }
     },
     hoverIn = function() {
-        this.animate({"r": 12}, 100);
+        this.animate({"r": 10}, 100);
     },
     hoverOut = function() {
         if(!this.removed)
