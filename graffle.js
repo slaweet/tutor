@@ -135,14 +135,22 @@ var Evaluator = {
     functions: {
         'π': 'Math.PI', 
         'PI': 'Math.PI', 
+        'e': 'Math.E', 
         'x div y': 'Math.floor(x/y)',
         'x mod y': 'x%y',
         '|x|': 'Math.abs(x)', 
         'sqrt(x)': 'Math.sqrt(x)', 
         'x^y': 'Math.pow(x,y)',
+        'x^2': 'Math.pow(x,2)',
+        'ln(x)': 'Math.log(x)',
         'log_x(y)': 'Evaluator.log(x,y)',
-        'sin(x)': 'Evaluator.sin(x)',
-        'cos(x)': 'Evaluator.cos(x)',
+        'log_2(x)': 'Evaluator.log(2,x)',
+        'sin(x)': 'Evaluator.gonio("sin", x)',
+        'cos(x)': 'Evaluator.gonio("cos", x)',
+        'tan(x)': 'Evaluator.gonio("tan", x)',
+        'arcsin(x)': 'Evaluator.gonio("asin", x)',
+        'arccos(x)': 'Evaluator.gonio("acos", x)',
+        'arctan(x)': 'Evaluator.gonio("atan", x)',
         'x or y': 'x||y',
         'x and y': 'x&&y',
         'x xor y': 'x!=y',
@@ -164,12 +172,13 @@ var Evaluator = {
             this.solution += ",'" + this.parseCard(this.roots[i]) + "'";
         }
         this.solution = '[' + this.solution.substring(1) + ']';
+        this.noCycles = CardManager.cards.length == this.queue.length;
         
         //debug(this.exp);
         CloneManager.clear();
     },
     animationDone: function() {
-        var success = true;
+        var success = this.noCycles;
         for (var i = 0; i < this.roots.length; i++) {
             success = success && this.succ(this.roots[i].exp);
         }
@@ -235,12 +244,29 @@ var Evaluator = {
     log: function(base, val) {
         return Math.log(val) / Math.log(base);
     },
+    gonio: function(fce, x) {
+        return this.roundNumber(eval('Math.' + fce + '(' + x +')'),10);
+    }
+/*,
     cos: function(x) {
         return this.roundNumber(Math.cos(x),10);
     },
     sin: function(x) {
         return this.roundNumber(Math.sin(x),10);
-    }
+    },
+    arccos: function(x) {
+        return this.roundNumber(Math.cos(x),10);
+    },
+    arcsin: function(x) {
+        return this.roundNumber(Math.cos(x),10);
+    },
+    : function(x) {
+        return this.roundNumber(Math.cos(x),10);
+    },
+    cos: function(x) {
+        return this.roundNumber(Math.cos(x),10);
+    },
+*/
 }
 
 // Manager of cards clones (cards for animation)
@@ -356,18 +382,31 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
         x3 = [0, 0, 0, 0, x4, x4, x4 - dx, x4 + dx][res[1]].toFixed(3),
         y3 = [0, 0, 0, 0, y1 + dy, y1 - dy, y4, y4][res[1]].toFixed(3);
     var path = ["M", x1.toFixed(3), y1.toFixed(3), "C", x2, y2, x3, y3, x4.toFixed(3), y4.toFixed(3)].join(",");
+    /*
+    if(res[1] == 4)
+        var arrow ="M"+ (x4.toFixed(3)-10) +","+ (y4.toFixed(3)-10) +"l10 10, 10 -10";
+    else if(res[1] == 1)
+        var arrow ="M"+ (x4.toFixed(3)-10) +","+ (y4.toFixed(3)-10) +"l10 10, -10 10";
+    else if(res[1] == 2)
+        var arrow ="M"+ (x4.toFixed(3)+10) +","+ (y4.toFixed(3)+10) +"l-10 -10, -10 10";
+    else if(res[1] == 3)
+        var arrow ="M"+ (x4.toFixed(3)+10) +","+ (y4.toFixed(3)+10) +"l-10 -10, 10 -10";
+        */
     if (line && line.line) {
         line.bg && line.bg.attr({path: path});
         line.line.attr({path: path});
+        //line.arrow.attr({path: arrow});
     } else {
         var color = typeof line == "string" ? line : "#fff";
         var ret = {
+            //arrow: this.path(arrow).attr({stroke: color, fill: "none", "stroke-width": 2 }),
             bg: bg && bg.split && this.path(path).attr({stroke: bg.split("|")[0], fill: "none", "stroke-width": bg.split("|")[1] || 3}),
             line: this.path(path).attr({stroke: color, fill: "none", "stroke-width": 2 }),
             from: obj1,
             to: obj2,
             remove: function () {
                 this.line.remove();
+                //this.arrow.remove();
                 delete this.from.connection;
                 delete this.to.connection;
                 delete this.from.connectedTo;
@@ -375,6 +414,8 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
                 //delete this;
             },
         };
+        ret.line.toFront();
+        //ret.arrow.toFront();
         obj1.toFront();
         obj2.toFront();
         obj1.connection = ret;
@@ -547,14 +588,13 @@ Raphael.fn.cardClone = function (card) {
     rect.attr({stroke: color,'fill': '#333', "fill-opacity": .8, "stroke-width": 2});
     text.toFront();
     rect.text = text;
-    //debug(card.name)
-    /*
+    
     for (var i in card.points) {
         if(card.points[i].name != 'out' && card.points[i].connectedTo) {
             card.points[i].connectedTo.clone.hide();
         }
     }
-    */
+    
     if(card.points.out && card.points.out.connection) {
         card.points.out.clone = rect;
         rect.path = card.points.out.connection.line;
