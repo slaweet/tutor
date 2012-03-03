@@ -253,7 +253,6 @@ var Evaluator = {
     },
     parseCard: function(card) {
         var exp = '(' + this.parseName(card.name) + ')';
-        alert(exp)
         for (var i in card.points) {
             if(card.points[i].name != 'out' && card.points[i].connectedTo) {
                 exp = exp.replace(this.inVars[card.points[i].name], this.parseCard(card.points[i].connectedTo.card));
