@@ -19,7 +19,7 @@ var CONTROLS_WIDTH = 245;
 var CONTROLS_HEIGHT = 65;
 var SLIDER_WIDTH = 120;
 
-var r;
+var r; //global var for the raphael object;
 
 // Manager of cards. 
 
@@ -36,8 +36,18 @@ var CardManager = {
         this.playButton = c.playButton;
         this.slider = c.slider;
         this.centerCards()
+        Evaluator.moveCount = 0;
     },
     generateColors: function() {
+        this.colors = {};
+        this.colors[-2] = Raphael.getColor();
+        this.colors[-1] = this.colors[-2];
+        Raphael.getColor();//just to skip one ugly color :)
+        this.colors[2] = Raphael.getColor();
+        this.colors[1] = this.colors[2];
+        Raphael.getColor();//just to skip one ugly color :)
+        this.colors[0] = Raphael.getColor();
+    /*
         this.colors = {};
         this.colors['result'] = Raphael.getColor();
         this.colors['goniometric'] = Raphael.getColor();
@@ -48,8 +58,11 @@ var CardManager = {
         this.colors['bool'] = Raphael.getColor();
         Raphael.getColor();
         this.colors['pred'] = Raphael.getColor();
+        */
     },
     getColor: function(name, arity) {
+        return this.colors[arity];
+        /*
         switch (arity) {
             case 0:
                 return this.colors['const'];
@@ -69,6 +82,7 @@ var CardManager = {
                 else
                     return this.colors['arithmetic'];
         }
+        */
     },
     updateNextPosition: function(card, group) {
         this.nextCardPosition[group] = {x: card.attr('x') + card.attr('width') + 40, y: card.attr('y')};
@@ -143,14 +157,14 @@ var Evaluator = {
         'x^y': 'Math.pow(x,y)',
         'x^2': 'Math.pow(x,2)',
         'ln(x)': 'Math.log(x)',
-        'log_x(y)': 'Evaluator.log(x,y)',
-        'log_2(x)': 'Evaluator.log(2,x)',
-        'sin(x)': 'Evaluator.gonio("sin", x)',
-        'cos(x)': 'Evaluator.gonio("cos", x)',
-        'tan(x)': 'Evaluator.gonio("tan", x)',
-        'arcsin(x)': 'Evaluator.gonio("asin", x)',
-        'arccos(x)': 'Evaluator.gonio("acos", x)',
-        'arctan(x)': 'Evaluator.gonio("atan", x)',
+        'log_x(y)': 'log(x,y)',
+        'log_2(x)': 'log(2,x)',
+        'sin(x)': 'Math.sin(x)',
+        'cos(x)': 'Math.cos(x)',
+        'tan(x)': 'Math.tan(x)',
+        'arcsin(x)': 'Math.asin(x)',
+        'arccos(x)': 'Math.acos(x)',
+        'arctan(x)': 'Math.atan(x)',
         'x or y': 'x||y',
         'x and y': 'x&&y',
         'x xor y': 'x!=y',
@@ -167,15 +181,27 @@ var Evaluator = {
             if(!CardManager.cards[i].points.out || !CardManager.cards[i].points.out.connectedTo)
                 this.roots.push(CardManager.cards[i]);
         }
-        this.solution = ''
+        var solution = ''
         for (var i = 0; i < this.roots.length; i++) {
-            this.solution += ",'" + this.parseCard(this.roots[i]) + "'";
+            this.parseCard(this.roots[i]);
+            solution += ",'" + this.logString(this.roots[i]) + "'";
         }
-        this.solution = '[' + this.solution.substring(1) + ']';
+        solution = solution.substring(1);
+        var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+this.moveCount+"&move="+solution;
+        sendDataToInterface(q);		
+        this.moveCount++;
         this.noCycles = CardManager.cards.length == this.queue.length;
         
-        //debug(this.exp);
         CloneManager.clear();
+    },
+    logString: function(card) {
+        var exp = card.name.replace('+','PLUS');
+        for (var i in card.points) {
+            if(card.points[i].name != 'out' && card.points[i].connectedTo) {
+                exp = this.logString(card.points[i].connectedTo.card) + ';' + exp;
+            }
+        }
+        return exp
     },
     animationDone: function() {
         var success = this.noCycles;
@@ -184,9 +210,7 @@ var Evaluator = {
         }
         if(success) {
             //alert('Správně!!');
-            var q = "session_id="+id_game+"&session_hash="+check_hash+"&move=solution:"+this.solution;
-            sendDataToInterface(q);		
-            q = "session_id="+id_game+"&session_hash="+check_hash+"&win=1";
+            var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+this.moveCount+"&win=1";
             sendDataToInterface(q);
             after_win();
         }
@@ -197,13 +221,17 @@ var Evaluator = {
             ? this.results[exp] == 'True'
             : this.results[exp] === true
     },
+    /*
     eval: function(exp) {
         if(lang == 'haskell')
             Haskell.eval(exp);
         else
             this.jseval(exp);
     },
+    */
     jseval: function(exp) {
+        var round = this.roundNumber;
+        var log = this.log;
         try {
             var ret = eval(exp);
             //debug(exp);
@@ -212,14 +240,17 @@ var Evaluator = {
            // var ret = e.message;
         } finally {
             if(this.isNumber(ret))
-                ret = this.roundNumber(ret, 3)
-            this.results[exp] = ret;
+                ret = this.roundNumber(ret)
+            return ret;
         }
     },
     isNumber: function(n) {
       return !isNaN(parseFloat(n)) && isFinite(n);
     },
     roundNumber: function (number, digits) {
+        if (number === undefined) throw "Undefined variable";
+        if (number === true || number === false) return number;
+        if (digits === undefined) digits = 3;
         var multiple = Math.pow(10, digits);
         var rndedNum = Math.round(number * multiple) / multiple;
         return rndedNum;
@@ -235,38 +266,15 @@ var Evaluator = {
         this.queue.push(card);
 
         if(!this.results.hasOwnProperty(exp))
-            this.eval(exp);
+            this.results[exp] = this.jseval(exp);
         return exp;
     },
     parseName: function(name) {
-        return this.functions[name] ? this.functions[name] : (name.singleEquals() ? name.replace('=', '==') : name);
+        return this.functions[name] ? this.functions[name] : name.replace(/(x)=+(y|\d+|false|true)/,"round($1)==round($2)");
     },
     log: function(base, val) {
         return Math.log(val) / Math.log(base);
-    },
-    gonio: function(fce, x) {
-        return this.roundNumber(eval('Math.' + fce + '(' + x +')'),10);
     }
-/*,
-    cos: function(x) {
-        return this.roundNumber(Math.cos(x),10);
-    },
-    sin: function(x) {
-        return this.roundNumber(Math.sin(x),10);
-    },
-    arccos: function(x) {
-        return this.roundNumber(Math.cos(x),10);
-    },
-    arcsin: function(x) {
-        return this.roundNumber(Math.cos(x),10);
-    },
-    : function(x) {
-        return this.roundNumber(Math.cos(x),10);
-    },
-    cos: function(x) {
-        return this.roundNumber(Math.cos(x),10);
-    },
-*/
 }
 
 // Manager of cards clones (cards for animation)
