@@ -2,7 +2,7 @@
 * Author: Vít Stanislav<slaweet@mail.muni.cz> 
 * Year: 2012
 * compatibility: Mozilla Firefox, Opera, Google Chrome, Safari, Microsoft Internet Explorer 9
-* works, but slowly: MSIE 8
+* works, but slowly: MSIE 8, MSIE 7
 */
 
 /*
@@ -164,7 +164,7 @@ var Evaluator = {
         'x or y': 'x||y',
         'x and y': 'x&&y',
         'x xor y': 'x!=y',
-        'not x': '!x',
+        'not x': '!x'
     },
     clearQueue: function() {
         this.queue = [];
@@ -191,7 +191,7 @@ var Evaluator = {
         CloneManager.clear();
     },
     logString: function(card) {
-        var exp = card.name.replace('+','PLUS');
+        var exp = card.name.replace('+','%2B');
         for (var i in card.points) {
             if(card.points[i].name != 'out' && card.points[i].connectedTo) {
                 exp = this.logString(card.points[i].connectedTo.card) + ';' + exp;
@@ -415,7 +415,7 @@ Raphael.fn.connection = function (obj1, obj2, line, bg) {
                 delete this.from.connectedTo;
                 delete this.to.connectedTo;
                 //delete this;
-            },
+            }
         };
         ret.line.toFront();
         //ret.arrow.toFront();
@@ -491,14 +491,14 @@ Raphael.fn.slider = function (x, y) {
     up = function () {
         this.attr({'cursor': 'pointer'});
         this.inDrag = false;
-        this.animate({fill: '#aaa', stroke: '#aaa',}, 200);
+        this.animate({fill: '#aaa', stroke: '#aaa'}, 200);
     },
     hoverIn = function() {
         this.animate({fill: color, stroke: color,"fill-opacity": .8}, 200);
     },
     hoverOut = function() {
         if(!this.inDrag)
-            this.animate({fill: '#aaa', stroke: '#aaa',}, 200);
+            this.animate({fill: '#aaa', stroke: '#aaa'}, 200);
     },  
     attr = {fill: '#aaa', stroke: '#aaa', "fill-opacity": .0, "stroke-width": 3},
     color = '#26bf00',
@@ -618,7 +618,7 @@ Raphael.fn.cardClone = function (card) {
     text.animate({"font-size": 15}, time)
     rect.animate({x: text.attr('x') - width/2, y: y + CARD_HEIGHT * 3/4, width: width, height: CARD_HEIGHT / 2}, time, function(){this.moveTo(0)});
     rect.moveTo = function(length){
-        if(!this.path) {
+        if(!this.path || this.path.type != 'path') {
             if(!CardManager.playButton.paused) 
                 CloneManager.animate();
             return;
