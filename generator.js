@@ -119,3 +119,18 @@ window.onload = function () {
         $('opps').innerHTML += '<input type="checkbox" id="'+o+'"'+ ch +'>' + o + ' ';
     }
 }
+
+
+// Just one function for debuging
+
+var debug = function(object) {
+        var al;
+        if(typeof object == "string")
+            al = object;
+        else
+            for(var i in object) {
+                al += ' # ' + i +  '%' + object[i] + "<br>\n";
+            }
+        document.getElementById('debug').innerHTML += al + "<br>\n"; 
+    };
+

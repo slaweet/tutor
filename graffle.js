@@ -98,7 +98,7 @@ var CardManager = {
                 arity += 1;
                 if(names[i].indexOf('y') != -1)
                     arity += 1;
-                if(names[i].singleEquals())
+                if(names[i].search(/x=([^=])/) != -1)
                     arity = arity * (-1);
             }
             var group = this.arityToGroup(arity)
@@ -123,13 +123,8 @@ var CardManager = {
     }
 }
 
-// function to distinguish between root cards (contains single '=') and other cards with '='
-
-String.prototype.singleEquals = function () {
-    return this.indexOf('=') != -1 
-                && this.indexOf('==') == -1 && this.indexOf('>=') == -1 
-                && this.indexOf('<=') == -1 && this.indexOf('!=') == -1;
-}
+/*
+//returns true if string contains one of strings in given array
 
 String.prototype.contains = function (strings) {
     var ret = false
@@ -137,6 +132,7 @@ String.prototype.contains = function (strings) {
         ret = ret || this.indexOf(strings[i]) != -1; 
     return ret;
 }
+*/
 
 // Building and evaluating results
 
@@ -206,7 +202,7 @@ var Evaluator = {
     animationDone: function() {
         var success = this.noCycles;
         for (var i = 0; i < this.roots.length; i++) {
-            success = success && this.succ(this.roots[i].exp);
+            success = success && this.results[this.roots[i].exp] === true;
         }
         if(success) {
             //alert('Správně!!');
@@ -215,13 +211,13 @@ var Evaluator = {
             after_win();
         }
     },
-    
+    /*
+    // staff for haskell evaluator
     succ: function(exp) {
         return (lang == 'haskell')
             ? this.results[exp] == 'True'
             : this.results[exp] === true
     },
-    /*
     eval: function(exp) {
         if(lang == 'haskell')
             Haskell.eval(exp);
@@ -257,6 +253,7 @@ var Evaluator = {
     },
     parseCard: function(card) {
         var exp = '(' + this.parseName(card.name) + ')';
+        alert(exp)
         for (var i in card.points) {
             if(card.points[i].name != 'out' && card.points[i].connectedTo) {
                 exp = exp.replace(this.inVars[card.points[i].name], this.parseCard(card.points[i].connectedTo.card));
@@ -270,7 +267,7 @@ var Evaluator = {
         return exp;
     },
     parseName: function(name) {
-        return this.functions[name] ? this.functions[name] : name.replace(/(x)=+(y|\d+|false|true)/,"round($1)==round($2)");
+        return this.functions[name] ? this.functions[name] : name.replace(/x=([^=])/,"x==$1").replace(/(x)==(y|\d+)/,"round($1)==round($2)");
     },
     log: function(base, val) {
         return Math.log(val) / Math.log(base);
@@ -290,7 +287,6 @@ var CloneManager = {
                 }
             }
             CardManager.playButton.stop();
-            //this.queue = [];
         },
 
         animate: function() {
@@ -510,7 +506,6 @@ Raphael.fn.slider = function (x, y) {
     slider = this.circle(x + 50, y + 2, 8); 
     slider.x = x;
     slider.line = this.rect(x, y, SLIDER_WIDTH, 4, 2).toBack();
-    //slider.line = this.path("M"+ (x) +","+ (y + 2) +"l"+ SLIDER_WIDTH +" -5,0 10z").toBack();
     slider.line.attr(attr);
     slider.attr(attr);
     slider.attr({ "fill-opacity": .8, 'cursor': 'pointer'});
@@ -709,6 +704,7 @@ Raphael.fn.card = function (position, name, arity) {
     },
 
     color = CardManager.getColor(name,arity),
+    // comented lines for random x,y of a new card
     //shift = (arity < 0 ? 3 : arity),
     //y = Math.floor((Math.random() + shift) * (HOLDER_HEIGHT - CARD_HEIGHT) / (shift > 1 ? 4 : 2 + shift)),
     y = position.y,
@@ -837,18 +833,4 @@ Raphael.fn.connectPoint = function (card, name) {
     point.hover(hoverIn, hoverOut);
     return point;
 };
-
-
-// Just one function for debuging
-
-var debug = function(object) {
-        var al;
-        if(typeof object == "string")
-            al = object;
-        else
-            for(var i in object) {
-                al += ' # ' + i +  '%' + object[i] + "<br>\n";
-            }
-        document.getElementById('debug').innerHTML += al + "<br>\n"; 
-    };
 
