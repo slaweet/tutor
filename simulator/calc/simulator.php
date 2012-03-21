@@ -1,0 +1,35 @@
+<? $instance_plan = stripSlashes($_GET['zadani']) ?>
+<!-- 
+
+	SIMULATOR START
+
+
+ -->
+        <link rel="stylesheet" href="simulator/calc/calc.css" type="text/css" media="screen">
+        <script src="simulator/calc/raphael.js" type="text/javascript" charset="utf-8"></script>
+        <script src="simulator/calc/calc.js" type="text/javascript" charset="utf-8"></script>
+        <script type='text/javascript'>
+
+			//globalni promenne tutora
+            var session_id = "<?= $session_id ?>"; 		//získán z globální promìnné
+            var id_game = "<?= $session_id ?>";  		//získán z globální promìnné 
+            var check_hash = "<?= $session_hash ?>"; 	//získán z globální promìnné
+            var buttons = [<?= $instance_plan ?>];
+
+            window.onload = function () {
+                r = Raphael("holder", HOLDER_WIDTH, HOLDER_HEIGHT);
+                Calculator.init(buttons);
+            };
+        </script>
+	</head>
+
+	<body id='body' >
+    <h2 id="task"></h2>
+    <div id="holder"> </div>
+    <div id="debug"></div>
+<!-- 
+
+	SIMULATOR END
+
+ -->
+     

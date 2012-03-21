@@ -1,0 +1,13 @@
+#holder {
+    color: #fff;
+    background: #333;
+    height: 320px;
+    width: 580px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border: solid 5px #aaa;
+}
+p {
+    text-align: center;
+}
