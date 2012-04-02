@@ -24,7 +24,7 @@
 	</head>
 
 	<body id='body' >
-    <h2 id="task"></h2>
+    <div id="task"></div>
     <div id="holder"> </div>
     <div id="debug"></div>
 <!-- 

@@ -1,3 +1,8 @@
+/*
+* Author: Vít Stanislav<slaweet@mail.muni.cz> 
+* Year: 2012
+* compatibility: Mozilla Firefox, Opera, Google Chrome, Safari, Microsoft Internet Explorer >6
+*/
 
 var HOLDER_WIDTH = 580;
 var HOLDER_HEIGHT = 320;
@@ -8,20 +13,24 @@ var RESULT_HEIGHT = 65;
 var SLIDER_WIDTH = 120;
 var FONT_SIZE = 30;
 
-var r;
+var r; //global var for the raphael object;
+
+// UI build manager
 var UI = {
-    buttons: {}, 
-    numbers: [7,4,1,0,8,5,2,'.',9,6,3],
-    actions: ['+','-','*','/'],
-    unActions: ['log','ln','^2','sqrt','sin','cos','tan','asin','acos','atan'],
-    constants: ['PI','E'],
-    build: function(allowed, goal) {
+    buttons: {},
+    numbers: [7, 4, 1, 0, 8, 5, 2, '.', 9, 6, 3],
+    actions: ['+', '-', '*', '/'],
+    unActions: ['1/x', 'x!', 'x^2', 'log', 'sqrt', 'sin', 'cos', 'tan', 'asin', 'acos', 'atan'],
+    //constants: ['PI', 'E'],
+    build: function (allowed, goals) {
         this.allowed = allowed;
         this.colors = [];
-        for(var i = 0; i < 5; i++) {
-        this.colors.push(Raphael.getColor());
+        for (var i = 0; i < 5; i++) {
+            this.colors.push(Raphael.getColor());
         }
-        document.getElementById('task').innerHTML = goal + ' = ?';
+        for (var i = 0; i < goals.length; i++) {
+            document.getElementById('task').innerHTML += "<div><span id='g"+ goals[i] +"'> " + goals[i] + " </span></div>";
+        }
         this.allAllowed = this.isAllowed('all');
         var x = 20;
         var y = 20;
@@ -29,7 +38,7 @@ var UI = {
         this.memoryIndicator = r.memoryIndicator(x, y, this.colors[0]);
         this.buttons['esc'] = r.button('AC', x + RESULT_WIDTH + 20 , y, 'reset', this.colors[0]);
         if(this.isAllowed('M')) {
-            this.buttons['M+'] = r.button('M+', x + (RESULT_WIDTH + 20) + BUTTON_WIDTH + 20 , y, 'memorize', this.colors[0]);
+            this.buttons['Min'] = r.button('Min', x + (RESULT_WIDTH + 20) + BUTTON_WIDTH + 20 , y, 'memorize', this.colors[0]);
             this.buttons['MR'] = r.button('MR', x + (RESULT_WIDTH + 20)  + (BUTTON_WIDTH + 20) * 2 , y, 'memoryRecall', this.colors[0]);
         }
         y += 60;
@@ -41,8 +50,8 @@ var UI = {
         x += (BUTTON_WIDTH + 20) * Math.ceil(this.actions.length /4);
         this.buildColumn(this.unActions, x, 'unAction', 2); 
         x += (BUTTON_WIDTH + 20) * Math.ceil(this.unActions.length /4);
-        this.y += (BUTTON_HEIGHT + 20) * 2;
-        this.buildColumn(this.constants, x - (BUTTON_WIDTH + 20), 'constant', 1); 
+        //this.y += (BUTTON_HEIGHT + 20) * 2;
+        //this.buildColumn(this.constants, x - (BUTTON_WIDTH + 20), 'constant', 1); 
         return this.buttons; 
     },
     buildColumn: function(buttonNames, x, action, colorIndex) {
@@ -66,19 +75,30 @@ var UI = {
         return false;
     }
 }
+
+// main manager entrence point of whole calculator
 var Calculator = {
     init: function(allowed) {
         this.goal = allowed.shift();
-        UI.build(allowed, this.goal);
+        this.goals = this.goal.split(';');
+        UI.build(allowed, this.goals);
         this.result = UI.result;
-        this.goal = this.goal.substring(this.goal.indexOf('=')+1);
-        this.goal = eval(this.goal);
         Evaluator.reset();
         document.addEvent('keypress', this.onKeyDown);
         this.moveCount = 0;
     },
     tutorLog: function(result) {
-        if(this.round(result) == this.goal) {
+        //if(this.round(result) == this.goal) {
+        for(var i = 0; i < this.goals.length; i++) {
+            var goal = this.goals[i].substring(this.goals[i].indexOf('=')+1);
+            goal = eval(goal);
+            if(this.round(result) == goal) {
+                document.getElementById('g' + this.goals[i]).className = 'stroke'; 
+
+                this.goals.splice(i, 1);
+            }
+        }
+        if(this.goals.length == 0) {
             //alert('Správně!!');
             var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+this.moveCount+"&win=1";
             sendDataToInterface(q);
@@ -93,18 +113,20 @@ var Calculator = {
         return rndedNum;
     },
     round: function (number) {
-        var digits = 11;
-        digits -= (Math.round(number) + '').length;
-        var multiple = Math.pow(10, digits);
-        var result = Math.round(number * multiple) / multiple;
-        return result;
+        if(Math.round(number) != number) {
+            var digits = 11;
+            digits -= (Math.round(number) + '').length + 1;
+            var multiple = Math.pow(10, digits);
+            number = Math.round(number * multiple) / multiple;
+        }
+        return number;
     },
     buttonClick: function (name, clickFn) {
         var done = Evaluator[clickFn](name);
         if(done) {
             name = (name+'').replace('+','%2B');
             this.moveCount++;
-            buildTask(name );
+            //buildTask(name );
             var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+this.moveCount+"&move="+name;
             sendDataToInterface(q);		
         }
@@ -126,6 +148,8 @@ var Calculator = {
         }
     }
 }
+
+// object that evaluates button presses and value of the result
 var Evaluator = {
     reset: function() {
         this.no1 = NaN;
@@ -159,17 +183,31 @@ var Evaluator = {
                 this.calculate();
             }
             switch (action) {
-            case 'ln':
-                var result = Math.log(this.no1);
+            case '1/x':
+                var result = 1 / this.no1;
+                break;
+            case 'x!':
+                var result = this.fact(this.no1);
                 break;
             case 'log':
                 var result = this.log(10, this.no1);
                 break;
-            case '^2':
+            case 'x^2':
                 var result = Math.pow(this.no1, 2);
+                break;
+            case 'sin':
+            case 'cos':
+            case 'tan':
+                var result = Math[action](this.toRadians(this.no1));
+                break;
+            case 'asin':
+            case 'acos':
+            case 'atan':
+                var result = this.toDegrees(Math[action](this.no1));
                 break;
             default:
                 var result = Math[action](this.no1);
+                break;
             }
             this.writeResult(result);
             this.newNumber = true;
@@ -225,13 +263,26 @@ var Evaluator = {
     log: function(base, val) {
         return Math.log(val) / Math.log(base);
     },
+    fact: function(num) {
+        var rval=1;
+        for (var i = 2; i <= num; i++)
+            rval = rval * i;
+        return rval;
+    },
     writeResult: function(result) {
         this.no1 = result + '';
         UI.result.write(result);
         Calculator.tutorLog(this.no1);
+    },
+    toRadians: function(angle) {
+        return angle * (Math.PI / 180);
+    },
+    toDegrees: function(angle) {
+        return angle * (180 / Math.PI);
     }
 }
 
+//Calculator display element
 Raphael.fn.resultRow = function (x, y) {
     var color = '#aaaaaa',
         rect = this.rect(x, y, RESULT_WIDTH, BUTTON_HEIGHT, 2),
@@ -248,6 +299,7 @@ Raphael.fn.resultRow = function (x, y) {
     return row;
 }
 
+//indicator of some value saved in calculator memory (by 'Min' button)
 Raphael.fn.memoryIndicator = function (x, y, color) {
     var mi = r.text(x+10, y+10, 'M');
     mi.attr({"font-size": FONT_SIZE / 2, 'fill': color, 'font-weight': 'bold'});
@@ -255,6 +307,7 @@ Raphael.fn.memoryIndicator = function (x, y, color) {
     return mi
 }
 
+//calculator button element
 Raphael.fn.button = function (name, x, y, clickFn, color) {
     var hoverIn = function() {
             button.animate({stroke: color, "fill-opacity": .3}, 100);
@@ -262,9 +315,31 @@ Raphael.fn.button = function (name, x, y, clickFn, color) {
     hoverOut = function() {
             button.animate({stroke: color, "fill-opacity": .2}, 100);
     },    
+    parseName = function(name) {
+        name = name.toString();
+        var transforms = {'asin': 'sin^-1','acos': 'cos^-1','atan': 'tan^-1'};//,'E' : 'e'};//,'PI':'π'}
+        if(transforms[name]) {
+            name = transforms[name];
+        }
+        var index = name.indexOf('^');
+        if(index != -1) {
+            var expText = name.substring(index + 1);
+            name = name.substring(0, index);
+            var exp = r.text(x + ((name.length+11)/16)*width, y + BUTTON_HEIGHT/4, expText)
+            exp.attr({"font-size": FONT_SIZE/2, 'fill': color, stroke: color, "stroke-width": 1});
+        }
+        index = name.indexOf('sqrt');
+        if(index != -1) {
+            var sqrt = r.path("M"+ (x + width/3) +","+ (y + BUTTON_HEIGHT/2) +"l5 0, 5 10, 5 -20, 10 0")
+            sqrt.attr({stroke: color, "stroke-width": 2.5});
+            name = name.substring(0, index);
+
+        }
+        return name;
+    },
     width =  BUTTON_WIDTH + (name.length > 3 ? 10 : 0);
     if( name.length > 3 ) x -= 5;
-    var text = this.text(x + width/2, y + BUTTON_HEIGHT/2, name);
+    var text = this.text(x + width/2, y + BUTTON_HEIGHT/2, parseName(name));
     text.attr({"font-size": FONT_SIZE, 'fill': color});
     var button = this.rect(x, y, width, BUTTON_HEIGHT, 2);
     button.attr({fill: color, stroke: color, "fill-opacity": .2, "stroke-width": 3, 'cursor': 'pointer'});
@@ -282,23 +357,4 @@ Raphael.fn.button = function (name, x, y, clickFn, color) {
     button.name = name;
     return button;
 };
-
-var buildTask = function(name) {
-        if (name.indexOf('M') == 0) name = 'M';
-        if (name != '=' && name != 'AC' && document.getElementById('debug').innerHTML.indexOf(name) == -1) { 
-            name = ",'" + name + "'";
-            document.getElementById('debug').innerHTML += name ; 
-        }
-    };
-
-var debug = function(object) {
-        var al;
-        if(typeof object == "string")
-            al = object;
-        else
-            for(var i in object) {
-                al += ' # ' + i +  '%' + object[i] + "<br>\n";
-            }
-        document.getElementById('debug').innerHTML += al + "<br>\n"; 
-    };
 

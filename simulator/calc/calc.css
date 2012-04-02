@@ -7,7 +7,24 @@
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border: solid 5px #aaa;
+    clear:both;
 }
 p {
     text-align: center;
+}
+#task  {
+    padding: 0 100px 20px 100px;
+}
+#task>div {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 0 50px 10px 50px;
+    float:left;
+    position: relative;
+    padding-bottom: 10px;
+    
+}
+.stroke {
+    color: #aaaaaa;
+    background: url('stroke.png') repeat-x left center;
 }
