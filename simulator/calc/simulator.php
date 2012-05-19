@@ -1,13 +1,12 @@
-<? $instance_plan = stripSlashes($_GET['zadani']) ?>
 <!-- 
 
 	SIMULATOR START
 
 
  -->
-        <link rel="stylesheet" href="simulator/calc/calc.css" type="text/css" media="screen">
-        <script src="simulator/calc/raphael.js" type="text/javascript" charset="utf-8"></script>
-        <script src="simulator/calc/calc.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" href="simulator/kalkulacka/calc.css" type="text/css" media="screen">
+        <script src="simulator/kalkulacka/raphael.js" type="text/javascript" charset="utf-8"></script>
+        <script src="simulator/kalkulacka/calc.js" type="text/javascript" charset="utf-8"></script>
         <script type='text/javascript'>
 
 			//globalni promenne tutora
