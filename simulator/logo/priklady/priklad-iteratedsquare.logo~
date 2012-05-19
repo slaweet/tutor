@@ -1,0 +1,19 @@
+to square :l
+  repeat 4 [ fd :l rt 90  ]
+end
+
+to iteratedsquare :n :l [
+  square :l
+  if :n > 1 [
+    fd :l/2
+    rt 45
+    iteratedsquare (:n-1) (:l / sqrt(2))
+  ]
+]
+
+home
+clean
+pendown
+fd 100
+square 10
+iteratedsquare 3 50

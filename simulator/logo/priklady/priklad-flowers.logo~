@@ -1,0 +1,32 @@
+to arc :r :angle
+  repeat :angle [
+     fd 2*3.14*:r / 360
+     rt 1
+  ]
+end
+
+to flower :r :k 
+ repeat :k [
+   arc :r 360/:k
+   rt 180 - 360/:k
+   arc :r 360/:k
+   rt 180 - 360/:k
+   rt 360/:k
+ ]
+end
+
+to moveright 
+penup rt 90 fd 150 lt 90 pendown
+end
+
+home
+rt 90
+bk 150
+lt 90
+clean
+
+flower 80 6
+moveright
+flower 110 9
+moveright
+flower 140 12

@@ -1,0 +1,28 @@
+to sierpinski :n :l
+  ifelse :n = 0 [
+    right 30
+    repeat 3 [ fd :l right 120 ]
+    left 30    
+  ] [ 
+    sierpinski (:n - 1) :l
+    right 30 
+    fd (:l * 2^(:n-1))
+    left 30
+    sierpinski (:n - 1) :l
+    right 150
+    fd (:l * 2^(:n-1))
+    left 150   
+    sierpinski (:n - 1) :l
+    left 90
+    fd (:l * 2^(:n-1))
+    right 90
+  ]
+end
+
+
+home 
+right 45
+back 200
+left 45
+clean
+sierpinski 5 10

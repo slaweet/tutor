@@ -1,0 +1,19 @@
+to line_and_move :l
+ forward :l
+ left 90
+ penup
+ forward :l
+ left 90
+ forward :l
+ left 180
+ pendown
+end
+
+home
+clean
+
+repeat 4 [
+ line_and_move 150
+]
+
+hideturtle

@@ -1,0 +1,35 @@
+
+
+to square :l
+  repeat 4 [ fd :l rt 90 ]
+end
+
+to circle :l
+  repeat 20 [ fd :l lt 360/20 ]
+end
+
+
+to anklet :n :l
+  lt 45
+  square :l   
+  repeat 3 [
+    fd :l
+    ifelse :n = 1 [ 
+     rt 45
+     circle (:l/10)
+     rt 45
+    ] [
+     lt 45
+     fd :l
+     anklet (:n-1) :l
+     bk :l
+     rt 135
+    ]
+  ]
+  fd :l
+  rt 135
+end
+
+home
+clean
+anklet 2 20

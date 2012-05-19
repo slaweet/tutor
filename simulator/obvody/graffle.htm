@@ -1,0 +1,31 @@
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" href="graffle.css" type="text/css" media="screen">
+<script src="raphael.js" type="text/javascript" charset="utf-8"></script>
+<script src="graffle.js" type="text/javascript" charset="utf-8"></script>
+<script src="haskell.js" type="text/javascript" charset="utf-8"></script>
+<script src="generator.js" type="text/javascript" charset="utf-8"></script>
+<script type='text/javascript'>
+    var names=[];
+    var lang = 'js';
+    if(names.length == 0) {
+        Generator.from = -9; 
+        Generator.to = 9; 
+        Generator.cardsFrom = 7; 
+        Generator.cardsTo = 9; 
+        Generator.opps = ['x+y', 'x-y', 'x*y', 'x/y']
+        var task = Generator.generate();
+        names = eval(task);
+    }
+    window.onload = function () {
+        document.getElementById('debug').innerHTML = task; 
+        document.getElementById('holder').innerHTML = ""; 
+        r = Raphael("holder", HOLDER_WIDTH, HOLDER_HEIGHT);
+        CardManager.init(names);
+    };
+</script>
+</head>
+<body id='body' >
+    <div id="holder"></div>
+    <div id="debug"></div>
+</body>

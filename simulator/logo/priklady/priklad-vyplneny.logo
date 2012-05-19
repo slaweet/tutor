@@ -1,0 +1,18 @@
+to square :l
+ repeat 4 [fd :l left 90]
+end
+
+to filledsquare :l
+   if :l > 10 [
+     square :l
+     fd 1
+     left 90
+     fd 1
+     right 90
+     filledsquare :l - 1
+   ]
+end
+
+home
+clean
+filledsquare 20

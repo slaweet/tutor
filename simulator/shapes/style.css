@@ -1,0 +1,31 @@
+#holder {
+    position: relative;
+    color: #fff;
+    background: #333;
+    height: 360px;
+    width: 860px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border: solid 5px #aaa;
+    clear:both;
+}
+
+#holder span {
+    float:left;
+    width: 260px;
+    height:280px;
+    padding: 10px;
+    color: #aaa;
+}
+#holder input {
+    margin-top: 20px;
+    margin-bottom: -20px;
+}
+#error {
+    height: 20px;
+    margin-top: 5px;
+    margin-bottom: -25px;
+    position: abslute;
+    color: red;
+}

@@ -1,0 +1,26 @@
+
+to polystarbranch :iter :n :l
+  if :iter > 0 [
+    lt (90 - 180/:n)
+    repeat :n-1 [
+    fd :l
+    lt (90 - 180/:n)
+    polystarbranch (:iter - 1) :n (:l/2)
+    rt (90 - 180/:n  + 360/:n)
+    ]
+    fd :l
+    rt (90 - 180/:n)
+    rt 360/:n 
+  ]
+end
+
+to polystar :iter :n :l
+  polystarbranch :iter :n :l
+  rt 180
+  polystarbranch (:iter - 1) :n (:l/2) 
+end
+
+home
+clean
+
+polystar 4 3 100

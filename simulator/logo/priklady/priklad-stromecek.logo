@@ -1,0 +1,16 @@
+to tree :l
+   if :l > 10 [
+      fd :l
+      left 45
+      tree (:l*0.6)
+      right 90
+      tree (:l*0.6)
+      left 45
+      bk :l
+   ]
+end
+
+home
+bk 200
+clean
+tree 200

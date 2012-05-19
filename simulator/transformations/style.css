@@ -1,0 +1,91 @@
+#holder {
+    position: relative;
+    color: #fff;
+    background: #333;
+    height: 590px;
+    width: 600px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border: solid 5px #aaa;
+    clear:both;
+}
+
+#plot {
+    height: 440px;
+    width: 440px;
+    float: left;
+}
+
+.controls {
+    height: 410px;
+    width: 120px;
+    float: left;
+}
+
+.matrix {
+    position: absolute;
+    left: -420px;
+    width: 240px;
+    height: 70px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-top: 00px;
+    color: #aaa;
+}
+.matrixwraper {
+    float:left;
+    margin-left:20px;
+    width: 420px;
+    height: 80px;
+}
+.matrixpositioner {
+    padding-top: 7px;
+    position: relative;
+    float:left;
+}
+#matrixline {
+    width: 600px;
+    height: 80px;
+}
+#matrixline>span {
+}
+.label {
+    color: #aaa;
+    padding: 20px 0 0 0px;
+    width: 120px;
+    float:left;
+}
+
+.matrix .bracket {
+    float:left;
+    height: 30px;
+    width: 100px;
+}
+#matrix input {
+    color: #00a2bf;
+}
+#sumarymatrix input  {
+    color: #aaa;
+}
+.matrix input {
+    float:left;
+    border:none;
+    background: transparent;
+    height: 30px;
+    width: 42px;
+    text-align: center;
+    font-size: 20px;
+}
+#holder .button {
+    width: 140px;
+    height: 90px;
+}
+#counter {
+    margin-top: -30px;
+    margin-bottom: -10px;
+    color: #00a2bf;
+    margin-left: 20px;
+}
+#sumarymatrixwraper  {
+}

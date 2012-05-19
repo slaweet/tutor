@@ -1,0 +1,23 @@
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<script src="raphael.js" type="text/javascript" charset="utf-8"></script>
+<script src="graffle.js" type="text/javascript" charset="utf-8"></script>
+<script src="solver.js" type="text/javascript" charset="utf-8"></script>
+<head>
+<body>
+<form onsubmit='Solver.click(); return false;'>
+<table>
+	<tr><td>Zadání:<td><input id='source' value="'3','-5','|x|','x+y','x=2'" style="width: 500px;"></tr>
+	<tr><td>Max iterací*:<td><input id='limit' value="5000" style="width: 500px;"></tr>
+    <tr><td><button type='submit' id='gen'>Zjistit řešení</button><tr>
+	<tr><td>Počet řešení:<td><input id='count' value='' style="width: 500px;"></tr>
+	<tr><td>Jedinečných**:<td><input id='pure' value='' style="width: 500px;"></tr>
+</table>
+</form>
+Řešení:<br>
+<textarea id='text' style="width: 600px; height: 400px;">
+</textarea><br>
+Zatím neumí více koncových kartiček<br>
+* počet průchodů, po nichž se hledání zastaví (přibližně odpovídá milisekundám)<br>
+** odpočítá prohození operandů komutativních operací. (zatím neřeší prohození stejných kartiček)<br>
+</body>

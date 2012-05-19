@@ -1,0 +1,65 @@
+#holder {
+    color: #fff;
+    background: #333;
+    height: 480px;
+    width: 640px;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border: solid 5px #aaa;
+}
+#wraper {
+    position: relative;
+    width: 640px;
+}
+#wraper form {
+    position: absolute;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: solid 3px #aaa;
+    font-size: 30px;
+    background: rgba(0,0,0,0.7);
+    padding: 5px 15px 5px 5px;
+    display: none;
+    font-size: 30px;
+    color: #bf5600 ;
+}
+#wraper input {
+    position: relative;
+    color: #bf5600 ;
+    height: 40px;
+    width: 100px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border: solid 3px #bf5600;
+    font-size: 30px;
+    background: rgba(250,250,250,0.1);
+    margin-bottom: 5px;
+}
+#wraper button {
+    color: #bf5600 ;
+    background: rgba(0,0,0,0.8);
+    cursor: pointer;
+}
+#submit {
+    font-size: 18px;
+    height: 26px;
+    border: solid 3px #bf5600;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+#reset {
+    position: absolute;
+    height: 30px;
+    font-size: 15px;
+    right: -13px;
+    top: -10px;
+    font-weight: bold;
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border: solid 3px #aaa;
+}

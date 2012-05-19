@@ -1,0 +1,18 @@
+
+** Koch
+
+to koch :n
+  ifelse :n = 1 [
+     fd 10
+  ] [
+     koch (:n - 1)
+     left 60
+     koch (:n - 1)
+     right 120
+     koch (:n - 1)
+     left 60
+     koch (:n - 1)     
+  ]
+end
+
+koch 3
