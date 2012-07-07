@@ -8,6 +8,7 @@
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border: solid 5px #aaa;
+    margin-top: 20px;
     clear:both;
 }
 
@@ -26,16 +27,22 @@
 .matrix {
     position: absolute;
     left: -420px;
-    width: 240px;
+    width: 250px;
     height: 70px;
     padding-left: 15px;
     padding-right: 15px;
     margin-top: 00px;
     color: #aaa;
 }
+.matrix span {
+    float:left;
+    width: 94px;
+    height: 70px;
+    margin-right: 90px;
+}
 .matrixwraper {
     float:left;
-    margin-left:20px;
+    margin-left:15px;
     width: 420px;
     height: 80px;
 }
@@ -57,11 +64,7 @@
     float:left;
 }
 
-.matrix .bracket {
-    float:left;
-    height: 30px;
-    width: 100px;
-}
+
 #matrix input {
     color: #00a2bf;
 }
@@ -79,7 +82,7 @@
 }
 #holder .button {
     width: 140px;
-    height: 90px;
+    height: 85px;
 }
 #counter {
     margin-top: -30px;

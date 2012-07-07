@@ -29,13 +29,16 @@ var NEUTRAL_COLOR = "#fff";
 
 var BUNDLE = {
     "en":{ 
+    "start": "start",
     "no-start": "There is no state at the start",
     "conditions": "Requirements",
     "use-regexp": "Sestavte konečný automat rozpornávající jazyk zadaný regulárním výrazem" 
     },
     "cs":{ 
+    "grammar": "generuje gramatika",
+    "start": "start",
     "no-start": "Na startu není žádný stav",
-    "conditions": "Požadavky",
+    "conditions": "Sestrojte automat přijímající každé slovo, které",
     "use-regexp": "Sestavte konečný automat rozpornávající jazyk zadaný regulárním výrazem" 
     }
 }
@@ -88,8 +91,9 @@ var AutomataManager = {
 
         this.maxTestedWordLength = task.maxTestedWordLength || -1;
         this.paper = Raphael("holder", HOLDER_WIDTH, HOLDER_HEIGHT);
+        this.controlsPaper = Raphael("controls", CONTROLS_WIDTH, CONTROLS_HEIGHT);
         r = this.paper;
-        var c = r.controls();
+        var c = this.controlsPaper.controls();
         this.playButton = c.playButton;
         this.slider = c.slider;
         this.stateStack = this.paper.stateStack(-10, HOLDER_HEIGHT - 50, task.maxStatesCount, task.alphabet || task.automata.alphabet);
@@ -103,12 +107,12 @@ var AutomataManager = {
         if (task.text && task.text == 'regexp') {
             $('#text').html(Lang.get('use-regexp') + ': <br><b>' + task.regexp + '</b>');
         } else if (task.text) {
-            $('#text').html('<b>' + Lang.get('conditions') + '</b>: <br>' + task.text);
+            $('#text').html(Lang.get('conditions') + ' ' + task.text.replace("G = ",Lang.get('grammar')+":\n G = ").replace(/\n/g, "\n<br>"));
         }
     },
     initAutomata: function(automata) {
-        this.start = this.paper.start(0, 150);
-        this.automata.token = this.paper.token(-20, 150, '#fff', this);
+        this.start = this.paper.start(0, 150, this.maxTestedWordLength <= -1);
+        this.automata.token = this.paper.token(-25, 150, this);
         if (automata == undefined) {
             return;
         }
@@ -124,7 +128,7 @@ var AutomataManager = {
 
             }
             state.moveTo({x: x, y:y})
-            this.addState(state);
+            this.automata.addState(state);
         }
 
         for (var i = 0; i < automata.accepting.length; i++) {
@@ -135,7 +139,7 @@ var AutomataManager = {
             var conn = this.automata.states[f.from].getConnectionTo(this.automata.states[f.to]);
             var label = this.automata.states[f.from].labels[f.char];
             conn.addLabel(label)
-            this.addEdge(label);
+            this.automata.addEdge(label);
         }
         this.setInit(this.automata.states[automata.init]);
     },
@@ -192,14 +196,15 @@ var AutomataManager = {
         for (var i = 0; i < this.words.length; i++) {
             this.setWordColor(this.words[i], NEUTRAL_COLOR);
         }
+        this.taskPrint();
     },
     taskPrint: function() {
         var a = {
             stateCount: this.automata.states.length,
             alphabet: this.stateStack.alphabet,
-            delta: this.edgesToPrint(),
+            delta: this.automata.getEdgesToPrint(),
             init: this.automata.init && this.automata.init.name[1],
-            accepting: this.getAcceptingStates()
+            accepting: this.automata.getAcceptingStates()
         }
         $("#debug").text(JSON.encode(a));
     },
@@ -222,45 +227,7 @@ var AutomataManager = {
         }
         return words;
     },
-    addState: function(state) {
-        this.automata.states.push(state)
-    },
-    removeState: function(state){
-        this.automata.states.splice(this.automata.states.indexOf(state), 1);
-        this.stateStack.getBack(state);
-    },
-    addEdge: function(label){
-        this.automata.edges.push(label);
-        this.taskPrint();
-    },
-    removeEdge: function(label){
-        this.automata.edges.splice(this.automata.edges.indexOf(label), 1);
-        this.taskPrint();
-    },
-    getAcceptingStates: function(){
-        var acc = [];
-        for (var i = 0; i < this.automata.states.length; i++) {
-            if (this.automata.states[i].isAccepting) {
-                acc.push(i);
-            }
-        }
-        return acc;
-    },
-    edgesToPrint: function(){
-        var edges = [];
-        for (var i = 0; i < this.automata.edges.length; i++) {
-            var label = this.automata.edges[i];
-            var edge = {
-                from: this.automata.states.indexOf(label.connection.from),
-                to: this.automata.states.indexOf(label.connection.to),
-                char: label.name
-            }
-            if (edge.from > -1) {
-                edges.push(edge)
-            }
-        }
-        return edges;
-    },
+
     setInit: function(state) {
         this.automata.init = state;
         var pos = this.start.getPos();
@@ -274,6 +241,34 @@ var Automata = {
     edges: [],
     word: "",
     init: null,
+    addState: function(state) {
+        this.states.push(state)
+    },
+    removeState: function(state){
+        this.states.splice(this.states.indexOf(state), 1);
+        AutomataManager.stateStack.getBack(state);
+    },
+    addEdge: function(label){
+        this.edges.push(label);
+    },
+    removeEdge: function(label){
+        this.edges.splice(this.edges.indexOf(label), 1);
+    },
+    getEdgesToPrint: function(){
+        var edges = [];
+        for (var i = 0; i < this.edges.length; i++) {
+            var label = this.edges[i];
+            var edge = {
+                from: this.states.indexOf(label.connection.from),
+                to: this.states.indexOf(label.connection.to),
+                char: label.name
+            }
+            if (edge.from > -1) {
+                edges.push(edge)
+            }
+        }
+        return edges;
+    },
     run: function(word){
         if (this.init == null) {
             alert(Lang.get('no-start')); 
@@ -296,6 +291,7 @@ var Automata = {
         var line = this.lastState.getLineWithLabel(symbol);
         if (line == null) {
             var color = (this.lastState.isAccepting && symbol == "") ? GOOD_COLOR : BAD_COLOR;
+            this.token.setColor(color);
             AutomataManager.setWordColor(this.word, color);
             AutomataManager.playButton.stop();
         } else {
@@ -311,6 +307,15 @@ var Automata = {
             var marginLeft = 10;
             pos.left += marginLeft + letterWidth * (this.wordIndex);
             $("#arrow").animate(pos, 5000 / AutomataManager.slider.speed());
+    },
+    getAcceptingStates: function(){
+        var acc = [];
+        for (var i = 0; i < this.states.length; i++) {
+            if (this.states[i].isAccepting) {
+                acc.push(i);
+            }
+        }
+        return acc;
     },
     isAccepted: function(word) {
         if (this.init == null) return false;
@@ -329,8 +334,8 @@ var Automata = {
 
 // Circle for the animation of running automata 
 
-Raphael.fn.token = function (x, y, color, manager) {
-    token = this.circle(x, y, 20).attr({stroke: color,'fill': color, "fill-opacity": .5, "stroke-width": 2});
+Raphael.fn.token = function (x, y, manager) {
+    token = this.circle(x, y, 20).attr({"fill-opacity": .5, "stroke-width": 2});
     
     token.manager = manager;
     token.moveTo = function(length){
@@ -348,27 +353,32 @@ Raphael.fn.token = function (x, y, color, manager) {
             }
         });
     }
+    token.setColor = function(color) {
+        this.attr({stroke: color, fill: color});
+    }
     token.moveToHome = function() {
         this.attr({cx: x, cy: y});
+        this.setColor(NEUTRAL_COLOR);
     }
     token.setPath = function(line) {
         this.path = line;
         this.pathLength = line.getTotalLength();
     }
+    token.moveToHome();
     return token;
 }
 
 // start arrow
 
-Raphael.fn.start = function (x,y) {
-    var color = '#fff';
+Raphael.fn.start = function (x,y, showText) {
+    var color = NEUTRAL_COLOR;
     var start = {
-        text: this.text(x +20, y + 10,'start').attr({"font-size": 15, "fill": color}),
+        text: showText && this.text(x +20, y + 10, Lang.get('start')).attr({"font-size": 15, "fill": color}),
         line: this.path(['M', x, y, 'l', 60, 0].join()).attr({"stroke-width": 2, "stroke": color}),
         arrow: this.path(['M', x + 60, y, 'l', -20, 10, 10, -10, -10, -10, 20, 10].join()).attr({"stroke": color, "fill": color}),
         overlapesWith: function(state) {
             var pos = state.getPos();
-            return pos.x < x+100 && Math.abs(pos.y-y) < 40;
+            return pos.x < x+120 && Math.abs(pos.y-y) < 40;
         },
         getPos: function() {
             return {x: 60, y: 150};
@@ -411,7 +421,7 @@ Raphael.fn.stateStack = function (x, y, maxStates, alphabet) {
         var state = this.stack.getState(ANIMATION_TIME);
         if (state) {
             state.fg.stopMove();
-            AutomataManager.addState(state);
+            AutomataManager.automata.addState(state);
             if (state.getPos().y >= y) {
                 state.moveTo({x: x+50, y: y-40}, ANIMATION_TIME);
                 state.bg.updateRadius();
@@ -486,8 +496,6 @@ Raphael.fn.state = function (x, y, name, alphabet) {
             dy = -this.oy;
         else if (this.oy + dy > HOLDER_HEIGHT)
             dy = HOLDER_HEIGHT - this.oy;
-        if (this.oy + dy < CONTROLS_HEIGHT  &&  this.ox + dx > HOLDER_WIDTH - CONTROLS_WIDTH)
-            dy = CONTROLS_HEIGHT -this.oy;
         this.parent.moveTo({x: this.ox + dx, y: this.oy + dy});
     },
     up = function () {
@@ -497,10 +505,11 @@ Raphael.fn.state = function (x, y, name, alphabet) {
             AutomataManager.setInit(this.parent)
         }
         if (AutomataManager.stateStack.overlapesWith(this.parent)) {
-            AutomataManager.removeState(this.parent);
+            AutomataManager.automata.removeState(this.parent);
         } else {
             this.parent.hoverIn();
         }
+        //workaround for doubleclick
         var time =  new Date().getTime();
         if (time - this.lastClickTime < 500) {
             this.parent.toggleAccepting();
@@ -680,7 +689,7 @@ Raphael.fn.label = function (state, name) {
         this.ox = this.attr("cx");
         this.oy = this.attr("cy");
         if (this.parent.isUsed) {
-            AutomataManager.removeEdge(this.parent);
+            AutomataManager.automata.removeEdge(this.parent);
             this.parent.connection.removeLabel(this.parent);
         }
         if (this.connection == undefined) {
@@ -706,7 +715,7 @@ Raphael.fn.label = function (state, name) {
                 var conn = from.getConnectionTo(to);
                 conn.addLabel(this.parent);
                 this.inDrag = false;
-                AutomataManager.addEdge(this.parent);
+                AutomataManager.automata.addEdge(this.parent);
                 return;
             }
         }
@@ -1015,7 +1024,7 @@ Raphael.fn.playButton = function (x, y) {
 // Rectangle in upper right corner with play/pause button and speed slider
 
 Raphael.fn.controls = function () {
-    var x = HOLDER_WIDTH - CONTROLS_WIDTH + 10,
+    var x =  10,
         y =  -10,
         controls = this.rect(x, y, CONTROLS_WIDTH, CONTROLS_HEIGHT, 10);
     controls.attr({stroke: '#aaa', "stroke-width": 5});

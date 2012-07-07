@@ -28,6 +28,7 @@
 	<body id='body' >
         <div id="text"> </div>
         <div id="words">
+            <span id="controls"></span>
             <div></div><br style="clear:both;"/><span id="arrow"/>
         </div>
         <div id="holder"> </div>

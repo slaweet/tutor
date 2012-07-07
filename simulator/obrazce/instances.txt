@@ -1,0 +1,298 @@
+id = 39
+
+Ukázka or
+Or sample
+30
+x <= 0 or x <= y;  x <= 0 or y >= 0
+
+Ukázka mocniny
+Power sample
+35
+y <= 0 and y +10>= (x/10)^2; y <= 10 and y >= (x/10)^2
+
+Ukázka absolutní
+Absolute sample
+40
+abs(x+5) > y-5; abs(x) > y
+
+Ukázka sinus
+sinus sample
+40
+y <= 10*sin(pi*x/10) and y >= -10; y <= 5*sin(pi*x/10) and y >=-15
+
+Ukázka lineární
+Linear sample
+45
+y >= 20 + x or y <= -20 + x; y >= 20 - x or y <= -20 -x
+
+Ukázka max
+Max sample
+40
+max(-x,-y) <= 5; max(x,y) <= 10
+
+--------------------------------------------
+--------------------------------------------
+
+Sjezdovka
+Ski slope
+50
+y <= -x/2 + 5
+
+Kopec
+Hill
+55
+y<= -abs(x/2) + 10
+
+Šipka
+Arrow
+60
+x <= -abs(4y) +20
+
+Šipka 2
+Arrow 2
+65
+- abs(x) + 5 <= y and -abs(x) + 15 >= y 
+
+Šipka 3
+Arrow 3
+66
+y<= x/2+10 and y>= 2x-20
+
+Motýlek
+Bow tie
+70
+abs(x) >= abs(y)
+
+Rotovaný čtverec
+Rotated square
+75
+abs(x)+abs(y) <= 15
+
+Čtverec
+Square
+75
+max(abs(x),abs(y)) <= 10
+
+Šikmý pruh
+Sloping stripe
+76
+abs(x+y) <= 10
+
+Kříž 2
+Cross 2
+80
+abs(x+y) <= 5 or abs(x-y) <= 5
+
+Kříž 1
+Cross 1
+79
+abs(x) <= 5 or abs(y) <= 5
+
+Kříž 3
+Cross 3
+85
+abs(x)+abs(y) <= 15 or abs(x) <= 5 or abs(y) <= 5
+
+Kříž 4
+Cross 4
+100
+- abs(y) <= x/2 and -abs(y) >=2x or  abs(y) <= 2x and abs(y) >= x/2
+
+Trojúhelník
+Triangle
+90
+y <= x +10 and y <= -x + 10 and y >= -5
+
+Čtyři trojúhelníky
+Four Triangles
+95
+abs(x)+abs(y)<=20 and max(abs(x),abs(y)) >= 10
+
+Domeček
+Little house
+150
+x>=0 and x<=10 and y>=0 and y <=10 or y>=10 and x >=y-15 and y <= -x+25
+
+Osmiúhelník
+Octagon
+130
+abs(x)+abs(y) <= 15 and abs(x) <= 10 and abs(y) <= 10
+
+Pruhy
+Stripes
+135
+abs(abs(x)-10) <= 2 or abs(abs(y)-10)<=2
+
+Pět čtverců
+Five squares
+180
+abs(abs(x)-10) + abs(abs(y)-10) <= 5 or abs(x)+abs(y) <= 5
+
+Posunutý kruh
+Shifted circle
+100
+(x-5)^2 + (y+10)^2 <= 5^2
+
+Čtvrtkruh
+Quadrant
+110
+x^2 + y^2 <= 20^2 and  0 <=x and 0<=y
+
+Čtyři kruhy
+Four circles
+130
+(abs(x)-10)^2 + (abs(y)-10)^2 <= 100
+
+Míček na svahu
+Ball on a slope
+160
+y <= -x/2 - 5 or (x+10)^2 + (y-6)^2 <= 25
+
+Prohozený kruh
+Swaped circle
+200
+x*y >=0 and x^2 +y^2 <=400 or x*y <=0 and x^2 +y^2 >=400
+
+Pneumatika
+Tire
+180
+10^2 <= x^2 + y^2 and 20^2 >= x^2 + y^2
+
+Děravý čtverec
+Leaky square
+195
+max(abs(x),abs(y)) <= 15 and x^2 + y^2 >= 100
+
+Kapka
+Drop
+220
+x^2+y^2 <= 400 and  (x+10)^2+y^2 >=100 and (y>=0 or (x-10)^2 + y^2<=100)
+
+Sněhulák
+Snowman
+260
+min((y+12)^2-48,(y-2)^2-20,(y-12)^2) <=16-x^2 or (abs(x)-8)^2+(y-2)^2<=4
+
+Elipsa
+Ellipse
+180
+(x/2)^2 + y^2 <= 10^2
+
+Parabola
+Parabola
+155
+y >= (x/3)^2 - 20
+
+Šikmá elipsa
+Leaning ellipse
+175
+x^2+y^2 - x*y <=100
+
+Průnik elips
+Ellipse intersection
+195
+(x/2)^2 + y^2 <= 100 and (y/2)^2 + x^2 <= 100
+
+Hyperbola
+Hyperbola
+140
+x*y <= 20
+
+Růžice 1
+Rose 1
+185
+y <= abs(20/x) and y>= - abs(20/x)
+
+Růžice 2
+Rose 2
+190
+(abs(x)-20)^2 + (abs(y)-20)^2 >= 20^2
+
+Oko
+Eye
+225
+y >= (x/6)^2 - 10 and y <= -(x/6)^2 +10 and x^2 + y^2 >=5^2
+
+Druhé mocniny
+Second powers
+145
+y^2 - x^2 <= 5^2
+
+
+--------------------------------------------
+--------------------------------------------
+
+Řeka
+River
+130
+abs(x-sin(y*pi/10)) <= 5
+
+Dláždění ze sinusů
+Sines pavement
+100 
+sin(x) + sin(y) >= 0
+
+Šachovnice
+Chessboard
+140
+sin(pi*x/5) * sin(pi*y/5) >=0
+
+Čtverečky
+Little squares
+160
+sin(pi*x/5)<=0 and sin(pi*y/5)<=0  
+
+Proužky
+Stripes
+175
+sin(x*pi/2 + y*pi/2) >= 0
+
+Kolmé vlny
+Perpendicular waves
+230
+abs(y - 4*sin(x*pi/5)) <= 1 or abs(x + 4*sin(y*pi/5)) <= 1
+
+Sinus a cosinus
+Sine and cosine
+190
+abs(y - sin(x) - 5) <= 1 or abs(y - cos(x) + 5) <= 1
+
+Tangensové proužky
+Tangent stripes
+115
+sin(x) >= cos(x) * y
+
+Hřeben
+Ridge
+120
+y * cos(x) <=1
+
+Odmocninový skokánek
+Squareroot jumping platform
+190
+x>=0 and y <= -sqrt(x) or x<= 0 and y<=  sqrt(-x)
+
+Zaoblený čtverec
+Rounded square
+135
+x^6 + y^6 <= 15^6
+
+Na třetí a na druhou
+To the third and to the second
+110
+x^3 + y^2 <=100
+
+Třetí mocniny
+Third powers
+100
+x^3 + y^3 <=10^3
+
+Střecha z odmocniny
+Squareroot roof
+168
+sqrt(20-abs(x)) >= y/4
+
+U moře
+By the sea
+240
+y <= cos(x)-10 or (x-10)^2+(y-10)^2 <=25
