@@ -15,7 +15,7 @@
             var session_id = "<?= $session_id ?>"; 		//získán z globální promìnné
             var id_game = "<?= $session_id ?>";  		//získán z globální promìnné 
             var check_hash = "<?= $session_hash ?>"; 	//získán z globální promìnné
-            var task = "<?= $instance_plan ?>";
+            var task = '<?= $instance_plan ?>';
 
             window.onload = function () {
                 task = task != "" ? task : location.hash.substring(1);

@@ -1,0 +1,29 @@
+Násobky dvou
+Multiples of two
+50
+{alphabet:["a", "b"],regexp:"(..)*",words:["bb","aa","baba","bbaa"], maxTestedWordLength:10, text: "má délku slova = 2k, k >= 0"}
+
+Alespoň tři
+At least three
+80
+{alphabet:["a", "b"],regexp:".{3,}",words:["bba","aab","bbaa"], maxTestedWordLength:10, text: "je ve tvaru {a,b}^3{a,b}^*"}
+
+Baba kdekoliv
+Baba anywhere
+150
+{alphabet:["a", "b"],regexp:".*(baba).*",words:["baba","abbaba","babaaaa"] ,maxTestedWordLength:10, text: "obsahuje podslovo ‘baba’"}
+
+Dar na úvod
+Dar at the begining
+160
+{alphabet:["a", "d", "r"],regexp:"dar.*",words:["dar","darda","darrrrr"] ,maxTestedWordLength:10, text: "začíná podslovem ‘dar’"}
+
+Luk na konci
+Luk at the end
+140
+{alphabet:["k", "l", "u"],regexp:".*luk",words:["luk","kluk","kukluk"], maxTestedWordLength:10, text: "končí podslovem ‘luk’"}
+
+Áčka po třech
+As in groups of three
+190
+{alphabet:["a","b"],regexp:"((b*a){3})*b*",words:["aaba","abbaba","baabaaaa"], maxTestedWordLength:10, text: "má počet ‘a’ = 3k, k >= 0, počet ‘b’ libovolný"}
