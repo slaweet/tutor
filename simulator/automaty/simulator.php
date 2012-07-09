@@ -19,7 +19,7 @@
 
             window.onload = function () {
                 task = task != "" ? task : location.hash.substring(1);
-                task = eval("(" + task + ")");
+                task = eval("(" + task.replace(/\n/g, '\\n') + ")");
                 AutomataManager.init(task);
             }
         </script>

@@ -118,3 +118,4 @@ Gramatika 5
 Grammar 5
 260
 {alphabet:["a","b","c"],regexp:"(ab+|bb|bca)*(bc(c|b)|c)",words:["c","abbcb","bcabcc"], maxTestedWordLength:10, text: "G = ({S,X,Y,Z},{a,b,c},P,S)\n P = { S -> aX | bY | c,\nX -> bX | bS,\n Y -> bS | cZ,\n Z -> aS | b | c }"}
+
