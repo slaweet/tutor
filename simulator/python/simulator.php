@@ -83,8 +83,8 @@ eBookConfig.isLoggedIn = false;
 <textarea cols="50" rows="12" id="testing_code" class="active_code">
 row(10)
 </textarea>
-<button onclick="PythonManager.run(this)">Run</button>
-<button onclick="PythonManager.submit(this);">Submit</button>
+<button onclick="PythonManager.run(this)">Run this test</button>
+<button onclick="PythonManager.submit(this);">Run test that fails</button>
 <br />
 
 <p>Actual result:</p>
