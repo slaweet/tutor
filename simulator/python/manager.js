@@ -1,3 +1,8 @@
+/*
+* Author: Vít Stanislav<slaweet@mail.muni.cz> 
+* Year: 2012
+*/
+
 var PythonManager = {
     testCycles: 50,
     init: function(task) {
