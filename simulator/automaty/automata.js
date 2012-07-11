@@ -149,7 +149,7 @@ var AutomataManager = {
         for (var i = 0; i < word.length; i++) {
             wordSpan += '<span class="letter">'+word.charAt(i)+'</span>';
         }
-        $("#words>div").append('<span class="word '+accepted+'" id="w'+word+'">'+wordSpan+'</span>');
+        $("#words>div").append('<span class="word '+accepted+'" id="w'+word+'">'+wordSpan+'<span class="info"></span></span>');
         $("#w"+word).css({cursor: "pointer"}).click(function() {
             AutomataManager.playButton.start(this.id.substring(1));
         });
@@ -183,10 +183,9 @@ var AutomataManager = {
                     this.words.push(words[i]);
                 }
                 this.wordsIndex = this.words.indexOf(words[i]);
-                //this.setWordColor(words[i], isAccepted ? GOOD_COLOR : BAD_COLOR);
                 return false;
             } else {
-                this.setWordColor(words[i], isAccepted ? GOOD_COLOR : BAD_COLOR);
+                this.setWordResult(words[i], true);
             }
         }
         return true;
@@ -210,8 +209,13 @@ var AutomataManager = {
         $("#debug").text(JSON.encode(a));
     },
     setWordColor: function(word, color) {
-            $("#w"+word).css({color: color});
-
+        $("#w"+word).css({color: color});
+    },
+    setWordResult: function(word, isAccepted) {
+        var shouldBe = this.shouldBeAccepted(word);
+        var isCorrect = isAccepted == shouldBe;
+        $("#w"+word + " .info").css({'background-position': "0px " + (isCorrect ? -25 : 0) + 'px'});
+        this.setWordColor(word, isAccepted ? GOOD_COLOR : BAD_COLOR);
     },
     getAllWords: function(alphabet, maxLength) {
         var words = maxLength >= 0 ? [''] : [];
@@ -291,9 +295,10 @@ var Automata = {
         var symbol = this.word.charAt(this.wordIndex++);
         var line = this.lastState.getLineWithLabel(symbol);
         if (line == null) {
-            var color = (this.lastState.isAccepting && symbol == "") ? GOOD_COLOR : BAD_COLOR;
+            var isAccepted = this.lastState.isAccepting && symbol == "";
+            var color = isAccepted ? GOOD_COLOR : BAD_COLOR;
             this.token.setColor(color);
-            AutomataManager.setWordColor(this.word, color);
+            AutomataManager.setWordResult(this.word, isAccepted);
             AutomataManager.playButton.stop();
         } else {
             this.animateArrow();
