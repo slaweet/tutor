@@ -163,6 +163,7 @@ var AutomataManager = {
             sendDataToInterface(q);
             after_win();
             this.wordsIndex = this.words.length -1;
+            return;
         } 
         if (this.animPos == 0) {
             this.automata.run(this.words[this.wordsIndex++ % this.words.length]);
@@ -182,7 +183,7 @@ var AutomataManager = {
                     this.words.push(words[i]);
                 }
                 this.wordsIndex = this.words.indexOf(words[i]);
-                this.setWordColor(words[i], isAccepted ? GOOD_COLOR : BAD_COLOR);
+                //this.setWordColor(words[i], isAccepted ? GOOD_COLOR : BAD_COLOR);
                 return false;
             } else {
                 this.setWordColor(words[i], isAccepted ? GOOD_COLOR : BAD_COLOR);
