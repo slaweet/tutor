@@ -533,13 +533,6 @@ Raphael.fn.state = function (x, y, name, alphabet) {
             }
         });
     },
-    bgHoverIn = function() {
-        this.isHovered = true;
-    },
-    bgHoverOut = function() {
-        this.isHovered = false;
-        this.updateRadius();
-    },
     color = '#bfac00';
 
     var state = {
@@ -640,16 +633,9 @@ Raphael.fn.state = function (x, y, name, alphabet) {
             for (var i = 0; i < this.connections.length; i++) {
                 this.connections[i].toBack();
             }
-            this.enlargeBg();
         },
         hoverOut: function() { 
             this.moveLabelsToHome(ANIMATION_TIME);
-            if (!this.bg.isHovered) {
-                this.bg.updateRadius();
-            }
-        },
-        enlargeBg: function() {
-            this.bg.animate({r: (STATE_RADIUS + 10)}, ANIMATION_TIME);
         },
         overlapesWith: function(obj) {
             var p1 = this.getPos();
@@ -671,14 +657,10 @@ Raphael.fn.state = function (x, y, name, alphabet) {
     state.fg.parent = state;
 
     state.bg.parent = state;
-    state.bg.hover(bgHoverIn, bgHoverOut);
     state.bg.updateRadius = function() {
         var shift = this.parent.isAccepting ? 5 : 0;
         this.animate({r: this.parent.getRadius() + shift}, ANIMATION_TIME);
     }
-    state.bg.click(function() {
-        this.parent.toggleAccepting()
-    });
     return state;
 }
 
