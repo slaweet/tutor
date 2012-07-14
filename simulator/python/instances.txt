@@ -1,10 +1,37 @@
 Sudá posloupnost
 Even sequence
-50
-{text:" vypíše všechna sudá čísla od 0 do n.",function:{name:"odds", paramNames:["n"], paramTypes:["int"]}, solution:"def odds(n):\n    for i in range(n+1):\n        if i % 2 == 0:\n            print i"}
+150
+{text:" vypíše všechna sudá čísla od 0 do n.",function:{name:"odds", paramNames:["n"], paramTypes:["tinyint"]}, solution:"def odds(n):\n    for i in range(n+1):\n        if i % 2 == 0:\n            print i"}
 
 Součet 
 Sum
-60
-{text:" sečte všechna čísla od 1 do n a výsledek vypíše.",function:{name:"sum", paramNames:["n"], paramTypes:["int"]}, solution:"def sum(n):\n    sum = 0\n    for i in range(n+1):\n        sum += i\n    print sum"}
+160
+{text:" sečte všechna čísla od 1 do n a výsledek vypíše.",function:{name:"sum", paramNames:["n"], paramTypes:["tinyint"]}, solution:"def sum(n):\n    sum = 0\n    for i in range(n+1):\n        sum += i\n    print sum"}
 
+Faktoriál 
+Factorial
+180
+{text:" vynásobí všechna čísla od 1 do n a výsledek vypíše.",function:{name:"fact", paramNames:["n"], paramTypes:["tinyint"]}, solution:"def fact(n):\n    fact = 1\n    for i in range(n+1):\n        fact *= i\n    print fact"}
+
+Odmocnina 
+Squareroot
+190
+{text:" vypíše celou část odmocniny z čísla n, tj. největší celé x takové, že x^2 <= n.",function:{name:"sqrt", paramNames:["n"], paramTypes:["smallint"]}, solution:"import math\ndef sqrt(n):\n    print math.floor(math.sqrt(n))"}
+
+Ciferný součet 
+Digit sum
+190
+{text:" vypíše ciferný součet čísla n",function:{name:"dsum", paramNames:["n"], paramTypes:["int"]}, solution:"def dsum(n):\n    sum = 0\n    l = list(str(n))\n    for i in range(len(l)):\n        sum += int(l[i])\n    print sum"}
+
+Počet jedniček
+Amount of ones
+220
+{text:" vypíše počet jedniček v čísle n",function:{name:"sum1", paramNames:["n"], paramTypes:["int"]}, solution:"def sum1(n):\n    sum = 0\n    l = list(str(n))\n    for i in range(len(l)):\n        if int(l[i]) == 1:\n            sum += int(l[i])\n    print sum"}
+
+Pozpátku 
+Reverse
+260
+{text:" vypíše číslo n zapsané pozpátku.",function:{name:"reverse", paramNames:["n"], paramTypes:["int"]}, solution:"def reverse(n):\n    print str(n)[::-1]"}
+
+
+{text:"",function:{name:"", paramNames:["n"], paramTypes:["int"]}, solution:""}

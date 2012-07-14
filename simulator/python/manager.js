@@ -2,16 +2,44 @@
 * Author: Vít Stanislav<slaweet@mail.muni.cz> 
 * Year: 2012
 */
+var BUNDLE = {
+    "en":{ 
+    "solve": "Solve here: ",
+    "test": "Test here: ",
+    "run": "Run this test",
+    "submit": "Run test that fails",
+    "result": "Actual result:",
+    "expected": "Expected result:",
+    "task": "napište funkci ",
+    "that": ", that "
+    },
+    "cs":{ 
+    "solve": "Prostor pro řešení: ",
+    "test": "Prostor pro testování: ",
+    "run": "Spustit tento test",
+    "submit": "Spustit test který neprojde",
+    "result": "Výstup:",
+    "expected": "Požadovaný výstup:",
+    "task": "Napište funkci ",
+    "that": ", která "
+    }
+}
 
 var PythonManager = {
     testCycles: 50,
     init: function(task) {
         this.task = task;
+        for (var i in BUNDLE) {
+            Lang.setBundle(i, BUNDLE[i]);
+        }
+        $('.lang').text(function(i, text){ return Lang.get(text);});
         this.functionHeader = task.function.name + '(' + task.function.paramNames.join(', ') + ')'; 
-        $('#text').text("Napište funkci "+ this.functionHeader +", která" + task.text);
-        cm_editors["attempt_code"].setValue('def '+ this.functionHeader + ':\n    #code here');
+        $('#text').text(Lang.get("task") + this.functionHeader + Lang.get("that") + task.text);
+        cm_editors["attempt_code"].setValue('def '+ this.functionHeader + ':\n    """code here"""\n    ');
         this.setup();
         cm_editors["solution_code"].setValue(task.solution);
+        cm_editors["attempt_code"].focus();
+        cm_editors["attempt_code"].setCursor(3);
     },
     run: function(button) {
         runit('testing', button, {1:'attempt'});
@@ -28,7 +56,11 @@ var PythonManager = {
     },
     getRand: function(type) {
         switch(type) {
+            case 'smallint':
+                return Math.floor(Math.random()*1000)
             case 'int':
+                return Math.floor(Math.random()*1000000000)
+            case 'tinyint':
                 return Math.floor(Math.random()*20)
         }
     },

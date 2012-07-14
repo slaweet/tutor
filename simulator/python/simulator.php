@@ -34,7 +34,8 @@ eBookConfig.loginRequired = false
 eBookConfig.isLoggedIn = false;
 </script>
 
-    <script type="text/javascript" src="simulator/python/manager.js"></script>
+    <script src="simulator/automaty/lang.js" type="text/javascript" charset="utf-8"></script>
+    <script src="simulator/python/manager.js" type="text/javascript" charset="utf-8"></script>
 
         <script type='text/javascript'>
 
@@ -62,28 +63,28 @@ eBookConfig.isLoggedIn = false;
           <div id="text">
           </div>
 
-<p> Solve here: <p/>
+<p class="lang">solve<p/>
 <div id="attempt" >
 <textarea cols="50" rows="12" id="attempt_code" class="active_code">
 </textarea>
 </div>
 
-<p> Test here: <p/>
+<p class="lang">test<p/>
 <div id="testing" >
 <textarea cols="50" rows="12" id="testing_code" class="active_code">
 row(10)
 </textarea>
-<button onclick="PythonManager.run(this)">Run this test</button>
-<button onclick="PythonManager.submit(this);">Run test that fails</button>
+<button onclick="PythonManager.run(this)" class="lang">run</button>
+<button onclick="PythonManager.submit(this);" class="lang">submit</button>
 <br />
 
-<p>Actual result:</p>
+<p class="lang">result</p>
 <canvas id="testing_canvas" height="400" width="400" style="border-style: solid; display: none"></canvas>
 
 <pre id="testing_pre" class="active_out">
 
 </pre>
-<p>Expected result:</p>
+<p class="lang">expected</p>
 <canvas id="testing2_canvas" height="400" width="400" style="border-style: solid; display: none"></canvas>
 
 <pre id="testing2_pre" class="active_out">
