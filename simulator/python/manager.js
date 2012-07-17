@@ -44,11 +44,15 @@ var PythonManager = {
     testCycles: 50,
     editors: {},
     init: function(task) {
-        this.task = task;
         for (var i in BUNDLE) {
             Lang.setBundle(i, BUNDLE[i]);
         }
         $('.lang').text(function(i, text){ return Lang.get(text);});
+        if (task.indexOf("{") == -1) {
+            task = base64_decode(task);
+        }
+        task = eval("(" + task.replace(/\n/g, '\\n') + ")");
+        this.task = task;
         this.functionHeader = task.function.name + '(' + task.function.paramNames.join(', ') + ')'; 
         $('#text').text(Lang.get("task") + this.functionHeader + Lang.get("that") + task.text);
         this.createEditors();

@@ -14,6 +14,7 @@
     <script type="text/javascript" src="simulator/python/skulpt.js"></script>
 
     <script src="simulator/automaty/lang.js" type="text/javascript" charset="utf-8"></script>
+    <script src="simulator/python/base64.js" type="text/javascript" charset="utf-8"></script>
     <script src="simulator/python/manager.js" type="text/javascript" charset="utf-8"></script>
 
         <script type='text/javascript'>
@@ -22,11 +23,12 @@
             var session_id = "<?= $session_id ?>"; 		//získán z globální promìnné
             var id_game = "<?= $session_id ?>";  		//získán z globální promìnné 
             var check_hash = "<?= $session_hash ?>"; 	//získán z globální promìnné
-            var task = '<?= addslashes($instance_plan) ?>';
+            var task = "<?= base64_encode($instance_plan) ?>";
+            var lang = "<?= LocaleController::get_lang() ?>";
 
             window.onload = function () {
                 task = task != "" ? task : location.hash.substring(1);
-                task = eval("(" + task.replace(/\n/g, '\\n') + ")");
+                Lang.setLang(lang);
                 PythonManager.init(task);
             }
         </script>
