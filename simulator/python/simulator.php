@@ -5,9 +5,6 @@
 
  -->
     <link rel="stylesheet" href="simulator/python/style.css" type="text/css" />
-    <link rel="stylesheet" href="simulator/python/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="simulator/python/video.css" type="text/css" />
-    <link rel="stylesheet" href="simulator/python/edu-python.css" type="text/css" />
     <link rel="stylesheet" href="simulator/python/codemirror.css" type="text/css" />
     <link rel="stylesheet" href="simulator/python/default.css" type="text/css" />
 
@@ -43,7 +40,7 @@ eBookConfig.isLoggedIn = false;
             var session_id = "<?= $session_id ?>"; 		//získán z globální promìnné
             var id_game = "<?= $session_id ?>";  		//získán z globální promìnné 
             var check_hash = "<?= $session_hash ?>"; 	//získán z globální promìnné
-            var task = '<?= $instance_plan ?>';
+            var task = '<?= addslashes($instance_plan) ?>';
 
             window.onload = function () {
                 task = task != "" ? task : location.hash.substring(1);
@@ -55,59 +52,52 @@ eBookConfig.isLoggedIn = false;
 
 </head>
 <body>
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
-          <div class="section">
-          <div id="text">
-          </div>
+<div class="documentwrapper">
+    <div id="text"></div>
 
-<p class="lang">solve<p/>
-<div id="attempt" >
-<textarea cols="50" rows="12" id="attempt_code" class="active_code">
-</textarea>
+    <p class="lang">solve<p/>
+    <div id="attempt" >
+        <textarea cols="50" rows="12" id="attempt_code" class="active_code">
+        </textarea>
+    </div>
+
+    <p class="lang">test<p/>
+    <div id="testing" >
+        <textarea cols="50" rows="12" id="testing_code" class="active_code">
+        </textarea>
+        <button onclick="PythonManager.run(this)" class="lang">run</button>
+        <button onclick="PythonManager.submit(this);" class="lang">submit</button>
+
+    </div>
+
+    <div>
+        <span class="result">
+            <p class="lang">result</p>
+            <pre id="testing_pre" class="active_out">
+
+            </pre>
+        </span>
+        <span class="result">
+            <p class="lang">expected</p>
+            <pre id="testing2_pre" class="active_out">
+
+            </pre>
+        </span>
+    </div>
+    <br style="clear:both"/>
+
+    </div>
+    <div id="testing2"  style="display:none" >
+    <textarea cols="50" rows="12" id="testing2_code" class="active_code">
+    </textarea>
+    </div>
+
+    <div id="solution" style="display:none" >
+    <textarea cols="50" rows="12" id="solution_code" class="active_code">
+    </textarea>
+    </div>
 </div>
 
-<p class="lang">test<p/>
-<div id="testing" >
-<textarea cols="50" rows="12" id="testing_code" class="active_code">
-row(10)
-</textarea>
-<button onclick="PythonManager.run(this)" class="lang">run</button>
-<button onclick="PythonManager.submit(this);" class="lang">submit</button>
-<br />
-
-<p class="lang">result</p>
-<canvas id="testing_canvas" height="400" width="400" style="border-style: solid; display: none"></canvas>
-
-<pre id="testing_pre" class="active_out">
-
-</pre>
-<p class="lang">expected</p>
-<canvas id="testing2_canvas" height="400" width="400" style="border-style: solid; display: none"></canvas>
-
-<pre id="testing2_pre" class="active_out">
-
-</pre>
-</div>
-</div>
-<div id="testing2"  style="display:none" >
-<textarea cols="50" rows="12" id="testing2_code" class="active_code">
-row(10)
-</textarea>
-</div>
-
-<div id="solution" style="display:none" >
-<textarea cols="50" rows="12" id="solution_code" class="active_code">
-</textarea>
-</div>
-</div>
-
-
-          </div>
-        </div>
-      </div>
 <!-- 
 
 	SIMULATOR END

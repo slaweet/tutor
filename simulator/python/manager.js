@@ -40,6 +40,7 @@ var PythonManager = {
         cm_editors["solution_code"].setValue(task.solution);
         cm_editors["attempt_code"].focus();
         cm_editors["attempt_code"].setCursor(3);
+        this.run();
     },
     run: function(button) {
         runit('testing', button, {1:'attempt'});
