@@ -9,27 +9,9 @@
     <link rel="stylesheet" href="simulator/python/default.css" type="text/css" />
 
     <script type="text/javascript" src="simulator/python/jquery.js"></script>
-    <script type="text/javascript" src="simulator/python/underscore.js"></script>
-    <script type="text/javascript" src="simulator/python/simplemodal.js"></script>
-    <script type="text/javascript" src="simulator/python/jquery.textarea.js"></script>
-    <script type="text/javascript" src="simulator/python/edu-python.js"></script>
-    <script type="text/javascript" src="simulator/python/bookfuncs.js"></script>
     <script type="text/javascript" src="simulator/python/codemirror.js"></script>
     <script type="text/javascript" src="simulator/python/python.js"></script>
     <script type="text/javascript" src="simulator/python/skulpt.js"></script>
-    <script type="text/javascript" src="simulator/python/builtin.js"></script>
-    <script type="text/javascript" src="simulator/python/assess.js"></script>
-    <script type="text/javascript" src="simulator/python/animationbase.js"></script>
-<script type="text/javascript"> 
-eBookConfig = {}
-eBookConfig.host = 'http://interactivepython.org' ? 'http://interactivepython.org' : 'http://127.0.0.1:8000',
-eBookConfig.app = eBookConfig.host+'/courselib',
-eBookConfig.ajaxURL = eBookConfig.app+'/ajax/',
-eBookConfig.course = 'thinkcspy',
-eBookConfig.logLevel = 10,
-eBookConfig.loginRequired = false
-eBookConfig.isLoggedIn = false;
-</script>
 
     <script src="simulator/automaty/lang.js" type="text/javascript" charset="utf-8"></script>
     <script src="simulator/python/manager.js" type="text/javascript" charset="utf-8"></script>
@@ -86,15 +68,6 @@ eBookConfig.isLoggedIn = false;
     </div>
     <br style="clear:both"/>
 
-    </div>
-    <div id="testing2"  style="display:none" >
-    <textarea cols="50" rows="12" id="testing2_code" class="active_code">
-    </textarea>
-    </div>
-
-    <div id="solution" style="display:none" >
-    <textarea cols="50" rows="12" id="solution_code" class="active_code">
-    </textarea>
     </div>
 </div>
 
