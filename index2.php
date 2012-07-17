@@ -1,6 +1,74 @@
 <?
+ error_reporting(E_ALL);
 // index.php contains just include of index2.php, because local_settings calls "git pull" and index.php shouldn't be overriten by pull.
 include 'local_settings.php';
+
+  class LocaleController {
+   function get_lang(){
+    if (isset($_SESSION["lang"])){ if (in_array($_SESSION["lang"], Array("en"))){ $lang="en"; }else{$lang="cs";}} else {$lang="cs";}
+    return $lang;
+   }
+   function set_lang($lang){
+    $_SESSION["lang"] = $lang;
+   }
+   function get_flag($lang){
+    return  $_SESSION["lang"].'	<a href="'.$_SERVER['REQUEST_URI'].'&changelang='.$lang.'">
+  <img src="./obr/'.$lang.'_'.($lang == LocaleController::get_lang() ? '': '').'active.png" class="'.$lang.'_flag">
+  </a>';
+   }
+  }
+
+
+  function getUloha() {
+    return isset($_GET['uloha']) ? $_GET['uloha'] : (isset($_GET['problem_id']) ? $_GET['problem_id'] : 'transformations');
+  }
+
+function problemList() {
+	$adr = opendir('simulator');
+	$ret = '<div class="resit">';
+	while ($file = readdir($adr)) {
+	    if($soubor != "." and $soubor != "..") {
+		$ret .= '<div ><a href="index.php?p=problem_map&problem_id='.$file
+		.'"><img src="simulator/'.$file.'/default.png" /><h1>'.$file.'</h1></a></div>';
+	}
+	}
+	return $ret.'</div>';
+}
+function processInstances($data) {
+    $data = preg_split("/(\n\n|\r\n\r\n|\r\r)/", $data);
+    foreach ($data as $key => $instance) {
+        $task = preg_split("/(\n|\r\n|\r)/", $instance);
+        if (count($task) == 4) {
+            $_POST["name_cs"] = $task[0];
+            $_POST["name_en"] = $task[1];
+            $_POST["initial_mean_time"] = $task[2];
+            $_POST["problem_cs"] = $task[3];
+            InstanceController::add_instance($key);
+        }
+    }
+}
+class InstanceController {
+ function add_instance($id){
+  $time = $_POST["initial_mean_time"];
+		echo '<div class="vyreseno" ><a href="index.php?p=instance_solve&problem_id='.$_GET['problem_id'].'&instance_id='.$id.'" ><strong style="font-size: 1.0em;" >'.$_POST["name_".LocaleController::get_lang()].'</strong><br /><br />Předpověď<br />'.floor($time/60).':'. ($time%60 < 10 ? '0':'').($time%60).'<br /></a></div>';
+
+  
+  }
+}
+
+function instanceList($problem) {
+	echo '<h1>'.$problem.'</h1><div class="resit">';
+	$data = file_get_contents('simulator/'.$problem.'/instances.txt');
+	processInstances($data);
+	echo '</div>';
+}
+
+function getInstance($problem, $id) {
+	$data = file_get_contents('simulator/'.$problem.'/instances.txt');
+	$data = preg_split("/(\n\n|\r\n\r\n|\r\r)/", $data);
+	$instance = preg_split("/(\n|\r\n|\r)/", $data[$id]);
+	return $instance;
+}
 ?>
 <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\" dir=\"ltr\">
@@ -35,7 +103,7 @@ include 'local_settings.php';
 			font-weight: normal}
 	.logout a:hover{text-decoration: underline}
 	
-	.cz_flag {position: absolute;
+	.cs_flag {position: absolute;
 			top: 16px;
 			right: 55px}
 	.en_flag {position: absolute;
@@ -341,6 +409,7 @@ include 'local_settings.php';
 <div class="wrapper">
 <a href="index.php?p=problem_list">	<img src="./obr/logo.png" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='./obr/logo.png'); _width:1px; _height:1; position: absolute; top: 20px; left: 10px" width="360" height="100" alt="Problem Solving TUTOR">
 </a>
+<?= LocaleController::get_flag('cs') . LocaleController::get_flag('en') ?>
 
 <table class="main_menu"><tr><td><a href="index.php?p=main_page">ÚVOD</a><td><a href="index.php?p=about">VÝZKUM</a><td class="last_item" ><a href="index.php?p=contact">KONTAKT</a>
 	</tr></table><table class="second_menu"><tr><td width="20"></td><td><a href="index.php?p=problem_list">Problémy</a></td><td width="20"></td><td><a href="index.php?p=results">Statistiky</a></td><td width="20"></td><td><a href="index.php?p=user_update">Osobní&nbsp;údaje</a></td><td width="20"></td><td><a href="index.php?p=write_us">Napište&nbsp;nám</a></td><td width="100%"></td></tr></table><div class="main"><script type="text/javascript" src="simulator/rush_hour/scripts/mootools-1.2.1-core.js"></script><script type="text/javascript" src="simulator/rush_hour/scripts/mootools-1.2-more.js"></script>
@@ -456,64 +525,11 @@ include 'local_settings.php';
         <input onclick="delayedMap();" class="button" style="font-size:1em; height: 30px; width:250px; " type="submit" value="Pokračovat" /></a></div><br /><div id="div_after_win_stat"></div>
         <?
 
-  class LocaleController {
-  function get_lang(){
-    if (isset($_SESSION["lang"])){ if (in_array($_SESSION["lang"], Array("en"))){ $lang="en"; }else{$lang="cs";}} else {$lang="cs";}
-    return $lang;
-  }
-  }
 
-  function getUloha() {
-    return isset($_GET['uloha']) ? $_GET['uloha'] : (isset($_GET['problem_id']) ? $_GET['problem_id'] : 'transformations');
-  }
 
-function problemList() {
-	$adr = opendir('simulator');
-	$ret = '<div class="resit">';
-	while ($file = readdir($adr)) {
-	    if($soubor != "." and $soubor != "..") {
-		$ret .= '<div ><a href="index.php?p=problem_map&problem_id='.$file
-		.'"><img src="simulator/'.$file.'/default.png" /><h1>'.$file.'</h1></a></div>';
-	}
-	}
-	return $ret.'</div>';
+if (isset($_GET['changelang'])) {
+    LocaleController::set_lang($_GET['changelang']);
 }
-function processInstances($data) {
-    $data = preg_split("/(\n\n|\r\n\r\n|\r\r)/", $data);
-    foreach ($data as $key => $instance) {
-        $task = preg_split("/(\n|\r\n|\r)/", $instance);
-        if (count($task) == 4) {
-            $_POST["name_cs"] = $task[0];
-            $_POST["name_en"] = $task[1];
-            $_POST["initial_mean_time"] = $task[2];
-            $_POST["problem_cs"] = $task[3];
-            InstanceController::add_instance($key);
-        }
-    }
-}
-class InstanceController {
- function add_instance($id){
-  $time = $_POST["initial_mean_time"];
-		echo '<div class="vyreseno" ><a href="index.php?p=instance_solve&problem_id='.$_GET['problem_id'].'&instance_id='.$id.'" ><strong style="font-size: 1.0em;" >'.$_POST["name_cs"].'</strong><br /><br />Předpověď<br />'.floor($time/60).':'. ($time%60 < 10 ? '0':'').($time%60).'<br /></a></div>';
-
-  
-  }
-}
-
-function instanceList($problem) {
-	echo '<h1>'.$problem.'</h1><div class="resit">';
-	$data = file_get_contents('simulator/'.$problem.'/instances.txt');
-	processInstances($data);
-	echo '</div>';
-}
-
-function getInstance($problem, $id) {
-	$data = file_get_contents('simulator/'.$problem.'/instances.txt');
-	$data = preg_split("/(\n\n|\r\n\r\n|\r\r)/", $data);
-	$instance = preg_split("/(\n|\r\n|\r)/", $data[$id]);
-	return $instance;
-}
-
 if (isset($_GET['p']) and $_GET['p'] == 'problem_list') {
     echo problemList();
 } else if (isset($_GET['p']) and $_GET['p'] == 'problem_map' and isset($_GET['problem_id'])) {
@@ -522,7 +538,7 @@ if (isset($_GET['p']) and $_GET['p'] == 'problem_list') {
 	if (isset($_GET['p']) and $_GET['p'] == 'instance_solve') {
 	   $instance = getInstance($_GET['problem_id'],$_GET['instance_id']);
 	   $instance_plan = $instance[3];
-   	   echo "<h1>$instance[0]</h1>";
+   	   echo "<h1>".$instance[(LocaleController::get_lang() == 'cs' ? 0 : 1)]."</h1>";
 	}
 
         require 'simulator/'.(getUloha()).'/simulator.php';
