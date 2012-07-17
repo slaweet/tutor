@@ -2,6 +2,7 @@ Sudá posloupnost
 Even sequence
 150
 {text:" vypíše všechna sudá čísla od 0 do n.",function:{name:"odds", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    for i in range(n+1):\n        if i % 2 == 0:\n            print i", attempt:"    for i in range(n):\n        print i"}
+
 Součet 
 Sum
 160

@@ -184,8 +184,10 @@ include 'local_settings.php';
 /*  PO 5 V �AD� */
 	.resit div{float: left;
 			width: 140px;
+			min-height: 140px;
 			margin-right: 65px;
 			margin-bottom: 25px;
+			border: solid 1px  #EBE1BD;
 			text-align: center}
 	.resit img{padding: 0px;
 			width: 140px;
@@ -493,7 +495,7 @@ function processInstances($data) {
 class InstanceController {
  function add_instance($id){
   $time = $_POST["initial_mean_time"];
-		echo '<div class="vyreseno" ><a href="index.php?p=instance_solve&problem_id='.$_GET['problem_id'].'&instance_id='.$id.'" ><strong style="font-size: 1.0em;" >'.$_POST["name_cs"].'</strong><br /><br />Předpověď<br />'.floor($time/60).':'. ($time%60).'<br /></a></div>';
+		echo '<div class="vyreseno" ><a href="index.php?p=instance_solve&problem_id='.$_GET['problem_id'].'&instance_id='.$id.'" ><strong style="font-size: 1.0em;" >'.$_POST["name_cs"].'</strong><br /><br />Předpověď<br />'.floor($time/60).':'. ($time%60 < 10 ? '0':'').($time%60).'<br /></a></div>';
 
   
   }
