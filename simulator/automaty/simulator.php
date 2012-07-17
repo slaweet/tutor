@@ -16,10 +16,12 @@
             var id_game = "<?= $session_id ?>";  		//získán z globální promìnné 
             var check_hash = "<?= $session_hash ?>"; 	//získán z globální promìnné
             var task = '<?= $instance_plan ?>';
+            var lang = "<?= LocaleController::get_lang() ?>";
 
             window.onload = function () {
                 task = task != "" ? task : location.hash.substring(1);
                 task = eval("(" + task.replace(/\n/g, '\\n') + ")");
+                Lang.setLang(lang);
                 AutomataManager.init(task);
             }
         </script>
