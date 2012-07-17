@@ -54,48 +54,14 @@ var PythonManager = {
         task = eval("(" + task.replace(/\n/g, '\\n') + ")");
         this.task = task;
         this.functionHeader = task.function.name + '(' + task.function.paramNames.join(', ') + ')'; 
+        this.firstLine = 'def '+ this.functionHeader + ':\n';
         $('#text').text(Lang.get("task") + this.functionHeader + Lang.get("that") + task.text);
         this.createEditors();
-        this.editors["attempt_code"].setValue('def '+ this.functionHeader + ':\n    """code here"""\n    ');
-        this.setup();
+        this.setup(0);
+        this.editors["attempt_code"].setValue(this.FirstLine + (this.task.attempt ||'    """code here"""\n    '));
         this.editors["attempt_code"].focus();
         this.editors["attempt_code"].setCursor(3);
         this.run();
-    },
-    run: function(button) {
-        this.runit('testing', button, '_pre', this.editors["attempt_code"].getValue());
-        this.runit('testing', button, '2_pre', this.task.solution)
-    },
-    setup: function(button) {
-        var code = "";
-        for (var i = 0; i < this.task.function.paramNames.length; i++) {
-            code += this.task.function.paramNames[i] + ' = ' + this.getRand(this.task.function.paramTypes[i]) + '\n';
-        }
-        code += this.functionHeader;
-        this.editors["testing_code"].setValue(code);
-    },
-    getRand: function(type) {
-        switch(type) {
-            case 'smallint':
-                return Math.floor(Math.random()*1000)
-            case 'int':
-                return Math.floor(Math.random()*1000000000)
-            case 'tinyint':
-                return Math.floor(Math.random()*20)
-        }
-    },
-    submit: function(button) {
-        for (var i = 0; i < this.testCycles; i++) {
-            this.setup();
-            this.run(button);
-            var isCorrect = $('#testing2_pre').text() == $('#testing_pre').text(); 
-            if (!isCorrect) {
-                return false;
-            }
-        }
-        var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+this.moveCount+"&win=1";
-        sendDataToInterface(q);
-        after_win();
     },
     createEditors: function() {
         var edList = new Array();
@@ -115,6 +81,53 @@ var PythonManager = {
                     );
             this.editors[newEdId].parentDiv = edList[i].parentNode.id;
         }
+    },
+    setup: function(valueIndex) {
+        var code = "";
+        for (var i = 0; i < this.task.function.paramNames.length; i++) {
+            code += this.task.function.paramNames[i] + ' = ' + this.getParamValue(i,valueIndex) + '\n';
+        }
+        if (this.task.solution.indexOf('return') != -1) {
+            code += 'print ';
+        }
+        code += this.functionHeader;
+        this.editors["testing_code"].setValue(code);
+    },
+    getParamValue: function(paramIndex, valueIndex) {
+        var type = this.task.function.paramTypes[paramIndex].split(' ');
+        var value = (this.task.function.testParams && this.task.function.testParams[paramIndex][valueIndex]) || this.getRand(type);
+        if (type[0] == 'str') {
+            value = "'" + value + "'";
+        }
+        return value;
+    },
+    getRand: function(type) {
+        var type = type[0];
+        var min = type[1];
+        var max = type[2];
+        switch(type) {
+            case 'int':
+                return Math.floor(Math.random()*(max-min)+min+1);
+            case 'str':
+                return Math.random().toString(36).substr(2, this.getRand(['int',min,max])+2);
+        }
+    },
+    submit: function(button) {
+        for (var i = 0; i < this.testCycles; i++) {
+            this.setup(i);
+            this.run(button);
+            var isCorrect = $('#testing2_pre').text() == $('#testing_pre').text(); 
+            if (!isCorrect) {
+                return false;
+            }
+        }
+        var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+this.moveCount+"&win=1";
+        sendDataToInterface(q);
+        after_win();
+    },
+    run: function(button) {
+        this.runit('testing', button, '_pre', this.editors["attempt_code"].getValue());
+        this.runit('testing', button, '2_pre', this.task.solution)
     },
     runit: function(myDiv, theButton, pre, include) {
         $(theButton).attr('disabled','disabled');
