@@ -1,71 +1,70 @@
 Sudá posloupnost
 Even sequence
 150
-{text:" vypíše všechna sudá čísla od 0 do n.",function:{name:"odds", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"def odds(n):\n    for i in range(n+1):\n        if i % 2 == 0:\n            print i"}
-
+{text:" vypíše všechna sudá čísla od 0 do n.",function:{name:"odds", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    for i in range(n+1):\n        if i % 2 == 0:\n            print i", attempt:"    for i in range(n):\n        print i"}
 Součet 
 Sum
 160
-{text:" sečte všechna čísla od 1 do n a výsledek vypíše.",function:{name:"sum", paramNames:["n"], paramTypes:["int 1 20"]}, solution:"def sum(n):\n    sum = 0\n    for i in range(n+1):\n        sum += i\n    print sum"}
+{text:" sečte všechna čísla od 1 do n a vrátí výsledek.",function:{name:"sum", paramNames:["n"], paramTypes:["int 1 20"]}, solution:"    sum = 0\n    for i in range(n+1):\n        sum += i\n    return sum"}
 
 Faktoriál 
 Factorial
 180
-{text:" vynásobí všechna čísla od 1 do n a výsledek vypíše.",function:{name:"fact", paramNames:["n"], paramTypes:["int 1 20"]}, solution:"def fact(n):\n    fact = 1\n    for i in range(n+1):\n        fact *= i\n    print fact"}
+{text:" vynásobí všechna čísla od 1 do n a vrátí výsledek.",function:{name:"fact", paramNames:["n"], paramTypes:["int 1 20"]}, solution:"    fact = 1\n    for i in range(n+1):\n        fact *= i\n    return fact"}
 
 Odmocnina 
 Squareroot
 190
-{text:" vypíše celou část odmocniny z čísla n, tj. největší celé x takové, že x^2 <= n.",function:{name:"sqrt", paramNames:["n"], paramTypes:["int 1 1000"]}, solution:"import math\ndef sqrt(n):\n    print math.floor(math.sqrt(n))"}
+{text:" vrátí celou část odmocniny z čísla n, tj. největší celé x takové, že x^2 <= n.",function:{name:"sqrt", paramNames:["n"], paramTypes:["int 1 1000"]}, solution:"import math\ndef sqrt(n):\n    return math.floor(math.sqrt(n))"}
 
 Ciferný součet 
 Digit sum
 190
-{text:" vypíše ciferný součet čísla n",function:{name:"dsum", paramNames:["n"], paramTypes:["int 10000 10000000"]}, solution:"def dsum(n):\n    sum = 0\n    l = list(str(n))\n    for i in range(len(l)):\n        sum += int(l[i])\n    print sum"}
+{text:" vrátí ciferný součet čísla n",function:{name:"dsum", paramNames:["n"], paramTypes:["int 10000 10000000"]}, solution:"    sum = 0\n    l = list(str(n))\n    for i in range(len(l)):\n        sum += int(l[i])\n    return sum"}
 
 Počet jedniček
 Amount of ones
 220
-{text:" vypíše počet jedniček v čísle n",function:{name:"sum1", paramNames:["n"], paramTypes:["intt 10000 10000000"]}, solution:"def sum1(n):\n    sum = 0\n    l = list(str(n))\n    for i in range(len(l)):\n        if int(l[i]) == 1:\n            sum += int(l[i])\n    print sum"}
+{text:" vrátí počet jedniček v čísle n",function:{name:"sum1", paramNames:["n"], paramTypes:["intt 10000 10000000"]}, solution:"    sum = 0\n    l = list(str(n))\n    for i in range(len(l)):\n        if int(l[i]) == 1:\n            sum += int(l[i])\n    return sum"}
 
 Pozpátku 
 Reverse
 260
-{text:" vypíše číslo n zapsané pozpátku.",function:{name:"reverse", paramNames:["n"], paramTypes:["intt 10000 10000000"]}, solution:"def reverse(n):\n    print str(n)[::-1]"}
+{text:" vypíše číslo n zapsané pozpátku.",function:{name:"reverse", paramNames:["n"], paramTypes:["intt 10000 10000000"]}, solution:"    print str(n)[::-1]"}
 
 Diamant
 Diamant
 320
-{text:" vypíše diamant ze znaků '#'. Parametr n určuje velikost (pro podrobnosti viz Požadovaný výstup)",function:{name:"diamant", paramNames:["n"], paramTypes:["int 1 10"]}, solution:"def diamant(n):\n    for i in range(n):\n        print ' '*(n-i-1),'#'*(2*i-1)\n    for i in range(2,n):\n        print ' '*(i-1),'#'*(2*(n-i)-1)"}
+{text:" vypíše diamant ze znaků '#'. Parametr n určuje velikost (pro podrobnosti viz Požadovaný výstup)",function:{name:"diamant", paramNames:["n"], paramTypes:["int 1 10"]}, solution:"    for i in range(n):\n        print ' '*(n-i-1),'#'*(2*i-1)\n    for i in range(2,n):\n        print ' '*(i-1),'#'*(2*(n-i)-1)"}
 
 Kruh
 Circle
 280
-{text:" vypíše kruh ze znaků '#' o poloměru n (viz Požadovaný výstup)",function:{name:"circle", paramNames:["n"], paramTypes:["int 8 20"]}, solution:"def circle(n):\n    for i in range(-n, n+1):\n        line = ''\n        for j in range(-n, n+1):\n            if i*i + j*j <= n*n:\n                line += '#'\n            else:\n                line += '.'\n        print line"}
+{text:" vypíše kruh ze znaků '#' o poloměru n (viz Požadovaný výstup)",function:{name:"circle", paramNames:["n"], paramTypes:["int 8 20"]}, solution:"    for i in range(-n, n+1):\n        line = ''\n        for j in range(-n, n+1):\n            if i*i + j*j <= n*n:\n                line += '#'\n            else:\n                line += '.'\n        print line"}
 
 Šachovnice
 Chessboard
 360
-{text:" vypíše šachovnici 8x8 s políčky o velikosti n (viz Požadovaný výstup)",function:{name:"chessboard", paramNames:["n"], paramTypes:["int 1 6"]}, solution:"def chessboard(n):\n    for i in range(n*8):\n        line = ''\n        for j in range(n*8):\n            if max(i% (2*n), j% (2*n)) < n or min(i% (2*n), j% (2*n)) >= n:\n                line += '#'\n            else:\n                line += '.'\n        print line"}
+{text:" vypíše šachovnici 8x8 s políčky o velikosti n (viz Požadovaný výstup)",function:{name:"chessboard", paramNames:["n"], paramTypes:["int 1 6"]}, solution:"    for i in range(n*8):\n        line = ''\n        for j in range(n*8):\n            if max(i% (2*n), j% (2*n)) < n or min(i% (2*n), j% (2*n)) >= n:\n                line += '#'\n            else:\n                line += '.'\n        print line"}
 
 Čtverce
 Squares
 360
-{text:" vypíše vnořené čtverce, z nichž největší má hranu o velikosti n (viz Požadovaný výstup)",function:{name:"squares", paramNames:["n"], paramTypes:["int 1 30"]}, solution:"def squares(n):\n    for i in range(n):\n        line = ''\n        for j in range(n):\n            if ((i+j < n and((i % 2 == 0 and i <= j) or (j % 2 == 0 and j <= i))) \n                    or ((((n-i) % 2 == 1 and i >= j) or ((n-j) % 2 == 1 and j >= i)) and i+j >= n)):\n                line += '#'\n            else:\n                line += ' '\n        print line"}
+{text:" vypíše vnořené čtverce, z nichž největší má hranu o velikosti n (viz Požadovaný výstup)",function:{name:"squares", paramNames:["n"], paramTypes:["int 1 30"]}, solution:"    for i in range(n):\n        line = ''\n        for j in range(n):\n            if ((i+j < n and((i % 2 == 0 and i <= j) or (j % 2 == 0 and j <= i))) \n                    or ((((n-i) % 2 == 1 and i >= j) or ((n-j) % 2 == 1 and j >= i)) and i+j >= n)):\n                line += '#'\n            else:\n                line += ' '\n        print line"}
 
 Spirála
 Spiral
 360
-{text:" vypíše spirálu s nejdelšími hranami o velikosti n (viz Požadovaný výstup)",function:{name:"spiral", paramNames:["n"], paramTypes:["int 1 30"]}, solution:"def spiral(n):\n    for i in range(n):\n        line = ''\n        for j in range(n):\n            if ((i+j < n-2 and((i % 2 == 0 and i <= j) or (j % 2 == 0 and j <= i))) \n                    or ((((n-i) % 2 == 1 and i >= j) or ((n-j) % 2 == 1 and j >= i)) and i+j > n-2)\n                    or (i % 2 == 1 and i+j == n-2 and i< n/2)\n                    or ((n-i) % 2 == 0 and i+j == n-2 and i> n/2)):\n                line += '#'\n            else:\n                line += ' '\n        print line"}
+{text:" vypíše spirálu s nejdelšími hranami o velikosti n (viz Požadovaný výstup)",function:{name:"spiral", paramNames:["n"], paramTypes:["int 1 30"]}, solution:"    for i in range(n):\n        line = ''\n        for j in range(n):\n            if ((i+j < n-2 and((i % 2 == 0 and i <= j) or (j % 2 == 0 and j <= i))) \n                    or ((((n-i) % 2 == 1 and i >= j) or ((n-j) % 2 == 1 and j >= i)) and i+j > n-2)\n                    or (i % 2 == 1 and i+j == n-2 and i< n/2)\n                    or ((n-i) % 2 == 0 and i+j == n-2 and i> n/2)):\n                line += '#'\n            else:\n                line += ' '\n        print line"}
 
 Palindrom
 Palindrom
 260
-{text:" vrací True pokud je řetězec str palindrom (tj. čte se od předu i od zadu stejně)",function:{name:"palindrom", paramNames:["str"], paramTypes:["str 1 8"], testParams:[['lol', 'kajak', 'jelenovipivonelej', 'l']]}, solution:"def palindrom(str):\n    return str == str[::-1]"}
+{text:" vrací True pokud je řetězec str palindrom (tj. čte se od předu i od zadu stejně)",function:{name:"palindrom", paramNames:["str"], paramTypes:["str 1 8"], testParams:[['lol', 'kajak', 'jelenovipivonelej', 'l']]}, solution:"    return str == str[::-1]"}
 
 Šifra 1
 Cypher 1
 360
-{text:" vrací řetězec str zašifrovaný. Použitou šifru musíte nejdříve odhalit z Požedovaného výstupu :-P",function:{name:"cypher1", paramNames:["str"], paramTypes:["str 8 18"], testParams:[['heslojeprase']]}, solution:"def cypher1(str):\n    l = len(str)\n    l3 = (l-l%3)/3\n    if l3 != l/3:\n        l3 += 1\n    ret = ''\n    for i in range(l3):\n        ret += str[l3 * 0 +i]\n        if l3 * 1 +i < l:\n            ret += str[l3 * 1 +i]\n        if l3 * 2 +i < l:\n            ret += str[l3 * 2 +i]\n    return ret",attempt: "    length = len(str)\n    ret = ''\n    for i in range(length):\n         ret += str[i]\n    return ret"}
+{text:" vrací řetězec str zašifrovaný. Použitou šifru musíte nejdříve odhalit z Požedovaného výstupu :-P",function:{name:"cypher1", paramNames:["str"], paramTypes:["str 8 18"], testParams:[['heslojeprase']]}, solution:"    l = len(str)\n    l3 = (l-l%3)/3\n    if l3 != l/3:\n        l3 += 1\n    ret = ''\n    for i in range(l3):\n        ret += str[l3 * 0 +i]\n        if l3 * 1 +i < l:\n            ret += str[l3 * 1 +i]\n        if l3 * 2 +i < l:\n            ret += str[l3 * 2 +i]\n    return ret",attempt: "    length = len(str)\n    ret = ''\n    for i in range(length):\n         ret += str[i]\n    return ret"}
 
 {text:"",function:{name:"", paramNames:["n"], paramTypes:["int"]}, solution:""}

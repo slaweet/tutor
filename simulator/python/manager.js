@@ -58,7 +58,7 @@ var PythonManager = {
         $('#text').text(Lang.get("task") + this.functionHeader + Lang.get("that") + task.text);
         this.createEditors();
         this.setup(0);
-        this.editors["attempt_code"].setValue(this.FirstLine + (this.task.attempt ||'    """code here"""\n    '));
+        this.editors["attempt_code"].setValue(this.firstLine + (this.task.attempt ||'    """code here"""\n    '));
         this.editors["attempt_code"].focus();
         this.editors["attempt_code"].setCursor(3);
         this.run();
@@ -101,10 +101,10 @@ var PythonManager = {
         }
         return value;
     },
-    getRand: function(type) {
-        var type = type[0];
-        var min = type[1];
-        var max = type[2];
+    getRand: function(typeArray) {
+        var type = typeArray[0];
+        var min = typeArray[1];
+        var max = typeArray[2];
         switch(type) {
             case 'int':
                 return Math.floor(Math.random()*(max-min)+min+1);
@@ -127,7 +127,7 @@ var PythonManager = {
     },
     run: function(button) {
         this.runit('testing', button, '_pre', this.editors["attempt_code"].getValue());
-        this.runit('testing', button, '2_pre', this.task.solution)
+        this.runit('testing', button, '2_pre', this.firstLine + this.task.solution)
     },
     runit: function(myDiv, theButton, pre, include) {
         $(theButton).attr('disabled','disabled');
