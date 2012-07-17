@@ -131,8 +131,7 @@ include 'local_settings.php';
 			vertical-align: top}
 			
 	h1{font-family: Candara, Arial CE, sans-serif;
-			font-size: 120%;
-			margin: 0px}
+			font-size: 120%}
 	li{list-style-type: square;
 			padding: 1px 0px 1px 0px}
 	.main a{font-weight: bold;
