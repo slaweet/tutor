@@ -25,7 +25,7 @@ var BUNDLE = {
     "submit": "Run test that fails",
     "result": "Actual result:",
     "expected": "Expected result:",
-    "task": "napište funkci ",
+    "task": "Write function ",
     "that": ", that "
     },
     "cs":{ 
