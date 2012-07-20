@@ -107,7 +107,7 @@ var PythonManager = {
         var max = typeArray[2];
         switch(type) {
             case 'int':
-                return Math.floor(Math.random()*(max-min)+min+1);
+                return Math.floor(Math.random() * (max - min + 1) + min);
             case 'str':
                 return Math.random().toString(36).substr(2, this.getRand(['int',min,max])+2);
         }

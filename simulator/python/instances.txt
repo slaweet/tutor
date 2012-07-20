@@ -1,7 +1,27 @@
+Trénink 1
+Trening 1
+40
+{text:" vrátí dvojnásobek čísla n",function:{name:"double", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    return 2*n", attempt:"    n = n + 5\n    return n"}
+
+Sudá Posloupnost
+Even Sequence
+120
+{text:" vrátí seznam všech sudých čísel od 0 do n.",function:{name:"odds", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    for i in range((n+1)/2):\n        l.append(i*2)\n    return l", attempt:"    l = []\n    for i in range(n):\n        l.append(i)\n    return l"}
+
+NSD
+GCD
+130
+{text:" vrátí největšího společného dělitele čisel a, b",function:{name:"gcd", paramNames:["a","b"], paramTypes:["int 1 50","int 1 50"]}, solution:"    for i in range(min(a,b), 0, -1):\n        if b % i == 0 and a % i == 0:\n            return i"}
+
 Posloupnost 1
 Sequence 1
-150
-{text:" vrátí seznam všech sudých čísel od 0 do n.",function:{name:"odds", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    for i in range((n+1)/2):\n        l.append(i*2)\n    return l", attempt:"    l = []\n    for i in range(n):\n        l.append(i)\n    return l"}
+155
+{text:" vrátí seznam obsahující stejnou posloupnost jako Požedovaný výstup.",function:{name:"sequence1", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    if n > 0:\n        l.append(1)\n    for i in range(n-1):\n        l.append(l[i]*(i+2))\n    return l"}
+
+Posloupnost 1.5
+Sequence 1.5
+155
+{text:" vrátí seznam obsahující stejnou posloupnost jako Požedovaný výstup.",function:{name:"sequence1", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    if n > 0:\n        l.append(1)\n    for i in range(n-1):\n        l.append(l[i]+(i+1))\n    return l"}
 
 Posloupnost 2
 Sequence 2
