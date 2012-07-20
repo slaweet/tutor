@@ -1,7 +1,7 @@
 Trénink 1
 Trening 1
 40
-{text:" vrátí dvojnásobek čísla n",function:{name:"double", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    return 2*n", attempt:"    n = n + 5\n    return n"}
+{text:" vrátí dvojnásobek čísla n",function:{name:"double", paramNames:["n"], paramTypes:["int 0 10"]}, solution:"    l = []\n    return 2*n", attempt:"    n = n + 5\n    return n"}
 
 Sudá Posloupnost
 Even Sequence

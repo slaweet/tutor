@@ -83,14 +83,11 @@ var PythonManager = {
         }
     },
     setup: function(valueIndex) {
-        var code = "";
+        var params = []
         for (var i = 0; i < this.task.function.paramNames.length; i++) {
-            code += this.task.function.paramNames[i] + ' = ' + this.getParamValue(i,valueIndex) + '\n';
+            params.push(this.getParamValue(i,valueIndex));
         }
-        if (this.task.solution.indexOf('return') != -1) {
-            code += 'print ';
-        }
-        code += this.functionHeader;
+        var code = (this.task.solution.indexOf('return') != -1 ? 'print ' : '') + this.task.function.name + '(' + params.join(', ') + ')';
         this.editors["testing_code"].setValue(code);
     },
     getParamValue: function(paramIndex, valueIndex) {
