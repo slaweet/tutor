@@ -35,3 +35,6 @@ pre {
 .result:last-child {
     float: right;
 }
+.solution {
+    display: none;
+}

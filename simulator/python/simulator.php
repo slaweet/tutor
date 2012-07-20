@@ -37,7 +37,13 @@
 </head>
 <body>
 <div class="documentwrapper">
-    <div id="text"></div>
+    <p class="lang solution">solution<p/>
+    <div id="solution" class="solution">
+        <textarea cols="50" rows="12" id="solution_code" class="active_code">
+        </textarea>
+    </div>
+
+    <p id="text"></p>
 
     <p class="lang">solve<p/>
     <div id="attempt" >

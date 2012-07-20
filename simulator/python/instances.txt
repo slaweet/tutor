@@ -1,7 +1,22 @@
 Trénink 1
 Trening 1
 40
-{text:" vrátí dvojnásobek čísla n",function:{name:"double", paramNames:["n"], paramTypes:["int 0 10"]}, solution:"    l = []\n    return 2*n", attempt:"    n = n + 5\n    return n"}
+{text:" vrátí dvojnásobek čísla n",function:{name:"double", paramNames:["n"], paramTypes:["int 0 10"]}, solution:"    return 2*n", attempt:"    n = n + 5\n    return n"}
+
+Trénink podmínky
+Trening conditions
+50
+{text:" pokud je přirozené čislo n alespoň dvojciferné, vrátí cifru na místě desítek čísla n, jinak vrátí ciferný součet čísla n",function:{name:"foo", paramNames:["n"], paramTypes:["int 0 200"]}, solution:"    if n > 9:\n        return n %100 // 10\n    else:\n        return n", attempt:"    if n > 100:\n        return n // 5\n    else:\n        return n % 5"}
+
+Trénink cykly 
+Trening loops
+50
+{text:" pokud je přirozené čislo n alespoň dvojciferné, vrátí cifru na místě desítek čísla n, jinak vrátí ciferný součet čísla n",function:{name:"foo", paramNames:["n"], paramTypes:["int 0 200"]}, solution:"    if n > 9:\n        return n %100 // 10\n    else:\n        return n", attempt:"    if n > 100:\n        return n // 5\n    else:\n        return n % 5"}
+
+Trénink řetězce
+Trening strings
+50
+{text:" pokud je přirozené čislo n alespoň dvojciferné, vrátí cifru na místě desítek čísla n, jinak vrátí ciferný součet čísla n",function:{name:"foo", paramNames:["n"], paramTypes:["int 0 200"]}, solution:"    if n > 9:\n        return n %100 // 10\n    else:\n        return n", attempt:"    if n > 100:\n        return n // 5\n    else:\n        return n % 5"}
 
 Sudá Posloupnost
 Even Sequence

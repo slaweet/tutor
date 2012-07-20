@@ -19,21 +19,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 var BUNDLE = {
     "en":{ 
-    "solve": "Solve here: ",
-    "test": "Test here: ",
-    "run": "Run this test",
-    "submit": "Run test that fails",
-    "result": "Actual result:",
-    "expected": "Expected result:",
+    "solution": "One of many possible solutions:",
+    "solve": "Solve here:",
+    "test": "Test here:",
+    "run": "Run test",
+    "submit": "Submit",
+    "result": "Actual output:",
+    "expected": "Expected output:",
     "task": "Write function ",
     "that": ", that "
     },
     "cs":{ 
-    "solve": "Prostor pro řešení: ",
-    "test": "Prostor pro testování: ",
-    "run": "Spustit tento test",
-    "submit": "Spustit test který neprojde",
-    "result": "Výstup:",
+    "solution": "Jedno z mnoha možných řešení:",
+    "solve": "Prostor pro řešení:",
+    "test": "Prostor pro testování:",
+    "run": "Spustit test",
+    "submit": "Odevzdat",
+    "result": "Váš výstup:",
     "expected": "Požadovaný výstup:",
     "task": "Napište funkci ",
     "that": ", která "
@@ -118,6 +120,8 @@ var PythonManager = {
                 return false;
             }
         }
+        this.editors["solution_code"].setValue(this.firstLine + this.task.solution);
+        $(".solution").css('display', 'block');
         var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+this.moveCount+"&win=1";
         sendDataToInterface(q);
         after_win();
@@ -162,6 +166,16 @@ function handleEdKeys(ed, e) {
         else if (e.shiftKey) {
             e.stop();
             PythonManager.submit();
+        }
+    } else if (e.keyCode === 38) {
+        if (e.ctrlKey) {
+            PythonManager.editors.attempt_code.focus();
+            e.stop()
+        }
+    } else if (e.keyCode === 40) {
+        if (e.ctrlKey) {
+            PythonManager.editors.testing_code.focus();
+            e.stop()
         }
     } else {
         /*if (ed.acEditEvent == false || ed.acEditEvent === undefined) {
