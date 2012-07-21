@@ -11,12 +11,12 @@ Trening conditions
 Trénink cykly 
 Trening loops
 50
-{text:" pokud je přirozené čislo n alespoň dvojciferné, vrátí cifru na místě desítek čísla n, jinak vrátí ciferný součet čísla n",function:{name:"foo", paramNames:["n"], paramTypes:["int 0 200"]}, solution:"    if n > 9:\n        return n %100 // 10\n    else:\n        return n", attempt:"    if n > 100:\n        return n // 5\n    else:\n        return n % 5"}
+{text:" vypíše tři posloupnosti. První budou přirozená čísla od 1 do n. Druhá budou přirozená čísla od n do 1. Třetí bude Aritmetické posloupnost od 1 do 100 s krokem n.",function:{name:"loops", paramNames:["n"], paramTypes:["int 0 200"]}, solution:"    print range(1, n+1)\n    print range(n, 0, -1)\n    print range(1, 101, n)", attempt:"    print range(1, 10)\n    \n    l = []\n    for i in range(0, 10):\n        l.append(i+n)\n    print l\n    \n    print range(100, 0, -10)"}
 
 Trénink řetězce
 Trening strings
 50
-{text:" pokud je přirozené čislo n alespoň dvojciferné, vrátí cifru na místě desítek čísla n, jinak vrátí ciferný součet čísla n",function:{name:"foo", paramNames:["n"], paramTypes:["int 0 200"]}, solution:"    if n > 9:\n        return n %100 // 10\n    else:\n        return n", attempt:"    if n > 100:\n        return n // 5\n    else:\n        return n % 5"}
+{text:" vrátí řetězec str s prohozeným prvním a posledním znakem",function:{name:"swap", paramNames:["str"], paramTypes:["str 0 10"], testParams:[['abcdefg']]}, solution:"    if len(str) < 2: \n        return str\n    else: \n        return str[-1] + str[1:-1] + str[0]", attempt:"    return (' index: '+ str[2] +\n        '\\n substring: '+ str[1:3] +\n        '\\n indexFromEnd: '+ str[-2])"}
 
 Sudá Posloupnost
 Even Sequence
