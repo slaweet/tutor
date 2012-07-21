@@ -27,7 +27,7 @@ function problemList() {
 	$adr = opendir('simulator');
 	$ret = '<div class="resit">';
 	while ($file = readdir($adr)) {
-	    if($soubor != "." and $soubor != "..") {
+	    if($file != "." and $file != "..") {
 		$ret .= '<div ><a href="index.php?p=problem_map&problem_id='.$file
 		.'"><img src="simulator/'.$file.'/default.png" /><h1>'.$file.'</h1></a></div>';
 	}
@@ -412,7 +412,7 @@ function getInstance($problem, $id) {
 <?= LocaleController::get_flag('cs') . LocaleController::get_flag('en') ?>
 
 <table class="main_menu"><tr><td><a href="index.php?p=main_page">ÚVOD</a><td><a href="index.php?p=about">VÝZKUM</a><td class="last_item" ><a href="index.php?p=contact">KONTAKT</a>
-	</tr></table><table class="second_menu"><tr><td width="20"></td><td><a href="index.php?p=problem_list">Problémy</a></td><td width="20"></td><td><a href="index.php?p=results">Statistiky</a></td><td width="20"></td><td><a href="index.php?p=user_update">Osobní&nbsp;údaje</a></td><td width="20"></td><td><a href="index.php?p=write_us">Napište&nbsp;nám</a></td><td width="100%"></td></tr></table><div class="main"><script type="text/javascript" src="simulator/rush_hour/scripts/mootools-1.2.1-core.js"></script><script type="text/javascript" src="simulator/rush_hour/scripts/mootools-1.2-more.js"></script>
+	</tr></table><table class="second_menu"><tr><td width="20"></td><td><a href="index.php?p=problem_list">Problémy</a></td><td width="20"></td><td><a href="index.php?p=results">Statistiky</a></td><td width="20"></td><td><a href="index.php?p=user_update">Osobní&nbsp;údaje</a></td><td width="20"></td><td><a href="index.php?p=write_us">Napište&nbsp;nám</a></td><td width="100%"></td></tr></table><div class="main"><script type="text/javascript" src="scripts/mootools-1.2.1-core.js"></script><script type="text/javascript" src="scripts/mootools-1.2-more.js"></script>
       <script language="JavaScript">
        function zobrazSkryj(idecko){
          el=document.getElementById(idecko).style; 
