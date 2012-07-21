@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="simulator/python/default.css" type="text/css" />
 
     <script type="text/javascript" src="simulator/python/jquery.js"></script>
+    <script type="text/javascript" src="simulator/python/mootools-1.2.3.1-more.js"></script>
     <script type="text/javascript" src="simulator/python/codemirror.js"></script>
     <script type="text/javascript" src="simulator/python/python.js"></script>
     <script type="text/javascript" src="simulator/python/skulpt.js"></script>
@@ -47,7 +48,7 @@
 
     <p class="lang">solve<p/>
     <div id="attempt" >
-        <textarea cols="50" rows="12" id="attempt_code" class="active_code">
+        <textarea cols="50" rows="12" id="attempt_code" class="active_code" >
         </textarea>
     </div>
 

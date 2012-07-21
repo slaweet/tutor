@@ -60,10 +60,10 @@ var PythonManager = {
         $('#text').text(Lang.get("task") + this.functionHeader + Lang.get("that") + task.text);
         this.createEditors();
         this.setup(0);
-        this.editors["attempt_code"].setValue(this.firstLine + (this.task.attempt ||'    """code here"""\n    '));
-        this.editors["attempt_code"].focus();
-        this.editors["attempt_code"].setCursor(3);
+        this.editors.attempt_code.setValue(this.firstLine + (this.task.attempt ||'    """code here"""\n    '));
         this.run();
+        this.editors.attempt_code.focus();
+        this.editors.attempt_code.setCursor(3);
     },
     createEditors: function() {
         var edList = new Array();
@@ -78,6 +78,7 @@ var PythonManager = {
                 indentUnit: 4,
                 tabMode: "indent",
                 matchBrackets: true,
+                //initCallback: rest
                 onKeyEvent:handleEdKeys
             }
                     );
@@ -108,7 +109,7 @@ var PythonManager = {
             case 'int':
                 return Math.floor(Math.random() * (max - min + 1) + min);
             case 'str':
-                return Math.random().toString(36).substr(2, this.getRand(['int',min,max])+2);
+                return Math.random().toString(36).substr(2, this.getRand(['int',min,max]));
         }
     },
     submit: function(button) {
@@ -156,6 +157,26 @@ var PythonManager = {
         $(theButton).removeAttr('disabled');
     }
 }
+    function rest(editor)
+    {
+        editor.focus();
+        editor.grabKeys(function(e)
+                {
+                    if (e.keyCode === 13)
+                    {
+                        if (e.ctrlKey)
+                        {
+                            e.stop();
+                        }
+                        else if (e.shiftKey)
+                        {
+                            e.stop();
+                        }
+                    }
+                }, function(e) {
+                    return (e.ctrlKey || e.shiftKey) && e.keyCode === 13;
+                });
+    }
 
 function handleEdKeys(ed, e) {
     if (e.keyCode === 13) {
