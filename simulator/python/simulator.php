@@ -13,6 +13,7 @@
     <script type="text/javascript" src="simulator/python/codemirror.js"></script>
     <script type="text/javascript" src="simulator/python/python.js"></script>
     <script type="text/javascript" src="simulator/python/skulpt.js"></script>
+    <script type="text/javascript" src="simulator/python/builtin.js"></script>
 
     <script src="simulator/automaty/lang.js" type="text/javascript" charset="utf-8"></script>
     <script src="simulator/python/base64.js" type="text/javascript" charset="utf-8"></script>
