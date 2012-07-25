@@ -26,6 +26,7 @@ var ANIMATION_TIME = 200;
 var GOOD_COLOR = "#26bf00";
 var BAD_COLOR = "#bf0000";
 var NEUTRAL_COLOR = "#fff";
+var START_Y = 200;
 
 var BUNDLE = {
     "en":{ 
@@ -111,8 +112,8 @@ var AutomataManager = {
         }
     },
     initAutomata: function(automata) {
-        this.start = this.paper.start(0, 150, this.maxTestedWordLength <= -1);
-        this.automata.token = this.paper.token(-25, 150, this);
+        this.start = this.paper.start(0, START_Y, this.maxTestedWordLength <= -1);
+        this.automata.token = this.paper.token(-25, START_Y, this);
         if (automata == undefined) {
             return;
         }
@@ -130,6 +131,7 @@ var AutomataManager = {
             state.moveTo({x: x, y:y})
             this.automata.addState(state);
         }
+        this.setInit(this.automata.states[automata.init]);
 
         for (var i = 0; i < automata.accepting.length; i++) {
             this.automata.states[automata.accepting[i]].toggleAccepting();
@@ -141,7 +143,6 @@ var AutomataManager = {
             conn.addLabel(label)
             this.automata.addEdge(label);
         }
-        this.setInit(this.automata.states[automata.init]);
     },
     addWord: function(word) {
         var wordSpan = ""
@@ -392,7 +393,7 @@ Raphael.fn.start = function (x,y, showText) {
             return pos.x < x+120 && Math.abs(pos.y-y) < 40;
         },
         getPos: function() {
-            return {x: 60, y: 150};
+            return {x: 60, y: y};
         }
     }
     return start;
