@@ -104,7 +104,8 @@ var AutomataManager = {
         for (var i = 0; i < this.words.length; i++) {
             this.addWord(this.words[i], i);
         }
-        this.initAutomata(task.automata);
+        var defaultAutomata = {"stateCount":1,"alphabet":task.alphabet,"delta":[],"init":"0","accepting":[]};
+        this.initAutomata(task.automata || defaultAutomata);
         if (task.text && task.text == 'regexp') {
             $('#text').html(Lang.get('use-regexp') + ': <br><b>' + task.regexp + '</b>');
         } else if (task.text) {
