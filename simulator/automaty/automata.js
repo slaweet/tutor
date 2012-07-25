@@ -187,7 +187,7 @@ var AutomataManager = {
                 this.wordsIndex = this.words.indexOf(words[i]);
                 return false;
             } else {
-                this.setWordResult(words[i], true);
+                this.setWordResult(words[i], isAccepted);
             }
         }
         return true;
