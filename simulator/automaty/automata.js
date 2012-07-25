@@ -461,7 +461,7 @@ Raphael.fn.stateStack = function (x, y, maxStates, alphabet) {
             return state; 
         },
         createState: function(time) {
-            var state = this.paper.state(x + 50, y + 90, "q"+this.next++, this.alphabet);
+            var state = this.paper.state(x + 50, y + 90, "s"+this.next++, this.alphabet);
             this.states.push(state);
             this.rect.toFront();
         },
