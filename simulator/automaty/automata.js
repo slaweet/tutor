@@ -251,6 +251,11 @@ var Automata = {
     },
     removeState: function(state){
         this.states.splice(this.states.indexOf(state), 1);
+        for (var i = 0; i < state.connections.length; i++) {
+            for (var j = 0; j < state.connections[i].labels.length; j++) {
+                this.removeEdge(state.connections[i].labels[j]);
+            }
+        }
         AutomataManager.stateStack.getBack(state);
     },
     addEdge: function(label){
