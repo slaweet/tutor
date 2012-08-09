@@ -29,7 +29,7 @@
             var lang = "<?= LocaleController::get_lang() ?>";
 
             window.onload = function () {
-                task = task != "" ? task : location.hash.substring(1);
+                task = task != "" ? task : location.hash.substring(1).replace(/@/g, ' ');
                 Lang.setLang(lang);
                 PythonManager.init(task);
             }
