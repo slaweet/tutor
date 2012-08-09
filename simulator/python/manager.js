@@ -40,7 +40,7 @@ var BUNDLE = {
     "task": "Napište funkci ",
     "that": ", která "
     }
-}
+};
 
 var PythonManager = {
     testCycles: 50,
@@ -86,11 +86,12 @@ var PythonManager = {
         }
     },
     setup: function(valueIndex) {
-        var params = []
+        var params = [];
         for (var i = 0; i < this.task.function.paramNames.length; i++) {
             params.push(this.getParamValue(i,valueIndex));
         }
-        var code = (this.task.solution.indexOf('return') != -1 ? 'print ' : '') + this.task.function.name + '(' + params.join(', ') + ')';
+        var code = (this.task.solution.indexOf('return') != -1 ? 'print ' : '') 
+        	+ this.task.function.name + '(' + params.join(', ') + ')';
         this.editors["testing_code"].setValue(code);
     },
     getParamValue: function(paramIndex, valueIndex) {
@@ -122,6 +123,7 @@ var PythonManager = {
             }
         }
         this.editors["solution_code"].setValue(this.firstLine + this.task.solution);
+        this.editors["solution_code"].focus();
         $(".solution").css('display', 'block');
         var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+this.moveCount+"&win=1";
         sendDataToInterface(q);
@@ -129,7 +131,7 @@ var PythonManager = {
     },
     run: function(button) {
         this.runit('testing', button, '_pre', this.editors["attempt_code"].getValue());
-        this.runit('testing', button, '2_pre', this.firstLine + this.task.solution)
+        this.runit('testing', button, '2_pre', this.firstLine + this.task.solution);
     },
     runit: function(myDiv, theButton, pre, include) {
         $(theButton).attr('disabled','disabled');
@@ -151,7 +153,7 @@ var PythonManager = {
         try {
             Sk.importMainWithBody("<stdin>", false, prog);
         } catch (e) {
-            $(mypre).text("" + e)
+            $(mypre).text("" + e);
             //alert(e);
         }
         $(theButton).removeAttr('disabled');
@@ -191,12 +193,12 @@ function handleEdKeys(ed, e) {
     } else if (e.keyCode === 38) {
         if (e.ctrlKey) {
             PythonManager.editors.attempt_code.focus();
-            e.stop()
+            e.stop();
         }
     } else if (e.keyCode === 40) {
         if (e.ctrlKey) {
             PythonManager.editors.testing_code.focus();
-            e.stop()
+            e.stop();
         }
     } else {
         /*if (ed.acEditEvent == false || ed.acEditEvent === undefined) {
@@ -214,7 +216,7 @@ function outf(text) {
     x = text;
     if (x.charAt(0) == '(') {
         x = x.slice(1,-1);
-	x = '['+x+']'
+	x = '['+x+']';
 	try {
         var xl = eval(x);
         xl = xl.map(pyStr);
