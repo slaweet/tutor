@@ -1,138 +1,150 @@
-Trénink 1
-Trening 1
+Dvojnásobek
+Dvojnásobek
 40
-{text:" vrátí dvojnásobek čísla n",function:{name:"double", paramNames:["n"], paramTypes:["int 0 10"]}, solution:"    return 2*n", attempt:"    n = n + 5\n    return n"}
+{text:" vypíše informaci o dvojnásobku čísla n.",function:{name:"dvojnasobek", paramNames:["n"], paramTypes:["int 0 10"]}, solution:"    print \"Dvojnasobek cisla\", n, \"je\", 2*n\n", attempt:"    print \"Dvojnasobek cisla\", n, \"je\", n+5\n"}
 
-Trénink podmínky
-Trening conditions
+Sudá čísla
+Sudá čísla
 50
-{text:" pokud je přirozené čislo n alespoň dvojciferné, vrátí cifru na místě desítek čísla n, jinak vrátí ciferný součet čísla n",function:{name:"foo", paramNames:["n"], paramTypes:["int 0 200"]}, solution:"    if n > 9:\n        return n %100 // 10\n    else:\n        return n", attempt:"    if n > 100:\n        return n // 5\n    else:\n        return n % 5"}
+{text:" vypíše všechna sudá čísla od 0 do n (včetně).",function:{name:"suda", paramNames:["n"], paramTypes:["int 2 15"]}, solution:"    for i in range(n+1):\n        if i%2 == 0: print i\n", attempt:"    for i in range(n):\n        print i\n"}
 
-Trénink cykly 
-Trening loops
-50
-{text:" vypíše tři posloupnosti. První budou přirozená čísla od 1 do n. Druhá budou přirozená čísla od n do 1. Třetí bude Aritmetické posloupnost od 1 do 100 s krokem n.",function:{name:"loops", paramNames:["n"], paramTypes:["int 0 200"]}, solution:"    print range(1, n+1)\n    print range(n, 0, -1)\n    print range(1, 101, n)", attempt:"    print range(1, 10)\n    \n    l = []\n    for i in range(0, 10):\n        l.append(i+n)\n    print l\n    \n    print range(100, 0, -10)"}
+Dělitelé
+Dělitelé
+60
+{text:" vypíše všechny přirozená čísla, která dělí n.",function:{name:"delitele", paramNames:["n"], paramTypes:["int 1 36"]}, solution:"    for i in range(1,n+1):\n        if n % i == 0:\n            print i\n", attempt:"    for i in range(1,n):\n        if i % 3 == 0:\n            print i\n"}
 
-Trénink řetězce
-Trening strings
-50
-{text:" vrátí řetězec str s prohozeným prvním a posledním znakem",function:{name:"swap", paramNames:["str"], paramTypes:["str 0 10"], testParams:[['abcdefg']]}, solution:"    if len(str) < 2: \n        return str\n    else: \n        return str[-1] + str[1:-1] + str[0]", attempt:"    return (' index: '+ str[2] +\n        '\\n substring: '+ str[1:3] +\n        '\\n indexFromEnd: '+ str[-2])"}
+Faktoriál
+Faktoriál
+60
+{text:" vrátí faktoriál n (součin všech čísel od 1 do n).",function:{name:"faktorial", paramNames:["n"], paramTypes:["int 1 10"]}, solution:"    f = 1\n    for i in range(1,n+1):\n        f = f * i\n    return f\n", attempt:"    return n\n"}
 
-Sudá Posloupnost
-Even Sequence
+Ciferný součet
+Ciferný součet
 120
-{text:" vrátí seznam všech sudých čísel od 0 do n.",function:{name:"odds", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    for i in range((n+1)/2):\n        l.append(i*2)\n    return l", attempt:"    l = []\n    for i in range(n):\n        l.append(i)\n    return l"}
+{text:" vypíše ciferný součet čísla n.",function:{name:"ciferny_soucet", paramNames:["n"], paramTypes:["int 1 10000"]}, solution:"    soucet = 0\n    while n > 0:\n        soucet += n % 10\n        n = n // 10\n    return soucet\n", attempt:"    soucet = 0\n    soucet += n % 10\n    return soucet\n"}
 
-NSD
-GCD
-130
-{text:" vrátí největšího společného dělitele čisel a, b",function:{name:"gcd", paramNames:["a","b"], paramTypes:["int 1 50","int 1 50"]}, solution:"    for i in range(min(a,b), 0, -1):\n        if b % i == 0 and a % i == 0:\n            return i"}
+Fibonacciho posloupnost
+Fibonacciho posloupnost
+150
+{text:" vypíše prvních n členů Fibonacciho posloupnosti (první dva členy jsou 1, každý další je součtem dvou předchozích).",function:{name:"fibonacci", paramNames:["n"], paramTypes:["int 5 20"]}, solution:"    a, b = 1, 1\n    for i in range(n):\n        print a,\n        a, b = b, a+b\n", attempt:"    for i in range(n):\n        print i,\n"}
 
-Posloupnost 1
-Sequence 1
-155
-{text:" vrátí seznam obsahující stejnou posloupnost jako Požedovaný výstup.",function:{name:"sequence1", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    if n > 0:\n        l.append(1)\n    for i in range(n-1):\n        l.append(l[i]*(i+2))\n    return l"}
+Největší společný dělitel
+Největší společný dělitel
+150
+{text:" vrátí největšího společného dělitele dvou přirozených čísel a, b.",function:{name:"nsd", paramNames:["a","b"], paramTypes:["int 1 50","int 1 50"], testParams:[[12, 35],[18, 15]],}, solution:"    # Eucliduv algoritmus\n    while b != 0:\n        t = b\n        b = a % b\n        a = t\n    return a\n", attempt:"    return 1\n"}
 
-Posloupnost 1.5
-Sequence 1.5
-155
-{text:" vrátí seznam obsahující stejnou posloupnost jako Požedovaný výstup.",function:{name:"sequence1", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    if n > 0:\n        l.append(1)\n    for i in range(n-1):\n        l.append(l[i]+(i+1))\n    return l"}
-
-Posloupnost 2
-Sequence 2
-165
-{text:" vrátí seznam obsahující stejnou posloupnost jako Požedovaný výstup.",function:{name:"sequence2", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    for i in range(1,n+5):\n        for j in range(1,i):\n            if len(l) >= n:\n                return l\n            l.append(j)"}
-
-Posloupnost 3
-Sequence 3
-185
-{text:" vrátí seznam obsahující stejnou posloupnost jako Požedovaný výstup.",function:{name:"sequence3", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    i = 2\n    while len(l) < n:\n        if isprime(i):\n            l.append(i)\n        i += 1\n    return l\ndef isprime(n):\n    if n == 2: \n        return True    \n    # all other even numbers are not primes\n    if not n & 1: \n        return False\n    # range starts with 3 and only needs to go up the squareroot of n\n    # for all odd numbers\n    for x in range(3, int(n**0.5)+1, 2):\n        if n % x == 0:\n            return False\n    return True"}
-
-Posloupnost 4
-Sequence 4
-225
-{text:" vrátí seznam obsahující stejnou posloupnost jako Požedovaný výstup.",function:{name:"sequence4", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    if n > 0:\n        l.append(1)\n    for i in range(n-1):\n        l.append(l[i] + divisors(l[i]))\n    return l\ndef divisors(n):\n    sum = 0\n    for i in range(1,n+1):\n        if n//i == n/i:\n            sum += 1\n    return sum"}
-
-Posloupnost 5
-Sequence 5
-255
-{text:" vrátí seznam obsahující stejnou posloupnost jako Požedovaný výstup.",function:{name:"sequence5", paramNames:["n"], paramTypes:["int 0 20"]}, solution:"    l = []\n    if n > 0:\n        l.append(1)\n    if n > 1:\n        l.append(2)\n    if n > 2:\n        l.append(2)\n    i = 3\n    while len(l) < n:\n        for j in range(l[i-1]):\n            l.append(i)\n            if len(l) >= n:\n                break\n        i += 1\n    return l"}
-
-Součet 
-Sum
-160
-{text:" sečte všechna čísla od 1 do n a vrátí výsledek.",function:{name:"sum", paramNames:["n"], paramTypes:["int 1 20"]}, solution:"    sum = 0\n    for i in range(n+1):\n        sum += i\n    return sum"}
-
-Faktoriál 
-Factorial
+Binární zápis
+Binární zápis
 180
-{text:" vynásobí všechna čísla od 1 do n a vrátí výsledek.",function:{name:"fact", paramNames:["n"], paramTypes:["int 1 20"]}, solution:"    fact = 1\n    for i in range(1,n+1):\n        fact *= i\n    return fact"}
-
-Odmocnina 
-Squareroot
-190
-{text:" vrátí celou část odmocniny z čísla n, tj. největší celé x takové, že x^2 <= n.",function:{name:"sqrt", paramNames:["n"], paramTypes:["int 1 1000"]}, solution:"    import math\n    return math.floor(math.sqrt(n))"}
-
-Ciferný součet 
-Digit sum
-190
-{text:" vrátí ciferný součet čísla n",function:{name:"dsum", paramNames:["n"], paramTypes:["int 10000 10000000"]}, solution:"    sum = 0\n    l = list(str(n))\n    for i in range(len(l)):\n        sum += int(l[i])\n    return sum"}
-
-Počet jedniček
-Amount of ones
-220
-{text:" vrátí počet jedniček v čísle n",function:{name:"sum1", paramNames:["n"], paramTypes:["int 10000 10000000"]}, solution:"    sum = 0\n    l = list(str(n))\n    for i in range(len(l)):\n        if int(l[i]) == 1:\n            sum += int(l[i])\n    return sum"}
-
-Pozpátku 
-Reverse
-260
-{text:" vypíše číslo n zapsané pozpátku.",function:{name:"reverse", paramNames:["n"], paramTypes:["intt 10000 10000000"]}, solution:"    print str(n)[::-1]"}
-
-Kosočtverec
-Diamant
-320
-{text:" vypíše kosočtverec ze znaků '#'. Parametr n určuje velikost (pro podrobnosti viz Požadovaný výstup)",function:{name:"diamant", paramNames:["n"], paramTypes:["int 1 10"]}, solution:"    for i in range(n):\n        print ' '*(n-i-1),'#'*(2*i-1)\n    for i in range(2,n):\n        print ' '*(i-1),'#'*(2*(n-i)-1)"}
-
-Kruh
-Circle
-280
-{text:" vypíše kruh ze znaků '#' o poloměru n (viz Požadovaný výstup)",function:{name:"circle", paramNames:["n"], paramTypes:["int 8 20"]}, solution:"    for i in range(-n, n+1):\n        line = ''\n        for j in range(-n, n+1):\n            if i*i + j*j <= n*n:\n                line += '#'\n            else:\n                line += '.'\n        print line"}
+{text:" vypíše číslo n v binárním zápisu.",function:{name:"binarne", paramNames:["n"], paramTypes:["int 1 100"]}, solution:"    vystup = \"\"\n    while n > 0:\n        if n % 2 == 0: vystup = \"0\" + vystup\n        else: vystup = \"1\" + vystup\n        n = n // 2\n    print vystup\n", attempt:"    if n % 2 == 0: print \"0\"\n    else: print \"1\"\n"}
 
 Šachovnice
-Chessboard
-360
-{text:" vypíše šachovnici 8x8 s políčky o velikosti n (viz Požadovaný výstup)",function:{name:"chessboard", paramNames:["n"], paramTypes:["int 1 6"]}, solution:"    for i in range(n*8):\n        line = ''\n        for j in range(n*8):\n            if max(i% (2*n), j% (2*n)) < n or min(i% (2*n), j% (2*n)) >= n:\n                line += '#'\n            else:\n                line += '.'\n        print line"}
+Šachovnice
+150
+{text:" vypíše šachovnici rozměrů n krát n, tvořenou znaky 'X' a '.'.",function:{name:"sachovnice", paramNames:["n"], paramTypes:["int 2 10"]}, solution:"    for y in range(n):\n        for x in range(n):\n            if (x + y) % 2 == 0: print \"X\",\n            else: print \".\",\n        print\n", attempt:"    for y in range(n):\n        print \"X\",\n    print\n    for y in range(n):\n        print \".\",\n    print\n"}
 
-Čtverce
-Squares
-360
-{text:" vypíše vnořené čtverce, z nichž největší má hranu o velikosti n (viz Požadovaný výstup)",function:{name:"squares", paramNames:["n"], paramTypes:["int 1 30"]}, solution:"    for i in range(n):\n        line = ''\n        for j in range(n):\n            if ((i+j < n and((i % 2 == 0 and i <= j) or (j % 2 == 0 and j <= i))) \n                    or ((((n-i) % 2 == 1 and i >= j) or ((n-j) % 2 == 1 and j >= i)) and i+j >= n)):\n                line += '#'\n            else:\n                line += ' '\n        print line"}
+Výpis prvočísel
+Výpis prvočísel
+200
+{text:" vypíše prvních n prvočísel.",function:{name:"vypis_prvocisel", paramNames:["n"], paramTypes:["int 3 30"]}, solution:"    i = 1\n    while n > 0:\n        if pocet_delitelu(i) == 2:\n            print i,\n            n = n - 1\n        i = i + 1\n\ndef pocet_delitelu(n):\n    pocet = 0\n    for i in range(1, n+1):\n        if n % i == 0:\n            pocet = pocet + 1\n    return pocet    \n", attempt:"    \"\"\"dopln kod\"\"\"\n"}
 
-Spirála
-Spiral
-360
-{text:" vypíše spirálu s nejdelšími hranami o velikosti n (viz Požadovaný výstup)",function:{name:"spiral", paramNames:["n"], paramTypes:["int 1 30"]}, solution:"    for i in range(n):\n        line = ''\n        for j in range(n):\n            if ((i+j < n-2 and((i % 2 == 0 and i <= j) or (j % 2 == 0 and j <= i))) \n                    or ((((n-i) % 2 == 1 and i >= j) or ((n-j) % 2 == 1 and j >= i)) and i+j > n-2)\n                    or (i % 2 == 1 and i+j == n-2 and i< n/2)\n                    or ((n-i) % 2 == 0 and i+j == n-2 and i> n/2)):\n                line += '#'\n            else:\n                line += ' '\n        print line"}
+Pascalův trojúhelník
+Pascalův trojúhelník
+400
+{text:" vypíše zadaný počet řádků Pascalova trojúhelníku (řádky jsou tvořeny kombinačními čísly, resp. vznikají vždy jako součet dvou čísel z předchozího řádku).",function:{name:"pascaluv_trojuhelnik", paramNames:["pocet_radku"], paramTypes:["int 3 10"]}, solution:"    for n in range(pocet_radku):\n        for k in range(0, n + 1):\n            print kombinacni_cislo(n,k),\n        print\n  \ndef faktorial(n):\n    f = 1\n    for i in range(1,n+1):\n        f = f * i\n    return f\n\ndef kombinacni_cislo(n,k):\n    return faktorial(n)/(faktorial(n-k) * faktorial(k))\n", attempt:"    for n in range(pocet_radku):\n        for k in range(0, n + 1):\n            print k,\n        print\n"}
+
+Mocniny dvojky
+Mocniny dvojky
+40
+{text:" vypíše prvních n mocnin dvojky.",function:{name:"mocniny_dvojky", paramNames:["n"], paramTypes:["int 2 12"]}, solution:"    x = 1\n    for i in range(n):\n        print x,\n        x = x * 2\n", attempt:"    for i in range(n):\n        print i,\n"}
+
+Tajná posloupnost
+Tajná posloupnost
+60
+{text:" vypíše prvních n členů 'tajné posloupnosti', jejíž princip musíte odhalit z ukázkového výstupu (zkuste různé délky výpisu).",function:{name:"tajna_posloupnost", paramNames:["n"], paramTypes:["int 1 30"]}, solution:"    aktualni = 1\n    strop = 1\n    for i in range(n):\n        print aktualni,\n        aktualni += 1\n        if aktualni > strop:\n            aktualni = 1\n            strop += 1\n", attempt:"    for i in range(n):\n        print 1,\n"}
+
+Součet
+Součet
+50
+{text:" vrátí součet všech čísel od 1 do n.",function:{name:"soucet", paramNames:["n"], paramTypes:["int 5 30"]}, solution:"    return sum(range(n+1))\n", attempt:"    return n\n"}
+
+Čtverec
+Čtverec
+80
+{text:" vykreslí čtverce o hraně délky n, jehož obrys je tvořen hvězdičkami a vnitřek plusy (viz ukázkový výstup).",function:{name:"ctverec", paramNames:["n"], paramTypes:["int 4 20"]}, solution:"    # řešení využívající násobení řetězců\n    print \"*\"*n+\"\\n\"+(\"*\"+\"+\"*(n-2)+\"*\"+\"\\n\")*(n-2)+\"*\"*n\n", attempt:"    print \"*\"\n"}
+
+Trojúhelník
+Trojúhelník
+60
+{text:" vykreslí ze znaků '#' pravoúhlý trojúhelník s odvěsnou délky n (viz ukázkový výstup).",function:{name:"trojuhelnik", paramNames:["n"], paramTypes:["int 3 10"]}, solution:"    for i in range(n):\n        for j in range(n-i):\n            print \"#\",\n        print\n", attempt:"    for i in range(n-1):\n        for j in range(n+1):\n            print \"#\",\n        print\n"}
+
+Počet dělitelů
+Počet dělitelů
+70
+{text:" vrátí počet dělitelů přirozeného čísla n.",function:{name:"pocet_delitelu", paramNames:["n"], paramTypes:["int 1 36"]}, solution:"    # řešení využívající \"generátorovou notaci seznamu\" (list comprehension)\n    return len([ x for x in range(1,n+1) if n % x == 0 ])\n", attempt:"    return 1\n"}
+
+Diamant
+Diamant
+180
+{text:" vypíše obrázek 'diamantu' ze znaků '#' a '.' podle uvedeného vzoru (viz ukázkový výstup).",function:{name:"diamant", paramNames:["n"], paramTypes:["int 1 10"]}, solution:"    for x in range(-n,n+1):\n        for y in range(-n,n+1):\n            if abs(x)+abs(y) <= n:\n                print \"#\",\n            else:\n                print '.',\n        print\n", attempt:"    for x in range(n):\n        for y in range(n):\n            print '#',\n        print\n"}
+
+Cik-cak
+Cik-cak
+200
+{text:" vypíše zadaný text 'cik-cak' na dva řádky s prazdnými místy vyznačenými tečkami (viz ukázkový výstup).",function:{name:"cikcak", paramNames:["text"], paramTypes:["str 5 15"], testParams:[['PARDUBICE','SLON','KOS','TESTTESTTEST']],}, solution:"    radek(text,0)\n    radek(text,1)\n    \ndef radek(text, parita):\n    for i in range(len(text)):\n        if i % 2 == parita:\n            print text[i],\n        else:\n            print '.',\n    print    \n", attempt:"    for i in range(len(text)):    \n        print text[i],\n"}
 
 Palindrom
 Palindrom
-260
-{text:" vrací True pokud je řetězec str palindrom (tj. čte se od předu i od zadu stejně)",function:{name:"palindrom", paramNames:["str"], paramTypes:["str 1 8"], testParams:[['lol', 'kajak', 'jelenovipivonelej', 'l']]}, solution:"    return str == str[::-1]"}
+60
+{text:" otestuje (vrátí True/False), zda je text palindromem (tj. čte se od předu i od zadu stejně).",function:{name:"palindrom", paramNames:["text"], paramTypes:["str 3 10"], testParams:[['jelenovipivonelej', 'afrika', 'lol', 'kajak', 'a']],}, solution:"    for i in range(len(text)):\n        if text[i] != text[len(text)-i-1]:\n            return False\n    return True\n    #Nebo také následujícím krátkým zápisem:\n    #return text == text[::-1]\n", attempt:"    if text[0] != text[len(text)-1]:\n        return False\n    return True\n"}
 
-Šifra 1
-Cypher 1
-360
-{text:" vrací řetězec str zašifrovaný. Použitou transpoziční šifru musíte nejdříve odhalit z Požedovaného výstupu :-P",function:{name:"cypher1", paramNames:["str"], paramTypes:["str 8 18"], testParams:[['heslojeprase']]}, solution:"    l = len(str)\n    l3 = (l-l%3)/3\n    if l3 != l/3:\n        l3 += 1\n    ret = ''\n    for i in range(l3):\n        ret += str[l3 * 0 +i]\n        if l3 * 1 +i < l:\n            ret += str[l3 * 1 +i]\n        if l3 * 2 +i < l:\n            ret += str[l3 * 2 +i]\n    return ret",attempt: "    length = len(str)\n    ret = ''\n    for i in range(length):\n         ret += str[i]\n    return ret"}
+Přesmyčky
+Přesmyčky
+300
+{text:" vypíše hlášku o tom, zda zadaná slova jsou vzájemné přesmyčky (viz ukázkový výstup).",function:{name:"presmycky", paramNames:["slovo1","slovo2"], paramTypes:["str 2 7","str 2 7"], testParams:[['lekar','sovy','utok','kos'],['karel','vosa','kota','sok']],}, solution:"    s1 = list(slovo1)\n    s1.sort()\n    s2 = list(slovo2)\n    s2.sort()\n    print slovo1, 'a', slovo2,\n    if s1 == s2:\n        print 'jsou',\n    else:\n        print 'nejsou',\n    print 'vzajemne presmycky'\n", attempt:"    print slovo1, 'a', slovo2, 'nejsou vzajemne presmycky'    \n"}
 
-Šifra 2
-Cypher 2
-380
-{text:" vrací řetězec str zašifrovaný. Použitou  transpoziční šifru musíte nejdříve odhalit z Požedovaného výstupu :-P",function:{name:"cypher2", paramNames:["str"], paramTypes:["str 8 18"], testParams:[['heslojeprase']]}, solution:"    length = len(str)\n    ret = ''\n    for i in range(length/2):\n         ret += str[i*2]\n    for i in range(length/2):\n        if length - i*2 - (length+1)%2 < length:\n            ret += str[length - i*2 - (length+1)%2]\n    return ret"}
+Binární číslo
+Binární číslo
+120
+{text:" vrátí hodnotu binárního čísla zadaného v řetězci.",function:{name:"vyhodnot", paramNames:["retezec"], paramTypes:["str 2 5"], testParams:[['11001','101','1','100001','1010101','11','11101']],}, solution:"    h = 0\n    for i in range(len(retezec)):\n        if retezec[-i-1] == \"1\":\n            h += 2**i\n    return h\n", attempt:"    return 0\n"}
 
-Šifra 3
-Cypher 3
-430
-{text:" vrací řetězec str zašifrovaný. Použitou transpoziční šifru musíte nejdříve odhalit z Požedovaného výstupu :-P",function:{name:"cypher3", paramNames:["str", "n"], paramTypes:["str 8 18", "int 2 6"], testParams:[['heslojeprase'],[3]]}, solution:"    l = len(str)\n    ret = ''\n    for i in range(l-l%n+n):\n        if (i-i%n)+ n-1 - i%n < l:\n            ret += str[(i-i%n)+ n-1 - i%n]\n    return ret"}
+Podmnožiny
+Podmnožiny
+400
+{text:" vypíše všechny k prvkové podmnožiny množiny {1, 2, ..., n} (v lexikografickém pořadí).",function:{name:"podmnoziny", paramNames:["n","k"], paramTypes:["int 2 8"," int 2 7"], testParams:[[5,4,7,6],[3,2,4,1]],}, solution:"    podmn = []\n    for i in range(2**n):\n        mnozina = []\n        for j in range(n):\n            if i & (2**j):\n                mnozina.append(j+1)\n        if len(mnozina) == k:        \n            podmn.append(mnozina)\n    podmn.sort()\n    for mnozina in podmn:\n        for x in mnozina: print x,\n        print\n# Ve standardním Pythonu lze úlohu řešit pomocí itertools.combinations\n", attempt:"    for i in range(1,k+1):\n        print i,\n    print\n"}
 
+Caesarova šifra
+Caesarova šifra
+200
+{text:" vrátí text, ve kterém je každé písmeno posunuto o n pozic v abecedě (mezery zachová).",function:{name:"caesar", paramNames:["text","n"], paramTypes:["str 3 10","int 1 26"], testParams:[["koza skace", "ahoj svete", "jedna dva tri"],[3,1,18]],}, solution:"    vystup = \"\"\n    for i in range(len(text)):\n        if text[i] == ' ': vystup = vystup + ' '\n        else:\n            c = ord(text[i]) + n\n            while (c > ord('z')): c = c - 26\n            vystup = vystup + chr(c)\n    return vystup\n", attempt:"    #ilustrace převodu znaků na čísla a zpět\n    print 'a', ord('a')\n    print 102, chr(102)\n    return text\n"}
 
+Velké X
+Velké X
+150
+{text:" vypíše velké X tvořené ze znaků '#' a '.' o velikosti n (viz ukázkový příklad).",function:{name:"velkex", paramNames:["n"], paramTypes:["int 2 12"], testParams:[[7, 6]],}, solution:"    for x in range(n):\n        for y in range(n):\n            if x == y or x == n - 1 - y: print '#',\n            else: print '.',\n        print\n", attempt:"    print '#'\n"}
 
-{text:"",function:{name:"", paramNames:["n"], paramTypes:["int"]}, solution:""}
+Transpoziční šifra
+Transpoziční šifra
+180
+{text:" vrátí text zašifrovaný podle transpoziční šifry, jejíž řešení spočívá v tom, že text čteme střídavě od začátku a od konce (viz ukázkový výstup).",function:{name:"transpozice", paramNames:["text"], paramTypes:["str 3 15"], testParams:[["heslojeprase","ahojsvete","kos","sobota"]],}, solution:"    zacatek = \"\"\n    konec = \"\"\n    for i in range(len(text)):\n        if i % 2 == 0:\n            zacatek = zacatek + text[i]\n        else:\n            konec = text[i] + konec\n    return zacatek + konec                            \n", attempt:"    return text\n"}
+
+První písmena
+První písmena
+90
+{text:" vrátí první písmena slov ze zadaného textu (můžete předpokládat, že text neobsahuje žádnou interpunkci, k oddělení slov slouží pouze mezery).",function:{name:"prvni_pismena", paramNames:["text"], paramTypes:["str 3 30"], testParams:[["Ema mele maso  Ota vola ahoj", "ahoj svete", "Vcera jsem byl na poli okopavat brambory", "Zdar", "Kde domov muj"]],}, solution:"    vystup = \"\"\n    for i in range(len(text)):\n        if i == 0 or text[i-1] == \" \":\n            vystup += text[i]\n    return vystup\n", attempt:"    return text\n"}
+
+Všechny přesmyčky
+Všechny přesmyčky
+300
+{text:" vypíše všechny přesmyčky zadaného slova, seřazené abecedně.",function:{name:"vsechny_presmycky", paramNames:["slovo"], paramTypes:["str 2 5"], testParams:[["ahoj", "kolo","kos","prase","anna"]],}, solution:"    presmycky = permutace(slovo)\n    presmycky.sort()\n    posledni = None\n    for presmycka in presmycky:\n        if presmycka != posledni:\n            print presmycka\n        posledni = presmycka\n	\ndef permutace(slovo):\n    if len(slovo) == 1: return [ slovo ]\n    vystup = []\n    for i in range(len(slovo)):\n        nove_slovo = slovo[:i] + slovo[i+1:]\n        for per in permutace(nove_slovo):\n            vystup.append(slovo[i] + per)\n    return vystup\n", attempt:"    print slovo\n"}
+
+Frekvenční analýza
+Frekvenční analýza
+120
+{text:" vypíše informaci o počtu výskytů jednotlivých písmen v zadaném textu. Počítejte pouze malá písmena anglické abecedy. Vypisujte pouze informace písmenech, která se v textu vyskytují.",function:{name:"frekvencni_analyza", paramNames:["text"], paramTypes:["str 2 20"], testParams:[["ema mele maso  ota vola ahoj", "ahoj svete", "ja mam kone vrany kone"]],}, solution:"    frekvence = [ 0 for i in range(26) ]\n    for pismeno in text:\n        if ord(pismeno) >= ord('a') and ord(pismeno) <= ord('z'):\n            frekvence[ord(pismeno) - ord('a')] += 1\n    for i in range(26):\n        if frekvence[i] != 0:\n            print chr(ord('a')+i), frekvence[i]\n", attempt:"    for i in range(26):\n        pismeno = chr(ord('a')+i)\n        if pismeno in text:\n            print pismeno\n"}
+
+Nejdelší slovo
+Nejdelší slovo
+150
+{text:" vrátí nejdelší slovo, které se v textu vyskytuje. V případě více kandidátů vrátí toho, který je první podle abecedy. Můžete předpokládat, že text neobsahuje žádnou interpunkci, k oddělení slov slouží pouze mezery.",function:{name:"nejdelsi_slovo", paramNames:["text"], paramTypes:["str 2 30"], testParams:[["jedna dva tri ctyri pet sest","bezi liska k taboru nese pytel zazvoru","ja mam kone vrany kone"]],}, solution:"    slova = text.split(\" \")\n    kandidat = \"\"\n    for slovo in slova:\n        if len(kandidat) < len(slovo) or len(kandidat) == len(slovo) and kandidat > slovo:\n            kandidat = slovo\n    return kandidat\n# Ve standardním Pythonu pak lze stručněji:\n# def nejdelsi_slovo(text):    \n#     slova = text.split(\" \")\n#     slova.sort(key = lambda s: (-len(s), s))\n#     return slova[0]\n", attempt:"    slova = text.split(\" \")\n    return slova[0]\n"}
+
