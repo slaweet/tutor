@@ -38,12 +38,15 @@ var BUNDLE = {
     "result": "Váš výstup:",
     "expected": "Požadovaný výstup:",
     "task": "Napište funkci ",
+    "wrong": "Funkce nefunfuje správně. (Pro příklad příklad argumentů se špatným chováním viz Prostor pro testování). ",
+    "attempt": ". pokus o odevzdání. ",
     "that": ", která "
     }
 };
 
 var PythonManager = {
     testCycles: 50,
+    moveCount: 0,
     editors: {},
     init: function(task) {
         for (var i in BUNDLE) {
@@ -114,16 +117,30 @@ var PythonManager = {
         }
     },
     submit: function(button) {
+        var allCorrect = true;
         for (var i = 0; i < this.testCycles; i++) {
             this.setup(i);
             this.run(button);
             var isCorrect = $('#testing2_pre').text() == $('#testing_pre').text(); 
             if (!isCorrect) {
-                return false;
+                allCorrect = false;
+                break;
             }
         }
+        this.tutorLog(this.editors["attempt_code"].getValue());
+        if (allCorrect) {
+            this.win();
+        } else {
+            $('#message').text(this.moveCount + Lang.get('attempt') + Lang.get('wrong'));
+        }
+    },
+    tutorLog: function(move) {
+        var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+(this.moveCount++)+"&move="+move;
+        sendDataToInterface(q);
+    },
+    win: function(button) {
         this.editors["solution_code"].setValue(this.firstLine + this.task.solution);
-        this.editors["solution_code"].focus();
+        this.editors["solution_code"].refresh();
         $(".solution").css('display', 'block');
         var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+this.moveCount+"&win=1";
         sendDataToInterface(q);
@@ -159,6 +176,7 @@ var PythonManager = {
         $(theButton).removeAttr('disabled');
     }
 }
+
     function rest(editor)
     {
         editor.focus();
@@ -181,6 +199,7 @@ var PythonManager = {
     }
 
 function handleEdKeys(ed, e) {
+    $('#message').text('');
     if (e.keyCode === 13) {
         if (e.ctrlKey) {
             e.stop();

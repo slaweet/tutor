@@ -61,6 +61,7 @@
         <button onclick="PythonManager.submit(this);" class="lang">submit</button>
 
     </div>
+    <p id="message"></p>
 
     <div>
         <span class="result">

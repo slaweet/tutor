@@ -1,10 +1,9 @@
 <?
- error_reporting(E_ALL);
 // index.php contains just include of index2.php, because local_settings calls "git pull" and index.php shouldn't be overriten by pull.
 include 'local_settings.php';
 
   class LocaleController {
-   function get_lang(){
+   static function get_lang(){
     if (isset($_SESSION["lang"])){ if (in_array($_SESSION["lang"], Array("en"))){ $lang="en"; }else{$lang="cs";}} else {$lang="cs";}
     return $lang;
    }
