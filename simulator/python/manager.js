@@ -60,7 +60,7 @@ var PythonManager = {
         this.task = task;
         this.functionHeader = task.function.name + '(' + task.function.paramNames.join(', ') + ')'; 
         this.firstLine = 'def '+ this.functionHeader + ':\n';
-        $('#text').text(Lang.get("task") + this.functionHeader + Lang.get("that") + task.text);
+        $('#text').html(Lang.get("task") + '<b>' + this.functionHeader  + '</b>' + Lang.get("that") + task.text);
         this.createEditors();
         this.setup(0);
         this.editors.attempt_code.setValue(this.firstLine + (this.task.attempt ||'    """code here"""\n    '));
