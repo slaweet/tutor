@@ -209,6 +209,11 @@ function handleEdKeys(ed, e) {
             e.stop();
             PythonManager.submit();
         }
+    } else if (e.keyCode === 86 || e.keyCode === 67) {
+        //disable copy and paste
+        if (e.ctrlKey) {
+            e.stop();
+        }
     } else if (e.keyCode === 38) {
         if (e.ctrlKey) {
             PythonManager.editors.attempt_code.focus();
