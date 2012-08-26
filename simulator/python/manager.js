@@ -123,7 +123,7 @@ var PythonManager = {
         for (var i = 0; i < this.testCycles; i++) {
             this.setup(i);
             this.run(button);
-            var isCorrect = $('#testing2_pre').text() == $('#testing_pre').text(); 
+            var isCorrect = this.getNormalizedText('#testing2_pre') == this.getNormalizedText$('#testing_pre');
             if (!isCorrect) {
                 allCorrect = false;
                 break;
@@ -135,6 +135,9 @@ var PythonManager = {
         } else {
             $('#message').text(this.moveCount + Lang.get('attempt') + Lang.get('wrong'));
         }
+    },
+    getNormalizedText: function(selector) {
+        return $(selector).text().replace(/ +/g, ' ').replace(/ +\n/, '\n');
     },
     tutorLog: function(move) {
         var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+(this.moveCount++)+"&move="+move;
