@@ -21,7 +21,7 @@ var BUNDLE = {
     "en":{ 
     "solution": "One of many possible solutions:",
     "solve": "Solve here:",
-    "test": "Test here:",
+    "test": "Testing area:",
     "run": "Run test",
     "submit": "Submit",
     "result": "Actual output:",
@@ -82,7 +82,9 @@ var PythonManager = {
                 tabMode: "indent",
                 matchBrackets: true,
                 //initCallback: rest
-                onKeyEvent:handleEdKeys
+                onKeyEvent:handleEdKeys,
+                onChange: clearMessage,
+                lineNumberFormatter: function(i){return i+5}
             }
                     );
             this.editors[newEdId].parentDiv = edList[i].parentNode.id;
@@ -170,7 +172,15 @@ var PythonManager = {
         try {
             Sk.importMainWithBody("<stdin>", false, prog);
         } catch (e) {
-            $(mypre).text("" + e);
+            var message = (e+"");
+            if (message.indexOf("ParseError: bad input on line") != -1) {
+                var a = message.split(" ");
+                //alert(a[a.length-1] + " " + this.editors["attempt_code"].lineCount())
+                if (parseInt(a[a.length-1]) > this.editors["attempt_code"].lineCount()) {
+                    message = message.replace(/(\d)+/, (a[a.length-1]-this.editors["attempt_code"].lineCount()) + " in testing area");
+                }
+            }
+            $(mypre).text(message);
             //alert(e);
         }
         $(theButton).removeAttr('disabled');
@@ -198,8 +208,11 @@ var PythonManager = {
                 });
     }
 
-function handleEdKeys(ed, e) {
+function clearMessage(ed, e) {
     $('#message').text('');
+}
+
+function handleEdKeys(ed, e) {
     if (e.keyCode === 13) {
         if (e.ctrlKey) {
             e.stop();
