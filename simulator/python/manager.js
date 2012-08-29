@@ -63,6 +63,9 @@ var PythonManager = {
         }
         task = eval("(" + task.replace(/\n/g, '\\n') + ")");
         this.task = task;
+        if (task.onlyTestParams) {
+            this.testCycles = task.function.testParams[0].length; 
+        }
         this.functionHeader = task.function.name + '(' + task.function.paramNames.join(', ') + ')'; 
         this.firstLine = 'def '+ this.functionHeader + ':\n';
         $('#text').html(Lang.get("task") + '<b>' + this.functionHeader  + '</b>' + Lang.get("that") + task.text);

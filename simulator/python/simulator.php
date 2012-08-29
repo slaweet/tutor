@@ -38,7 +38,7 @@
 
 </head>
 <body>
-<div class="documentwrapper">
+<div class="documentwrapper" oncontextmenu="return false;" >
     <p class="lang solution">solution<p/>
     <div id="solution" class="solution">
         <textarea cols="50" rows="12" id="solution_code" class="active_code">
