@@ -17,6 +17,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
+var GOOD_COLOR = "#26bf00";
+var BAD_COLOR = "#bf0000";
 var BUNDLE = {
     "en":{ 
     "solution": "One of many possible solutions:",
@@ -39,7 +41,10 @@ var BUNDLE = {
     "expected": "Požadovaný výstup:",
     "task": "Napište funkci ",
     "wrong": "Funkce nefunfuje správně. (Pro příklad příklad argumentů se špatným chováním viz Prostor pro testování). ",
+    "correct": "Naprosto správně!",
     "attempt": ". pokus o odevzdání. ",
+    "goodAttempt": "Váš výstup a požadovaný výstup se shodují.",
+    "badAttempt": "Váš výstup a požadovaný výstup se neshodují.",
     "that": ", která "
     }
 };
@@ -122,8 +127,7 @@ var PythonManager = {
         var allCorrect = true;
         for (var i = 0; i < this.testCycles; i++) {
             this.setup(i);
-            this.run(button);
-            var isCorrect = this.getNormalizedText('#testing2_pre') == this.getNormalizedText$('#testing_pre');
+            var isCorrect = this.run(button);
             if (!isCorrect) {
                 allCorrect = false;
                 break;
@@ -131,9 +135,10 @@ var PythonManager = {
         }
         this.tutorLog(this.editors["attempt_code"].getValue());
         if (allCorrect) {
+            this.displayMessage(this.moveCount + Lang.get('attempt') + Lang.get('correct'), allCorrect);
             this.win();
         } else {
-            $('#message').text(this.moveCount + Lang.get('attempt') + Lang.get('wrong'));
+            this.displayMessage(this.moveCount + Lang.get('attempt') + Lang.get('wrong'), allCorrect);
         }
     },
     getNormalizedText: function(selector) {
@@ -154,6 +159,12 @@ var PythonManager = {
     run: function(button) {
         this.runit('testing', button, '_pre', this.editors["attempt_code"].getValue());
         this.runit('testing', button, '2_pre', this.firstLine + this.task.solution);
+        var isCorrect =  this.getNormalizedText('#testing2_pre') == this.getNormalizedText('#testing_pre');
+        this.displayMessage(isCorrect ? Lang.get("goodAttempt") : Lang.get("badAttempt"), isCorrect);
+        return isCorrect;
+    },
+    displayMessage: function(text, isGood) {
+        $('#message').css('color', isGood ? GOOD_COLOR : BAD_COLOR).text(text);
     },
     runit: function(myDiv, theButton, pre, include) {
         $(theButton).attr('disabled','disabled');
