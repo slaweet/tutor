@@ -82,6 +82,7 @@ var Cookie = {
 // manager of automata
 
 var AutomataManager = {
+    moveCount: 0,
     wordsIndex: 0,
     animPos: 0,
     maxTestedWordLength: -1,
@@ -157,6 +158,7 @@ var AutomataManager = {
         });
     },
     run: function(word) {
+        this.tutorLog();
         if (word != undefined) {
             this.wordsIndex = this.words.indexOf(word);
         } else if (this.checkIfDone(this.words) && this.checkIfDone(this.getAllWords(this.stateStack.alphabet, this.maxTestedWordLength))) {
@@ -199,6 +201,16 @@ var AutomataManager = {
             this.setWordColor(this.words[i], NEUTRAL_COLOR);
         }
         this.taskPrint();
+    },
+    tutorLog: function() {
+        var a = [
+            this.automata.init && parseInt(this.automata.init.name[1]),
+            this.automata.getAcceptingStates().join(','),
+            this.automata.getEdgesToLog()
+        ]
+        var move = a.join(';');
+        var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+(this.moveCount++)+"&move="+move;
+        sendDataToInterface(q);
     },
     taskPrint: function() {
         var a = {
@@ -265,6 +277,19 @@ var Automata = {
     },
     removeEdge: function(label){
         this.edges.splice(this.edges.indexOf(label), 1);
+    },
+    getEdgesToLog: function(){
+        var edges = [];
+        for (var i = 0; i < this.edges.length; i++) {
+            var label = this.edges[i];
+            var edge = [
+                 this.states.indexOf(label.connection.from),
+                 this.states.indexOf(label.connection.to),
+                 label.name
+            ]
+            edges.push('[' + edge.join(',') + ']')
+        }
+        return edges;
     },
     getEdgesToPrint: function(){
         var edges = [];
