@@ -52,6 +52,7 @@ var BUNDLE = {
 var PythonManager = {
     testCycles: 50,
     moveCount: 0,
+    logCount: 0,
     editors: {},
     init: function(task) {
         for (var i in BUNDLE) {
@@ -89,7 +90,7 @@ var PythonManager = {
                 indentUnit: 4,
                 tabMode: "indent",
                 matchBrackets: true,
-                //initCallback: rest
+                initCallback: rest,
                 onKeyEvent:handleEdKeys,
                 onChange: clearMessage,
                 lineNumberFormatter: function(i){return i+5}
@@ -136,7 +137,7 @@ var PythonManager = {
                 break;
             }
         }
-        this.tutorLog(this.editors["attempt_code"].getValue());
+        this.tutorLog("SUBMIT"+this.editors["attempt_code"].getValue());
         if (allCorrect) {
             this.displayMessage(this.moveCount + Lang.get('attempt') + Lang.get('correct'), allCorrect);
             this.win();
@@ -148,8 +149,13 @@ var PythonManager = {
         return $(selector).text().replace(/ +/g, ' ').replace(/ +\n/, '\n');
     },
     tutorLog: function(move) {
-        var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+(this.moveCount++)+"&move="+move;
+        var maxLength = 252;
+        var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+(this.logCount++)+"&move=" + (this.moveCount++)+move.substring(0,maxLength).replace(/\+/g, '%2B');
         sendDataToInterface(q);
+        if (move.length > maxLength) {
+            this.moveCount--;
+            this.tutorLog(move.substring(maxLength));
+        }
     },
     win: function(button) {
         this.editors["solution_code"].setValue(this.firstLine + this.task.solution);
@@ -160,6 +166,9 @@ var PythonManager = {
         after_win();
     },
     run: function(button) {
+        if (button && button.innerHTML == Lang.get('run')) {
+            this.tutorLog("RUN"+this.editors["attempt_code"].getValue() + "TEST" + this.editors["testing_code"].getValue());
+        }
         this.runit('testing', button, '_pre', this.editors["attempt_code"].getValue());
         this.runit('testing', button, '2_pre', this.firstLine + this.task.solution);
         var isCorrect =  this.getNormalizedText('#testing2_pre') == this.getNormalizedText('#testing_pre');
@@ -206,6 +215,7 @@ var PythonManager = {
 
     function rest(editor)
     {
+        alert('s')
         editor.focus();
         editor.grabKeys(function(e)
                 {
