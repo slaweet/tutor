@@ -1,0 +1,121 @@
+Trénink - kolo
+Trening - kolo
+30
+{automata:{stateCount:5,alphabet:["k","l", "o"],delta:[{"from":0,"to":1,"char":"k"},{"from":1,"to":2,"char":"o"},{"from":3,"to":4,"char":"o"},{"from":2,"to":3,"char":"k"}],init:0,accepting:[4]},words:["koko","kolo"],regexp:"kolo",maxStatesCount:5}
+["a","b"],regexp:".*",maxStatesCount:1}
+
+Trénink - babka
+Trening - babka
+50
+{automata:{stateCount:5,alphabet:["a","b", "k"],delta:[{"from":0,"to":1,"char":"b"},{"from":1,"to":2,"char":"a"},{"from":3,"to":4,"char":"a"},{"from":2,"to":3,"char":"b"}],init:0,accepting:[4]},words:["baba","babka"],regexp:"babka",maxStatesCount:6}
+
+Trénink - losa osol, lososa nesol
+Trening - los osol
+55
+{automata:{"stateCount":7,"alphabet":["l","o","s"],"delta":[{"from":0,"to":1,"char":"l"},{"from":1,"to":2,"char":"o"},{"from":2,"to":3,"char":"s"},{"from":0,"to":4,"char":"o"},{"from":4,"to":5,"char":"s"},{"from":5,"to":6,"char":"o"},{"from":6,"to":3,"char":"l"}],"init":"0","accepting":[3]},words:["osol","los","sol","losos"],regexp:"(los|osol|sol)",maxStatesCount:7}
+
+Trénink - sok na skok
+Trening - sok skok
+60
+{automata:{"stateCount":5,"alphabet":["k","o","s"],"delta":[],"init":"0","accepting":[3]},words:["sok","skok","kos"],regexp:"(sok|skok)",maxStatesCount:7}
+
+Trénink - kos
+Trening - kos
+70
+{alphabet:["k","o","s"],words:["sok","kos","kokos"],regexp:"(kos)",maxStatesCount:7}
+
+Násobky dvou
+Multiples of two
+100
+{alphabet:["a", "b"],regexp:"(..)*",words:["bb","aa","baba","bbaa"], maxTestedWordLength:10, text: "má délku slova = 2k, k >= 0"}
+
+Alespoň tři
+At least three
+120
+{alphabet:["a", "b"],regexp:".{3,}",words:["bba","aab","bbaa"], maxTestedWordLength:10, text: "je ve tvaru {a,b}^3{a,b}^*"}
+
+Baba kdekoliv
+Baba anywhere
+150
+{alphabet:["a", "b"],regexp:".*(baba).*",words:["baba","abbaba","babaaaa"] ,maxTestedWordLength:10, text: "obsahuje podslovo ‘baba’"}
+
+Dar na úvod
+Dar at the begining
+160
+{alphabet:["a", "d", "r"],regexp:"dar.*",words:["dar","darda","darrrrr"] ,maxTestedWordLength:10, text: "začíná podslovem ‘dar’"}
+
+Luk na konci
+Luk at the end
+140
+{alphabet:["k", "l", "u"],regexp:".*luk",words:["luk","kluk","kukluk"], maxTestedWordLength:10, text: "končí podslovem ‘luk’"}
+
+Áčka po třech
+As in groups of three
+190
+{alphabet:["a","b"],regexp:"((b*a){3})*b*",words:["aaba","abbaba","baabaaaa"], maxTestedWordLength:10, text: "má počet ‘a’ = 3k, k >= 0, počet ‘b’ libovolný"}
+
+Kokos nebo koks
+Kokos or koks
+185
+{alphabet:["k","o","s"],regexp:".*(koks|kokos).*",words:["kokss","kokosok","sokoks"], maxTestedWordLength:10, text: "obsahuje podslovo ‘kokos’ nebo ‘koks’"}
+
+Sudá binární čísla 
+Even binary numbers
+175
+{alphabet:["1","0"],regexp:"(1.*0|0)",words:["1010","110","0"], maxTestedWordLength:10, text: "představuje zápis binárního čísla dělitelného dvěma. Jedine cislo zacinajici nulou je nula"}
+
+Binární dělitelná třemi
+Binary divisible by three
+220
+{alphabet:["1","0"],regexp:"(1((01*0)*(10*1)*)*10*|0)",words:["11","110","1001"], maxTestedWordLength:10, text: "představuje zápis binárního čísla dělitelného třemi. Jedine cislo zacinajici nulou je nula"}
+
+Ternární lichá čísla
+Ternary odd numbers
+240
+{alphabet:["1","0","2"],regexp:"(2(0|2|1(0|2)*1)*1(0|2)*|1(0|2|1(0|2)*1)*)",words:["1","210","100"], maxTestedWordLength:10, text: "představuje zápis čísla v trojkové soustavě nedělitelného dvěma. Jedine cislo zacinajici nulou je nula"}
+
+Začátek jako konec
+Beginning as same as end
+170
+{alphabet:["a","b"],regexp:"(a.*a|b.*b|a|b)",words:["abba","abbaba","baabaaab"], maxTestedWordLength:10, text: "je neprázdné a má první znak stejný jako poslední"}
+
+Regexp 1
+Regexp 1
+110
+{alphabet:["b","o","s"],regexp:"s(ob)*",words:["sob","sobob","s"], maxTestedWordLength:10, text: "regexp"}
+
+Regexp 2
+Regexp 2
+150
+{alphabet:["b","u"],regexp:"bu(bu)+",words:["bubu","bububu"], maxTestedWordLength:10, text: "regexp"}
+
+Regexp 3
+Regexp 3
+170
+{alphabet:["b","o","d"],regexp:"(od|ob)*(ob|od)+",words:["obod","odob","odobod"], maxTestedWordLength:10, text: "regexp"}
+
+Regexp 4
+Regexp 4
+180
+{alphabet:["k","o","s"],regexp:"(ko)*(ok|os)(s|ok)*",words:["kooss","kokoosok","kokooks"], maxTestedWordLength:10, text: "regexp"}
+
+Regexp 5
+Regexp 5
+250
+{alphabet:["e","u","r"],regexp:"((u|r(u|e))*|(u|r))*",words:["rur","re","rureur"], maxTestedWordLength:10, text: "regexp"}
+
+Gramatika 1
+Grammar 1
+160
+{alphabet:["a","b","c"],regexp:"b*a",words:["a","ba","bba","bbba"], maxTestedWordLength:5, text: "G = ({S,Y},{a,b},P,S)\n P = { S -> a | bY,\n Y -> bS | a }"}
+
+Gramatika 2
+Grammar 2
+220
+{alphabet:["a","b"],regexp:"(aa|bb)+",words:["aa","bb","bbaa","aabbaa"], maxTestedWordLength:10, text: "G = ({S,A,B},{a,b},P,S)\n P = { S -> aA | bB,\n A -> aS | a,\n B -> bS | b }"}
+
+Gramatika 5
+Grammar 5
+260
+{alphabet:["a","b","c"],regexp:"(ab+|bb|bca)*(bc(c|b)|c)",words:["c","abbcb","bcabcc"], maxTestedWordLength:10, text: "G = ({S,X,Y,Z},{a,b,c},P,S)\n P = { S -> aX | bY | c,\nX -> bX | bS,\n Y -> bS | cZ,\n Z -> aS | b | c }"}
+

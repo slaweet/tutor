@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Train your brain with educational activities" />
+    <meta name="keywords" content="Problem Solving Activities, Math, Informatics, Puzzles" />
+    <title> Problem Solving Tutor </title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+<!--
+  MAIN WRAPPER
+-->
+<!-- Color selection possiblities : coffee or olive -->
+<div id="main_wrapper">
+<div id="header_wrapper">
+    <div id="header">
+        <div id="logotype">
+
+            <a href="index.php?p=problem_list">
+                <a href="./">
+                    <img src="images/logotype.jpg" alt="back to home page"/></a>
+        </div>
+
+        <div id="top_links">
+
+            <!-- first row at a right side of header -->
+            <div id="top_links_first">
+
+                <!-- links on top of a page-->
+                <div id="top_links_first_links">
+                    <div class="top_links_first_end">
+                    </div>
+                    <div id="top_links_first_center_links">
+                        <div class="links_safe_zone"></div>
+                        <div class="links_link">
+                            Body: 15
+                            / <span class=green><strong>2</strong></span>                  </div>
+                        <div class="links_safe_zone"></div>
+                    </div>
+                    <div class="top_links_first_start">
+                    </div>
+                </div>
+
+                <!-- lang selection -->
+                <div id="top_links_first_lang">
+                    <div class="top_links_first_end">
+                    </div>
+                    <div id="top_links_first_center_lang">
+                        <div id="top_links_first_lang_center_content">
+                            <div id="lang_end_safe_zone"></div>
+                            <div id="top_links_first_lang_center_content_lang"></div>
+                            <div class="lang_select">
+                                <a href="index.php?p=instance_solve&instance_id=1795&changelang=en">                    <img src="images/lang_en.jpg" alt="select language english"/></a>
+                            </div>
+                            <div class="lang_divider"></div>
+                            <div class="lang_select">
+                                <a href="index.php?p=instance_solve&instance_id=1795&changelang=cs">                    <img src="images/lang_cz.jpg" alt="select language"/></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="top_links_first_start">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="float_clear_both"></div>
+
+            <!-- second row at a right side of header -->
+            <!-- version where the user IS LOGGED IN! -->
+            <div id="top_links_second">
+                <div class="login_box_safe_zone">
+                </div>
+                <div id="login_box">
+                    <div id="login_box_end">
+                    </div>
+                    <div id="login_box_middle">
+                        <div id="login_box_first_row">
+                            <div class="login_box_text_info" style="width:300px;">
+                                Jste přihlášen jako <span id="login_user_name">fred</span>
+                            </div>
+                            <div class="submit_button_login">
+                                <a href="index.php?p=user_edit">
+                                    <input type="submit" class="login_button" value="Můj účet" />
+                                </a>
+                            </div>
+                        </div>
+                        <div id="login_box_second_row">
+                            <div class="login_box_text_info">
+
+                                <div id="state_switcher">
+                                </div>
+
+
+
+                            </div>
+                            <div class="submit_button_login">
+                                <a href="index.php?p=logout">
+                                    <input type="submit" class="login_button_wrong" value="Odhlásit" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="login_box_start">
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="float_clear_both">
+</div>
+
+
+<!-- MENU -->
+<!-- EXISTING MENU :: ALL SUBPAGES -->
+<div id="menu_wrapper">
+    <div id="menu">
+
+        <div id="menu_save_zone_start">
+        </div>
+
+        <div class="inactive_main_menu_item">
+            <div class="inactive_main_menu_item_start">
+            </div>
+            <div class="inactive_main_menu_item_middle">
+                <div class="inactive_main_menu_item_text"><a href="index.php?p=problem_list">Problémy</a></div>
+            </div>
+            <div class="inactive_main_menu_item_end">
+            </div>
+        </div>
+        <div class="inactive_main_menu_item">
+            <div class="inactive_main_menu_item_start">
+            </div>
+            <div class="inactive_main_menu_item_middle">
+                <div class="inactive_main_menu_item_text"><a href="index.php?p=statistics&problem_id=30">Statistiky</a></div>
+            </div>
+            <div class="inactive_main_menu_item_end">
+            </div>
+        </div>
+        <div class="inactive_main_menu_item">
+            <div class="inactive_main_menu_item_start">
+            </div>
+            <div class="inactive_main_menu_item_middle">
+                <div class="inactive_main_menu_item_text"><a href="index.php?p=leader_board">Výsledkovka</a></div>
+            </div>
+            <div class="inactive_main_menu_item_end">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="float_clear_both"></div>
+
+<!-- CONTENT : ALL PAGES -->
+<div id="content_wrapper">
+<div id="content">
+
+<style type="text/css">
+
+    div.showrules_wrapper,.showheader
+    {
+        margin:0px;
+        padding:5px;
+        text-align:right;
+    }
+
+    .showheader{
+        float:left;
+    }
+
+    .showrules, .showheader{
+        cursor: pointer;
+    }
+    div.rules,div.after_win,.stats
+    {
+        margin:0px;
+        padding:5px;
+        display:none;
+    }
+
+    div.progress_bar {
+        background-color:orange;
+        width:0px;
+        height:20px;
+        border:0px solid green;
+        background-image: url(img/prechod.jpg);
+    }
+
+    div.progress{
+        display:none;
+    }
+
+    #header_wrapper{
+    }
+
+</style>
+
+<script type="text/javascript" src="javascript/jquery-1.7.1.min.js"></script>
+
+<script type="text/javascript">
+
+    // tohle je tu kvuli tomu, aby se jmenny prostor Jquery nemlatil s jinymi JS knihovnama treba Mootools
+    (function($) {
+
+        $(document).ready(function(){
+
+            $(".showheader").click(function(){
+                $("#header_wrapper").slideToggle("fast");
+                var text = $('.showheader').text();
+                $('.showheader').text(
+                        text == "Skrýt hlavičku" ? "Zobrazit hlavičku" : "Skrýt hlavičku");
+
+                if (text == "Skrýt hlavičku"){
+                    var data = 'showheader=0&user_id=6031';
+                }else{
+                    var data = 'showheader=1&user_id=6031';
+                }
+                $.ajax({
+                    type: "get",
+                    url: "./ajax/showheader.php",
+                    data: data,
+                    success:function(result){ }
+                });
+
+            });
+
+            $(".showrules").click(function(){
+                $(".rules").slideToggle("fast");
+                var text = $('.showrules').text();
+                $('.showrules').text(
+                        text == "Skryj pravidla" ? "Zobrazit pravidla" : "Skryj pravidla");
+            });
+
+            $("#button_instance_list").click(function(){
+                var data = 'session_id=&session_hash=&giveUp=1';
+                $.ajax({
+                    type: "get",
+                    url: "./interface/interface.php",
+                    data: data,
+                    success:function(result){
+                        window.location.href='index.php?p=instance_list&problem_id=30';
+                    }
+                });
+            });
+
+            $("#button_instance_list_after_win").click(function(){
+                window.location.href='index.php?p=instance_list&problem_id=30';
+            });
+
+            $("#button_restart").click(function(){
+                var data = 'session_id=&session_hash=&giveUp=1';
+                $.ajax({
+                    type: "get",
+                    url: "./interface/interface.php",
+                    data: data,
+                    success:function(result){
+                        window.location='index.php?p=instance_solve&instance_id=1795';
+
+                    }
+                });
+            });
+
+        });
+
+// tohle je tu kvuli tomu, aby se jmenny prostor Jquery nemlatil s jinymi JS knihovnama treba Mootools
+    })(jQuery);
+
+    function sendDataToInterface(data){
+        (function($) {
+            $.ajax({
+                type: "get",
+                url: "./interface/interface.php",
+                data: data,
+                success:function(result){
+                    //$(".interface").html(data); // debug mod kdy si to vypisuju
+                }
+            });
+        })(jQuery);
+    }
+
+    function after_win(){
+        (function($) {
+            $(".before_win").slideToggle("fast");
+            $(".after_win").slideToggle("fast");
+
+        })(jQuery);
+    }
+
+
+</script>
+
+<div class="rules">
+    <p>V rámečku vidíte barevně odlišené vzorečky několika geometrických útvarů v rovině. Pod rámečkem je zobrazen graf.</p>
+    <p>Vašim úkolem je upravit útvary v grafu tak, aby byly grafem rovnice odpovídající barvy.
+Manipulovat s nimi můžete pomocí zvýrazněných řídících bodů. Správně vyřešená rovnice a odpovídající graf se zbarví šedě.</p>
+    <br/>
+</div>
+<span class="showheader">Skrýt hlavičku</span>
+<div class="showrules_wrapper"><span class="showrules">Zobrazit pravidla</span></div>
+<center>
+    <div class="after_win">
+        <h1 class="no_margin">Vyřešeno!</h1>
+
+        <div class="content_row_content" >
+            <div class="recommend_center">
+                <span>Doporučujeme:</span>
+            </div>
+
+            <div class="level_selection" >
+                <div class="level_selection_lower">
+                    <div class="level_selection_lower_text">
+                        Lehčí<br />
+                        <a href="index.php?p=instance_solve&instance_id=1808"><span class="size16"><span class="bold">Rozcvička 2</span></span></a><br/><br/>
+                        Předpověď času řešení:<br/>
+                        <span class="size14"><span class="green">0:21</span></span>
+                    </div>
+                </div>
+                <div class="level_selection_divider"> </div>
+                <div class="level_selection_harder">
+                    <div class="level_selection_harder_text">
+                        Těžší<br />
+                        <a href="index.php?p=instance_solve&instance_id=1831"><span class="size16"><span class="bold">Sčítání 1</span></span></a><br/><br/>
+                        Předpověď času řešení:<br/>
+                        <span class="size14"><span class="green">0:29</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="float_clear_both"></div>
+        </div>
+
+
+        <input id="button_instance_list_after_win" type="button" value="Na přehled úloh" />
+    </div>
+
+    <br />
+    <div class="stats">
+        <br />
+        <center>Nahrávám statistiky ...</center>
+        <br /><br />
+    </div>
+    <div>
+        <h1 class="no_margin">Velmi náročný úkol 1</h1>
+
+        <!--
+
+           SIMULATOR START
+
+
+        -->
+        <!--<link rel="stylesheet" href="simulator/kalkulacka/calc.css" type="text/css" media="screen">-->
+        <!--<script type='text/javascript' src='simulator/rush_hour/scripts/mootools-1.2.1-core.js'></script>-->
+        <!--<script src="simulator/kalkulacka/raphael.js" type="text/javascript" charset="utf-8"></script>-->
+        <!--<script src="simulator/kalkulacka/calc.js" type="text/javascript" charset="utf-8"></script>-->
+
+        <link rel="stylesheet" href="simulator/inv_grafar/khan-exercise.css">
+
+        <script src="simulator/inv_grafar/ku/jquery.js"> </script>
+
+        <!-- Ohlehčená definice objektu KhanUtil -->
+        <script src="simulator/inv_grafar/mock-khan-exercise.js"> </script>
+
+        <!-- Kvůli jQuery.tmpl.getVARS -->
+        <script src="simulator/inv_grafar/ku/utils/tmpl.js"> </script>
+
+        <!-- Vykreslení popisek os grafu -->
+        <script src="simulator/inv_grafar/ku/utils/MathJax/1.1a/MathJax.js?config=KAthJax-77111459c7d82564a705f9c5480e2c88"> </script>
+
+        <!-- Knihovna pro práci s SVG -->
+        <script src="simulator/inv_grafar/ku/utils/raphael.js"> </script>
+
+        <!-- Grafí -->
+        <script src="simulator/inv_grafar/ku/utils/graphie.js"> </script>
+
+        <!-- addMouseLayer(); addMoveablePoint(); -->
+        <script src="simulator/inv_grafar/ku/utils/interactive.js"> </script>
+
+        <!-- pro MoveablePoint - interaktivita-->
+        <script src="simulator/inv_grafar/ku/utils/jquery.adhesion.js"> </script>
+        <script src="simulator/inv_grafar/ku/utils/jquery.mobile.vmouse.js"> </script>
+
+        <!-- pro MoveablePoint - správné vykreslení-->
+        <script src="simulator/inv_grafar/ku/utils/math.js"> </script>
+
+        <!-- pro mathjaxové výrazy (KhanUtil.expr())-->
+        <script src="simulator/inv_grafar/ku/utils/expressions.js"> </script>
+        <script src="simulator/inv_grafar/ku/utils/math-format.js"> </script>
+
+        <!-- Inverzní grafar-->
+        <script src="simulator/inv_grafar/invgrafar.js" charset="utf-8"> </script>
+        <script src="simulator/inv_grafar/main.js" charset="utf-8"> </script>
+        <script type='text/javascript'>
+
+            //globalni promenne tutora
+            //    var tutor_globals = {
+            //        instance_name : <?php $instance_name ?>, // název dané hry (třeba Sklad 515)
+            //        instanec_plan : <?php $instance_plan ?>, // textový formát dané hry (třeba zápis mapy Sokobanu)
+            //       instance_solution : <?php $instance_solution ?>, // volitelne, informace o správném reseni pro simulátor
+            //        session_id : <?php $session_id ?>, // id dané session = daná partie, dané hry, daného hráče
+            //        session_hash : <?php $session_hash ?> // syntaktický cukr, 32 znaků, pro kontrolu prohlížeče
+            //    };
+            var tutor_globals = {
+                /**@type string*/
+                instance_name : "test",
+
+                instance_plan : [
+                    {type:"1poly", eqn:"y = -1/2 x", spec:{
+                        fpoints:[[0, 0], [2, 1]],
+                        solpoints:[[0,0], [2,-1]],
+                        color : window.KhanUtil.PINK
+                    }},
+                    {type:"2poly", eqn:"y = x^2 - 9", spec: {
+                        fpoints:[[-1, -1], [-6, 5]],
+                        solpoints:[1,0,-9]
+                    }}
+                ],
+
+                /**@type string*/
+                session_id : "",
+                /**@type string*/
+                session_hash : ""
+            };
+
+            /////////////////////////////////////////////////////////
+
+            $(document).ready(function () {
+                'use strict';
+                //každý jQuery objekt dostal metodu graphie, která v něm najde div .graphie a inicializuje ho
+                jQuery('#holder').graphie();
+                //objekt grafu je nyní ve window.KhanUtil.graph
+                var p = window.invGrafar(
+                        {
+                            tutor: tutor({session_id : tutor_globals.session_id, session_hash: tutor_globals.session_hash}),
+                            context: window.KhanUtil,
+                            problem: {name: tutor_globals.instance_name, plan:tutor_globals.instance_plan}
+                        });
+            });
+        </script>
+        </head>
+
+        <body id='body' >
+        <div id="task" style="border: solid #ffa500 1px; padding: 1em, 2em; font-size: 3em;">
+            <center id="rovnice"></center>
+        </div>
+        <br/>
+        <div id="holder">
+            <div class="graphie"></div>
+        </div>
+        <div id="debug"></div>
+        <!--
+
+           SIMULATOR END
+
+        -->
+
+
+    </div>
+    <br />
+    <div class="before_win">
+        <input id="button_restart" type="button" value="Nový pokus" />
+        <input id="button_instance_list" type="button" value="Zkusit jinou úlohu" />
+
+
+    </div>
+</center>
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<div id="footer_wrapper">
+    <div id="footer">
+        <div id="footer_left">
+            <div class="footer_links_wrapper">
+                <ul>
+                    <li><a href="index.php?p=article&id=30">O projektu</a></li>
+                    <li><a href="index.php?p=article&id=213">Autoři úloh</a></li>
+                    <li><a href="index.php?p=main_page">Hlavní stránka</a></li>
+                </ul>
+            </div>
+
+            <div class="footer_links_wrapper">
+                <ul>
+                    <li><a href="index.php?p=article&id=250">Jak začít</a></li>
+                    <li><a href="index.php?p=article&id=249">Jak využít ve výuce</a></li>
+                    <li><a href="index.php?p=article&id=464">Pojmy a časté dotazy</a></li>
+                </ul>
+            </div>
+
+            <div class="footer_links_wrapper">
+                <ul>
+                    <li><a href="index.php?p=article&id=506">Podmínky užití</a></li>
+                    <li><a href="index.php?p=article&id=31">Kontakt</a></li>
+                    <li><a href="index.php?p=write_us">Napište nám</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div id="footer_right">
+            <div class="footer_link">
+                <a href="http://www.fi.muni.cz/~xpelanek/proso/"> <img src="images/proso.jpg" alt="Problem Solving Research"/></a>
+                <a href="index.php?p=live_view">.</a>
+                <br/>
+
+            </div>
+            <div class="footer_link">
+                <a href="http://www.muni.cz"> <img src="images/mu.jpg" alt="Masaryk University"/></a>
+            </div>
+            <div class="footer_link">
+                <a href="http://www.fi.muni.cz/"> <img src="images/fi.jpg" alt="Faculty of Informatics"/></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+</div >
+
+</body>
+</html>

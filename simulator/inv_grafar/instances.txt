@@ -1,0 +1,16 @@
+Linearni 1
+Linear 1
+40
+[ {eqn:"y = -1/2 x", spec:{ type:"Line",soltype:"Line", solpoints:[[0,0], [2,-1]]}} ] 
+
+Linearni a kvadratická
+Linear
+50
+[ {eqn:"y = -2 x", spec:{ type:"Line", soltype:"Line", solpoints:[[0,0], [2,-1]]}}, {eqn:"y = x^2 - 9", spec: { type:"Parabola", soltype:"Parabola",  fpoints:[[-1, -1], [-6, 5]], solpoints:[1,0,-9] }} ] 
+
+Dvě neznámé funkce
+Linear
+50
+[ {eqn:"y = -2 x", spec:{ soltype:"Line", solpoints:[[0,0], [2,-1]]}}, {eqn:"y = x^2 - 9", spec: { soltype:"Parabola",  fpoints:[[-1, -1], [-6, 5]], solpoints:[1,0,-9] }} ] 
+
+
