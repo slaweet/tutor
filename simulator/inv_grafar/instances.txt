@@ -11,6 +11,10 @@ Linear
 Dvě neznámé funkce
 Linear
 50
-[ {eqn:"y = -2 x", spec:{ soltype:"Line", solpoints:[[0,0], [2,-1]]}}, {eqn:"y = x^2 - 9", spec: { soltype:"Parabola",  fpoints:[[-1, -1], [-6, 5]], solpoints:[1,0,-9] }} ] 
+[ {eqn:"-2 x", spec:{ soltype:"Line", solpoints:[[0,0], [2,-1]]}}, {eqn:"x^2 - 9", spec: { soltype:"Parabola",  fpoints:[[-1, -1], [-6, 5]], solpoints:[1,0,-9] }} ] 
 
+Opačný směr
+Linear
+50
+[ {eqn:"-2x-7"}, {eqn:"1/2x^2"}] 
 

@@ -10,6 +10,24 @@
         <!--<script src="simulator/kalkulacka/calc.js" type="text/javascript" charset="utf-8"></script>-->
 
         <link rel="stylesheet" href="simulator/inv_grafar/khan-exercise.css">
+        <style>
+#task {
+ /*border: solid #ffa500 1px;*/
+ padding: 1em, 2em;
+}
+
+#task,
+#task input, 
+#task select {
+ font-size: 25px;
+}
+
+#task>div {
+ margin-top: 7px; 
+ margin-bottom: 3px;
+}
+        </style>
+
 
         <script src="simulator/inv_grafar/ku/jquery.js"> </script>
 
@@ -42,6 +60,9 @@
         <script src="simulator/inv_grafar/ku/utils/expressions.js"> </script>
         <script src="simulator/inv_grafar/ku/utils/math-format.js"> </script>
 
+        <!-- matematické výrazy do js-->
+        <script src="simulator/inv_grafar/ASCIIsvg.js" charset="utf-8"> </script>
+
         <!-- Inverzní grafar-->
         <script src="simulator/inv_grafar/invgrafar.js" charset="utf-8"> </script>
         <script src="simulator/inv_grafar/main.js" charset="utf-8"> </script>
@@ -57,12 +78,13 @@
                 };
             /////////////////////////////////////////////////////////
 
+            var p;
             $(document).ready(function () {
                 'use strict';
                 //kazdý jQuery objekt dostal metodu graphie, která v nem najde div .graphie a inicializuje ho
                 jQuery('#holder').graphie();
                 //objekt grafu je nyní ve window.KhanUtil.graph
-                var p = window.invGrafar(
+                 p = window.invGrafar(
                         {
                             tutor: tutor({session_id : tutor_globals.session_id, session_hash: tutor_globals.session_hash}),
                             context: window.KhanUtil,
@@ -73,7 +95,7 @@
         </head>
 
         <body id='body' >
-        <div id="task" style="border: solid #ffa500 1px; padding: 1em, 2em; font-size: 3em;">
+        <div id="task" style="">
             <center id="rovnice"></center>
         </div>
         <br/>

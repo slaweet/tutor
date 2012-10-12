@@ -34,12 +34,14 @@ var tutor = function (spec, my) {
 var invGrafar = function (spec, my) {
     'use strict';
     var colors = [window.KhanUtil.BLUE,window.KhanUtil.GREEN,window.KhanUtil.PINK,window.KhanUtil.YELLOW];
+    var letters = ['f','g','h'];
     my = my || {};
     var that = {};
 
     my.tutor = spec.tutor;
     my.graph = graphObj(spec.context);
     my.graph.initialize();
+    that.graph = my.graph;
 
     my.functions = [];
     my.solved = [];
@@ -49,17 +51,43 @@ var invGrafar = function (spec, my) {
             continue;
         }
         var f = spec.problem.plan[index];
-        f.spec.color = colors[index % colors.length]
-        f.spec.fpoints = f.spec.fpoints || [[0, 0], [2, 1]];
-        var fob = funcObject(f.spec);
+        if (f.spec) {
+            f.spec.color = colors[index % colors.length]
+            f.spec.fpoints = f.spec.fpoints || [[0, 0], [2, 1]];
+            var fob = funcObject(f.spec);
 
-        var i = my.functions.push(fob);
-        my.solved.push(false);
-        i -= 1;
+            var i = my.functions.push(fob);
+            my.solved.push(false);
+            i -= 1;
 
-        var color = f.spec.color;
-        $("#rovnice").append("<div id=\"rce_" + i + "\" style=\"margin-top: 7px; margin-bottom: 3px; color:" + color + "\"><code>" + f.eqn + "</code> "+getSelect(i, f.spec.type)+"</div>");
+            var fce = (f.eqn.indexOf("=") == -1 ? letters[i] + "(x) = " : "") + f.eqn;
+            var color = f.spec.color;
+            $("#rovnice").append("<div id=\"rce_" + i + "\"><code>"+ fce  + "</code> "+getSelect(i, f.spec.type)+"</div>");
 
+
+        } else {
+            f.type = "Generic";
+            f.fpoints = [];
+            f.color = colors[index % colors.length]
+            var color = f.color;
+            var fob = funcObject(f);
+
+            var i = my.functions.push(fob);
+            my.solved.push(false);
+            i -= 1; 
+            var fce = (f.eqn.indexOf("=") == -1 ? letters[i] + "(x) = " : "") + "";
+            $("#rovnice").append("<div id=\"rce_" + i + "\" ><code>"+ fce 
+                + "</code> "+"<input style='color:" + f.color + "' type='text'/></div>");
+            $("#rce_"+i+ " input").keypress(function (e) {
+              if (e.which == 13) {
+                var func = my.functions[$(this).parent().attr("id").replace("rce_", "").toInt()];
+                func.eqn = $(this).val();
+                my.graph.redrawFunc(func);
+              }
+            });
+        }
+        $("#rce_" + i + ", #rce_" + i + " input" + ", #rce_" + i + " select").css({color: color});
+        
         //capture current value of i and color
         (function(i, c) {
         fob.notify = function(solved) {
@@ -118,6 +146,21 @@ var invGrafar = function (spec, my) {
     };
     return that;
 };
+
+var getFuncPoints = function(funcString) {
+    var width = 11;
+    var step = 1;
+    var points = [];
+    for(var i = -width; i < width; i+= step) {
+        points.push([i,evalFunc(funcString, i)]);
+    }
+    return points;
+}
+
+var evalFunc = function(func, x) {
+    var val = eval(func);
+    return val;
+}
 
 var getSelect = function(id, type) {
     if (type) {

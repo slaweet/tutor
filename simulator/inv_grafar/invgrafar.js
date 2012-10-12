@@ -70,7 +70,11 @@ var graphObj = function (khanutil) {
             'use strict';
             that.functions.push(func);
             that.addPoints(func.getPoints(), func.color || window.KhanUtil.BLUE, func.update, func);
-            func.redraw(g);
+            if (func.type == "Generic") {
+                func.drawGoal(g);
+            } else {
+                func.redraw(g);
+            }
         },
         redrawFunc : function (func) {
             func.redraw(g);
@@ -115,6 +119,7 @@ var funcObject = function (spec) {
         constrains : [],
         type : spec.type || "Line",
         gobject : undefined,
+        eqn : spec.eqn,
         addConstrain : function (constrain) {
             that.constrains.push(constrain);
         },
@@ -293,6 +298,28 @@ var funcObject = function (spec) {
         },
         checkSolvedGonio : function () {
         },
+        redrawGeneric : function (graph) {
+            'use strict';
+            that.func = getEvalFunc(preprocess(that.eqn));
+            if (that.gobject !== undefined) {
+                that.gobject.remove();
+            }
+            var wx = graph.range[0][1];
+            var wy = graph.range[1][1];
+            graph.style({ stroke: that.color, strokeWidth: 2}, function() {
+                that.gobject = graph.plot(that.func, [-wx, wx]);
+            });
+        },
+        drawGoal : function (graph) {
+            'use strict';
+            that.func = getEvalFunc(preprocess(that.eqn));
+            
+            var wx = graph.range[0][1];
+            var wy = graph.range[1][1];
+            graph.style({ stroke: that.color, strokeWidth: 2, strokeDasharray: "--"}, function() {
+                that.goal = graph.plot(that.func, [-wx, wx]);
+            });
+        },
     };
 
     that.addConstrain(function (fpoints) {
@@ -334,3 +361,14 @@ var tanFunc = function (fpoints) {
     return function (x) { return a * Math.tan(b*(x + c)) + d; };
 };
 
+var getEvalFunc = function(func) {
+    return function (x) { return eval(func) || 10000; };
+}
+
+var preprocess = function(expr) {
+    expr = mathjs(expr);
+    expr = expr.replace(/pi/g, "PI");
+    expr = expr.replace(/e/g, "E");
+    expr = expr.replace(/(abs|sin|cos|PI|E|log|pow|sqrt|min|max)/g, "Math.$1");
+    return expr;
+}

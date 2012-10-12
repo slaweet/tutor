@@ -105,7 +105,7 @@ var PythonManager = {
         for (var i = 0; i < this.task.function.paramNames.length; i++) {
             params.push(this.getParamValue(i,valueIndex));
         }
-        var code = (this.task.solution.indexOf('return') != -1 ? 'print ' : '') 
+        var code = (this.task.solution.indexOf('print') == -1 ? 'print ' : '') 
         	+ this.task.function.name + '(' + params.join(', ') + ')';
         this.editors["testing_code"].setValue(code);
     },
