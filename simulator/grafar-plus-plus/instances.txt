@@ -1,0 +1,409 @@
+Linearni 1
+Linear 1
+40
+[ {eqn:"y = -1/2 x", type:"Line",soltype:"Line", solpoints:[[0,0], [2,-1]]} ] 
+
+Linearni soustava 1
+Linear system 1
+100
+[ {eqn:"-x +1", type:"Line",soltype:"Line", solpoints:[[0,1], [1,0]]},  {eqn:"4x + 6", type:"Line",soltype:"Line", solpoints:[[0,6], [1,10]]}, {eqn:"f(x) \\cap g(x) = ", type:"Point", sol:[-1,2]} ] 
+
+Linearni a kvadratická
+Linear
+50
+[ {eqn:"y = -2 x", type:"Line", soltype:"Line", solpoints:[[0,0], [2,-1]]}, {eqn:"y = x^2 - 9", type:"Parabola", soltype:"Parabola",  fpoints:[[-1, -1], [-6, 5]], solpoints:[1,0,-9] } ] 
+
+Dvě neznámé funkce
+Linear
+50
+[ {eqn:"-2 x", soltype:"Line", solpoints:[[0,0], [2,-1]]}, {eqn:"x^2 - 9", soltype:"Parabola",  fpoints:[[-1, -1], [-6, 5]], solpoints:[1,0,-9] } ] 
+
+Constrain
+Constrain
+50
+[ {eqn:"1/2x -5", type:"Line", soltype:"Line", solpoints:[[0,-5], [1,-3]], constrains:[function(p){return Math.abs(p[0][0])>5 && Math.abs(p[1][0])>5}], fpoints:[[-6, -6], [6, 8]]}] 
+
+Opačný směr
+Linear
+50
+[ {eqn:"-2x-7"}, {eqn:"1/2x^2"}] 
+
+Derivace 1
+Derivation 1
+100
+[ {  eqn:"x^2-3x+3"}, {eqn:"f'(x) = 2x-3"}] 
+
+Puvodni 1
+Old 1
+90
+[{eqn:"-abs(abs(sin(2*x))-0.25)+2"}]
+
+Puvodni 2
+Old 2
+90
+[{eqn:"sin(x/2)/cos(x/2)"}]
+
+Puvodni 3
+Old 3
+90
+[{eqn:"2^(x/3)-2"}]
+
+Puvodni 4
+Old 4
+90
+[{eqn:"log(x+4)/log(4)"}]
+
+Puvodni 5
+Old 5
+90
+[{eqn:"-2*2^(-(x/2)^2)"}]
+
+Puvodni 6
+Old 6
+90
+[{eqn:"e^(-(x+2)^2) + e^(-(x-1)^2)"}]
+
+Puvodni 7
+Old 7
+90
+[{eqn:"x*(abs(x-1)/(x-1)+1)/2 + (abs(x-1)/(x-1)-1)/2*(abs(x)-2)"}]
+
+Puvodni 8
+Old 8
+90
+[{eqn:"-cos(x)/sin(x)"}]
+
+Puvodni 9
+Old 9
+90
+[{eqn:"sin(sin(sin(sin(2*sin(2x)))))"}]
+
+Puvodni 10
+Old 10
+90
+[{eqn:"(abs(x)-2)^2*abs(x)/x"}]
+
+Puvodni 11
+Old 11
+90
+[{eqn:"-abs(x^2-abs(2x))+2"}]
+
+Puvodni 12
+Old 12
+90
+[{eqn:"log(x)/log(2)"}]
+
+Puvodni 13
+Old 13
+90
+[{eqn:"2^x-x^2"}]
+
+Puvodni 14
+Old 14
+90
+[{eqn:"0.5^x"}]
+
+Puvodni 15
+Old 15
+90
+[{eqn:"2^(x-2) -1"}]
+
+Puvodni 16
+Old 16
+90
+[{eqn:"x^(1/x)"}]
+
+Puvodni 17
+Old 17
+90
+[{eqn:" x*2^(-x)"}]
+
+Puvodni 18
+Old 18
+90
+[{eqn:"-2^x+1"}]
+
+Puvodni 19
+Old 19
+90
+[{eqn:"e^(-x^2)"}]
+
+Puvodni 20
+Old 20
+90
+[{eqn:"2*e^(-(x-1)^2)"}]
+
+Puvodni 21
+Old 21
+90
+[{eqn:"-abs(x*x-1)+3"}]
+
+Puvodni 22
+Old 22
+90
+[{eqn:"-abs(abs(x^2-2)-1)+3"}]
+
+Puvodni 23
+Old 23
+90
+[{eqn:"(x+5)^0.5-log(x+5)"}]
+
+Puvodni 24
+Old 24
+90
+[{eqn:"-sqrt(1-x^2)+1"}]
+
+Puvodni 25
+Old 25
+90
+[{eqn:"abs(log(abs(x)))"}]
+
+Puvodni 26
+Old 26
+90
+[{eqn:"1.5"}]
+
+Puvodni 27
+Old 27
+90
+[{eqn:"(x^(-x/abs(x)))/x"}]
+
+Puvodni 28
+Old 28
+90
+[{eqn:"abs(x)^(x)"}]
+
+Puvodni 29
+Old 29
+90
+[{eqn:"-(x/2)^2+sin(3x)+3"}]
+
+Puvodni 30
+Old 30
+90
+[{eqn:"((x)^2-2) /(x^2+1)"}]
+
+Puvodni 31
+Old 31
+90
+[{eqn:"- 3x + 1"}]
+
+Puvodni 32
+Old 32
+90
+[{eqn:"x/3 + 2"}]
+
+Puvodni 33
+Old 33
+90
+[{eqn:"abs(2x+2)-2"}]
+
+Puvodni 34
+Old 34
+90
+[{eqn:"e^(-ln(x)^2)"}]
+
+Puvodni 35
+Old 35
+90
+[{eqn:"e^x/(1+e^x)"}]
+
+Puvodni 36
+Old 36
+90
+[{eqn:"-1/(x-1)-1"}]
+
+Puvodni 37
+Old 37
+90
+[{eqn:"-(x+4)^2+2"}]
+
+Puvodni 38
+Old 38
+90
+[{eqn:"abs(sin(x))+1"}]
+
+Puvodni 39
+Old 39
+90
+[{eqn:"-(x+1)^3-1"}]
+
+Puvodni 40
+Old 40
+90
+[{eqn:"sin(4*x)/sin(x)"}]
+
+Puvodni 41
+Old 41
+90
+[{eqn:"abs(sin(x))/2"}]
+
+Puvodni 42
+Old 42
+90
+[{eqn:"sin(abs(x)^x)"}]
+
+Puvodni 43
+Old 43
+90
+[{eqn:"sqrt(x+3)-3"}]
+
+Puvodni 44
+Old 44
+90
+[{eqn:"(x/abs(x) + 1)/2"}]
+
+Puvodni 45
+Old 45
+90
+[{eqn:"sin(x^3)"}]
+
+Puvodni 46
+Old 46
+90
+[{eqn:"(x)^2 + abs(x)  -3"}]
+
+Puvodni 47
+Old 47
+90
+[{eqn:"sin(x)/abs(sin(x))"}]
+
+Puvodni 48
+Old 48
+90
+[{eqn:"(x+2)*(x-1)"}]
+
+Puvodni 49
+Old 49
+90
+[{eqn:"(x+1)*(x-1)*x"}]
+
+Puvodni 50
+Old 50
+90
+[{eqn:"1/20*(x-3)*(x+3)*(x-1)*(x+1)*(x-2)*(x+2)"}]
+
+Puvodni 51
+Old 51
+90
+[{eqn:"x^2 + x +1"}]
+
+Puvodni 52
+Old 52
+90
+[{eqn:"x^4+2x^3-x"}]
+
+Puvodni 53
+Old 53
+90
+[{eqn:"x^4+2x^3"}]
+
+Puvodni 54
+Old 54
+90
+[{eqn:"2x-2"}]
+
+Puvodni 55
+Old 55
+90
+[{eqn:"sin(-4x)-1"}]
+
+Puvodni 56
+Old 56
+90
+[{eqn:"sin(x)-1"}]
+
+Puvodni 57
+Old 57
+90
+[{eqn:"-x/2-1"}]
+
+Puvodni 58
+Old 58
+90
+[{eqn:"(-x/3)^3"}]
+
+Puvodni 59
+Old 59
+90
+[{eqn:"-abs(x)+2"}]
+
+Puvodni 60
+Old 60
+90
+[{eqn:"-pow(abs(x),0.5)+2"}]
+
+Puvodni 61
+Old 61
+90
+[{eqn:"sin(x)/cos(x/5)"}]
+
+Puvodni 62
+Old 62
+90
+[{eqn:"sin(x)^5"}]
+
+Puvodni 63
+Old 63
+90
+[{eqn:"abs(x)"}]
+
+Puvodni 64
+Old 64
+90
+[{eqn:"(cos(2x))+1"}]
+
+Puvodni 65
+Old 65
+90
+[{eqn:"2^x"}]
+
+Puvodni 66
+Old 66
+90
+[{eqn:"1/x"}]
+
+Puvodni 67
+Old 67
+90
+[{eqn:"x*x-2"}]
+
+Puvodni 68
+Old 68
+90
+[{eqn:"(x)^3-1"}]
+
+Puvodni 69
+Old 69
+90
+[{eqn:"sin(x)/cos(x)"}]
+
+Puvodni 70
+Old 70
+90
+[{eqn:"sin(pi*x)"}]
+
+Puvodni 71
+Old 71
+90
+[{eqn:"cos(2pi*x)+1"}]
+
+Puvodni 72
+Old 72
+90
+[{eqn:"sin(x)^20"}]
+
+Puvodni 73
+Old 73
+90
+[{eqn:"abs(sin(4x)*x/3)"}]
+
+Puvodni 74
+Old 74
+90
+[{eqn:"sin(3x)/(x)"}]
+
+Puvodni 75
+Old 75
+90
+[{eqn:"abs(x)+cos(10x)-2"}]

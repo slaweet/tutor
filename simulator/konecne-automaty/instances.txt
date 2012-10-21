@@ -72,7 +72,7 @@ Binary divisible by three
 Ternární lichá čísla
 Ternary odd numbers
 240
-{alphabet:["1","0","2"],regexp:"(2(0|2|1(0|2)*1)*1(0|2)*|1(0|2|1(0|2)*1)*)",words:["1","210","100"], maxTestedWordLength:10, text: "představuje zápis čísla v trojkové soustavě nedělitelného dvěma. Jedine cislo zacinajici nulou je nula"}
+{alphabet:["1","0","2"],regexp:"(2(0|2|1(0|2)*1)*1(0|2)*|1(0|2|1(0|2)*1)*)",words:["1","210","100"], maxTestedWordLength:4, text: "představuje zápis čísla v trojkové soustavě nedělitelného dvěma. Jedine cislo zacinajici nulou je nula"}
 
 Začátek jako konec
 Beginning as same as end

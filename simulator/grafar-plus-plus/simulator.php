@@ -9,69 +9,76 @@
         <!--<script src="simulator/kalkulacka/raphael.js" type="text/javascript" charset="utf-8"></script>-->
         <!--<script src="simulator/kalkulacka/calc.js" type="text/javascript" charset="utf-8"></script>-->
 
-        <link rel="stylesheet" href="simulator/inv_grafar/khan-exercise.css">
+        <link rel="stylesheet" href="simulator/grafar-plus-plus/khan-exercise.css">
         <style>
 #task {
  /*border: solid #ffa500 1px;*/
  padding: 1em, 2em;
 }
 
-#task,
+#task td,
 #task input, 
 #task select {
  font-size: 25px;
 }
+#task tr td:first-child {
+ text-align: right;
+}
 
-#task>div {
+#task>tr {
  margin-top: 7px; 
  margin-bottom: 3px;
+}
+
+#task .error {
+ color: red;
 }
         </style>
 
 
-        <script src="simulator/inv_grafar/ku/jquery.js"> </script>
+        <script src="simulator/grafar-plus-plus/ku/jquery.js"> </script>
 
         <!-- Ohlehcená definice objektu KhanUtil -->
-        <script src="simulator/inv_grafar/mock-khan-exercise.js"> </script>
+        <script src="simulator/grafar-plus-plus/mock-khan-exercise.js"> </script>
 
         <!-- Kvuli jQuery.tmpl.getVARS -->
-        <script src="simulator/inv_grafar/ku/utils/tmpl.js"> </script>
+        <script src="simulator/grafar-plus-plus/ku/utils/tmpl.js"> </script>
 
         <!-- Vykreslení popisek os grafu -->
-        <script src="simulator/inv_grafar/ku/utils/MathJax/1.1a/MathJax.js?config=KAthJax-77111459c7d82564a705f9c5480e2c88"> </script>
+        <script src="simulator/grafar-plus-plus/ku/utils/MathJax/1.1a/MathJax.js?config=KAthJax-77111459c7d82564a705f9c5480e2c88"> </script>
 
         <!-- Knihovna pro práci s SVG -->
-        <script src="simulator/inv_grafar/ku/utils/raphael.js"> </script>
+        <script src="simulator/grafar-plus-plus/ku/utils/raphael.js"> </script>
 
         <!-- Grafí -->
-        <script src="simulator/inv_grafar/ku/utils/graphie.js"> </script>
+        <script src="simulator/grafar-plus-plus/ku/utils/graphie.js"> </script>
 
         <!-- addMouseLayer(); addMoveablePoint(); -->
-        <script src="simulator/inv_grafar/ku/utils/interactive.js"> </script>
+        <script src="simulator/grafar-plus-plus/ku/utils/interactive.js"> </script>
 
         <!-- pro MoveablePoint - interaktivita-->
-        <script src="simulator/inv_grafar/ku/utils/jquery.adhesion.js"> </script>
-        <script src="simulator/inv_grafar/ku/utils/jquery.mobile.vmouse.js"> </script>
+        <script src="simulator/grafar-plus-plus/ku/utils/jquery.adhesion.js"> </script>
+        <script src="simulator/grafar-plus-plus/ku/utils/jquery.mobile.vmouse.js"> </script>
 
         <!-- pro MoveablePoint - správné vykreslení-->
-        <script src="simulator/inv_grafar/ku/utils/math.js"> </script>
+        <script src="simulator/grafar-plus-plus/ku/utils/math.js"> </script>
 
         <!-- pro mathjaxové výrazy (KhanUtil.expr())-->
-        <script src="simulator/inv_grafar/ku/utils/expressions.js"> </script>
-        <script src="simulator/inv_grafar/ku/utils/math-format.js"> </script>
+        <script src="simulator/grafar-plus-plus/ku/utils/expressions.js"> </script>
+        <script src="simulator/grafar-plus-plus/ku/utils/math-format.js"> </script>
 
         <!-- matematické výrazy do js-->
-        <script src="simulator/inv_grafar/ASCIIsvg.js" charset="utf-8"> </script>
+        <script src="simulator/grafar-plus-plus/ASCIIsvg.js" charset="utf-8"> </script>
 
         <!-- Inverzní grafar-->
-        <script src="simulator/inv_grafar/invgrafar.js" charset="utf-8"> </script>
-        <script src="simulator/inv_grafar/main.js" charset="utf-8"> </script>
+        <script src="simulator/grafar-plus-plus/invgrafar.js" charset="utf-8"> </script>
+        <script src="simulator/grafar-plus-plus/main.js" charset="utf-8"> </script>
         <script type='text/javascript'>
 
             //globalni promenne tutora
             var tutor_globals = {
                     instance_name : '<?= $instance_name ?>', // název dané hry (treba Sklad 515)
-                    instance_plan : <?= $instance_plan ?>, // textový formát dané hry (treba zápis mapy Sokobanu)
+                    instance_plan : "<?= base64_encode($instance_plan) ?>", // textový formát dané hry (treba zápis mapy Sokobanu)
                    instance_solution : '<?= $instance_solution ?>', // volitelne, informace o správném reseni pro simulátor
                    session_id : '<?= $session_id ?>', // id dané session = daná partie, dané hry, daného hráce
                     session_hash : '<?= $session_hash ?>' // syntaktický cukr, 32 znaku, pro kontrolu prohlízece
@@ -81,6 +88,7 @@
             var p;
             $(document).ready(function () {
                 'use strict';
+                tutor_globals.instance_plan = tutor_globals.instance_plan != "" ? tutor_globals.instance_plan : location.hash.substring(1);
                 //kazdý jQuery objekt dostal metodu graphie, která v nem najde div .graphie a inicializuje ho
                 jQuery('#holder').graphie();
                 //objekt grafu je nyní ve window.KhanUtil.graph
@@ -96,7 +104,7 @@
 
         <body id='body' >
         <div id="task" style="">
-            <center id="rovnice"></center>
+            <table id="rovnice"></table>
         </div>
         <br/>
         <div id="holder">

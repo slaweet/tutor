@@ -84,7 +84,7 @@ var graphObj = function (khanutil) {
     return that;
 };
 
-var approxzero = 0.00001;
+var APPROX_ZERO = 0.00001;
 
 /**
  * (a b)
@@ -104,11 +104,11 @@ var det2 = function (a, b, c, d) {
 var compare_linear = function (x1, y1, x2, y2, x3, y3, x4, y4) {
     var fp = det2(x2 - x1, y2 - y1, x3 - x1, y3 - y1);
     var sp = det2(x2 - x1, y2 - y1, x4 - x1, y4 - y1);
-    return Math.abs(fp) < approxzero && Math.abs(sp) < approxzero;
+    return Math.abs(fp) < APPROX_ZERO && Math.abs(sp) < APPROX_ZERO;
 };
 
 var compare_circle = function (sx1, sy1, r1, sx2, sy2, r2) {
-    return Math.abs(sx1 - sx2) < approxzero && Math.abs(sy1 - sy2) < approxzero && Math.abs(r1 - r2) < approxzero;
+    return Math.abs(sx1 - sx2) < APPROX_ZERO && Math.abs(sy1 - sy2) < APPROX_ZERO && Math.abs(r1 - r2) < APPROX_ZERO;
 };
 
 var funcObject = function (spec) {
@@ -116,7 +116,7 @@ var funcObject = function (spec) {
     var that = {
         color : spec.color || KhanUtil.BLUE,
         fpoints : spec.fpoints || [[0, 0], [2, 1]],
-        constrains : [],
+        constrains : spec.constrains || [],
         type : spec.type || "Line",
         gobject : undefined,
         eqn : spec.eqn,
@@ -165,7 +165,7 @@ var funcObject = function (spec) {
             }
         },
         checkSolved : function () {
-            if (that.type != spec.soltype) {
+            if (that.type != spec.soltype && that.type != "Generic" && that.type != "Point") {
                 return false;
             }
             if (that["checkSolved"+ that.type]) {
@@ -258,9 +258,9 @@ var funcObject = function (spec) {
             console.log(xpow0);
 
             return spec.solpoints[2] &&
-                Math.abs(xpow2 - spec.solpoints[0]) < approxzero &&
-                Math.abs(xpow1 - spec.solpoints[1]) < approxzero &&
-                Math.abs(xpow0 - spec.solpoints[2]) < approxzero;
+                Math.abs(xpow2 - spec.solpoints[0]) < APPROX_ZERO &&
+                Math.abs(xpow1 - spec.solpoints[1]) < APPROX_ZERO &&
+                Math.abs(xpow0 - spec.solpoints[2]) < APPROX_ZERO;
         },
         redrawCircle : function (graph) {
             'use strict';
@@ -283,6 +283,12 @@ var funcObject = function (spec) {
         redrawTangens : function (graph) {
             that.func = tanFunc;
             that.redrawGonio(graph);
+        },
+        redrawPoint : function (graph) {
+            spec.setCoords(that.fpoints[0]);
+        },
+        checkSolvedPoint : function () {
+            return that.fpoints[0][0] == spec.sol[0] && that.fpoints[0][1] == spec.sol[1]; 
         },
         redrawGonio : function (graph) {
             'use strict';
@@ -310,6 +316,20 @@ var funcObject = function (spec) {
                 that.gobject = graph.plot(that.func, [-wx, wx]);
             });
         },
+        checkSolvedGeneric : function () {
+            var step = 1/8;
+            var wx = 11;//graph.range[0][1];
+            var wy = 11;//graph.range[1][1];
+            var correct = getEvalFunc(preprocess(spec.eqn));
+            var attempt = getEvalFunc(preprocess(that.eqn));
+            for (var x = -wx; x < wy; x+= step) {
+                if (Math.abs(correct(x)-attempt(x)) > APPROX_ZERO) {
+                    return false;
+                }
+            }
+            return true;
+
+        },
         drawGoal : function (graph) {
             'use strict';
             that.func = getEvalFunc(preprocess(that.eqn));
@@ -323,8 +343,8 @@ var funcObject = function (spec) {
     };
 
     that.addConstrain(function (fpoints) {
-        var x1 = fpoints[0][0];
-        var x2 = fpoints[1][0];
+        var x1 = fpoints[0] && fpoints[0][0];
+        var x2 = fpoints[1] && fpoints[1][0];
         return x1 != x2;
     });
 
@@ -357,18 +377,21 @@ var tanFunc = function (fpoints) {
     var c = -fpoints[0][0];
     var d = fpoints[0][1];
     var a = fpoints[1][1] - d;
+    var s = (fpoints[0][0] < fpoints[1][0]) ? 1 : 0;
     var b = (s+k*4) * Math.PI / (2 * dist([-c, 0], [fpoints[1][0], 0]));
-    return function (x) { return a * Math.tan(b*(x + c)) + d; };
+    //return function (x) { return a * Math.tan(b*(x + c)) + d; };
+    return function (x) { return a* Math.tan((x+c)) + d; };
 };
 
 var getEvalFunc = function(func) {
-    return function (x) { return eval(func) || 10000; };
+    var ret = eval("(function (x) { return (" + func + ") || 100000; })");
+    return ret;
 }
 
 var preprocess = function(expr) {
     expr = mathjs(expr);
     expr = expr.replace(/pi/g, "PI");
     expr = expr.replace(/e/g, "E");
-    expr = expr.replace(/(abs|sin|cos|PI|E|log|pow|sqrt|min|max)/g, "Math.$1");
+    expr = expr.replace(/(abs|sin|cos|tan|PI|E|log|pow|sqrt|min|max)/g, "Math.$1");
     return expr;
 }
