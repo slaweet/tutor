@@ -5,6 +5,7 @@
 * works, but slowly: MSIE 8, MSIE 7
 */
 
+(function(window, Raphael, undefined) {
 /*
 //damn MSIE
 const HOLDER_WIDTH = 640;
@@ -877,4 +878,12 @@ Raphael.fn.connectPoint = function (card, name) {
     point.hover(hoverIn, hoverOut);
     return point;
 };
+
+window.initCardManager = function (task) {
+    r = Raphael("holder", HOLDER_WIDTH, HOLDER_HEIGHT);
+    CardManager.init(task);
+    return CardManager;
+};
+
+})(window, Raphael);
 

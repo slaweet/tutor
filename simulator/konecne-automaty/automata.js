@@ -5,6 +5,7 @@
 * works, but slowly: MSIE 8, MSIE 7
 */
 
+(function(window, Raphael, undefined) {
 /*
 //damn MSIE
 const HOLDER_WIDTH = 640;
@@ -1056,3 +1057,9 @@ Raphael.fn.controls = function () {
 
 
 
+
+window.initAutomataManager = function (task) {
+    AutomataManager.init(task);
+}
+
+})(window, Raphael);

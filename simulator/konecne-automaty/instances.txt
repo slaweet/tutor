@@ -119,3 +119,13 @@ Grammar 5
 260
 {alphabet:["a","b","c"],regexp:"(ab+|bb|bca)*(bc(c|b)|c)",words:["c","abbcb","bcabcc"], maxTestedWordLength:10, text: "G = ({S,X,Y,Z},{a,b,c},P,S)\n P = { S -> aX | bY | c,\nX -> bX | bS,\n Y -> bS | cZ,\n Z -> aS | b | c }"}
 
+S ab, bez aa
+With ab, without aa
+150
+{alphabet:["a", "b"],regexp:"b*ab(b*(ab)*)*a?",words:["abba","aab","bbaba"], maxTestedWordLength:10, text: "obsahuje podslovo ‘ab‘ a zároveň neobsahuje podslovo ‘aa‘"}
+
+Obsahuje sos nebo neobsahuje ss
+Contains sos or doesn't contain ss
+150
+{alphabet:["s", "o"],regexp:"",words:["sos","oooss","sosss"], maxTestedWordLength:10, text: "obsahuje podslovo ‘sos‘ nebo neobsahuje podslovo ‘ss‘"}
+

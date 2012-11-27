@@ -1,19 +1,21 @@
-var graphObj = function (khanutil) {
+var graphObj = function (khanutil, props) {
     'use strict';
 
     var g = khanutil.currentGraph;
-    var snapXc = 0.5;
-    var snapYc = 0.5;
+    var snapXc = props.snapX || 0.5;
+    var snapYc = props.snapY || 0.5;
+    var range = props.range || 11;
+    range = range.length == 2 ? range : [range,range];
 
     var that = {
         functions : [],
         points : [],
         initialize : function () {
             g.graphInit({
-                range: 11,
-                scale: 20,
+                range: range,
+                scale: [300/range[0],300/range[1]],
                 axisArrows: "&lt;-&gt;",
-                tickStep: 1,
+                tickStep: [Math.round(range[0]/10) , Math.floor(range[1]/10)],
                 labelStep: 1,
                 gridOpacity: 0.05,
                 axisOpacity: 0.2,
@@ -21,8 +23,8 @@ var graphObj = function (khanutil) {
                 labelOpacity: 0.5
             });
 
-            g.label( [ 0, -11 ], "y", "below" );
-            g.label( [ 11, 0 ], "x", "right" );
+            g.label( [ 0, -range[1] ], "y", "below" );
+            g.label( [ range[0], 0 ], "x", "right" );
 
             khanutil.addMouseLayer();
         },
@@ -165,7 +167,7 @@ var funcObject = function (spec) {
             }
         },
         checkSolved : function () {
-            if (that.type != spec.soltype && that.type != "Generic" && that.type != "Point") {
+            if (that.type != spec.soltype) {
                 return false;
             }
             if (that["checkSolved"+ that.type]) {
@@ -287,8 +289,27 @@ var funcObject = function (spec) {
         redrawPoint : function (graph) {
             spec.setCoords(that.fpoints[0]);
         },
+        redrawPointInput : function (graph) {
+            if (that.gobject === undefined) {
+                var color = spec.color;
+                that.gobject = KhanUtil.addMovablePoint({
+                    coord : [5,5],
+                    normalStyle: {
+                        stroke: color,
+                        fill: color
+                    }
+                }); 
+                that.gobject.constraints.fixed = true;
+            } else {
+                that.gobject.moveTo(that.point[0], that.point[1]);
+            }
+        },
         checkSolvedPoint : function () {
             return that.fpoints[0][0] == spec.sol[0] && that.fpoints[0][1] == spec.sol[1]; 
+        },
+        checkSolvedPointInput : function () {
+            console.log(that.point[0]);
+            return that.point[0] == spec.sol[0] && that.point[1] == spec.sol[1]; 
         },
         redrawGonio : function (graph) {
             'use strict';
@@ -336,7 +357,7 @@ var funcObject = function (spec) {
             
             var wx = graph.range[0][1];
             var wy = graph.range[1][1];
-            graph.style({ stroke: that.color, strokeWidth: 2, strokeDasharray: "--"}, function() {
+            graph.style({ stroke: that.color, strokeWidth: 2, strokeDasharray: "-"}, function() {
                 that.goal = graph.plot(that.func, [-wx, wx]);
             });
         },

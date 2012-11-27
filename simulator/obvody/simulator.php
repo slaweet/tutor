@@ -16,8 +16,7 @@
             var names = [<?= $instance_plan ?>];
 
             window.onload = function () {
-                r = Raphael("holder", HOLDER_WIDTH, HOLDER_HEIGHT);
-                CardManager.init(names);
+                initCardManager(names);
             }
         </script>
 	</head>

@@ -22,7 +22,7 @@
             window.onload = function () {
                 task = task != "" ? task : location.hash.substring(1);
                 Lang.setLang(lang);
-                Shapes.init(task);
+                initShapes(task);
             };
         </script>
 	</head>

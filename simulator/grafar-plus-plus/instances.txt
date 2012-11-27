@@ -8,6 +8,11 @@ Linear system 1
 100
 [ {eqn:"-x +1", type:"Line",soltype:"Line", solpoints:[[0,1], [1,0]]},  {eqn:"4x + 6", type:"Line",soltype:"Line", solpoints:[[0,6], [1,10]]}, {eqn:"f(x) \\cap g(x) = ", type:"Point", sol:[-1,2]} ] 
 
+Linearni soustava 2
+Linear system 2
+100
+[ {eqn:"-x +1", type:"Line",soltype:"Line", solpoints:[[0,1], [1,0]]},  {eqn:"4x + 6", type:"Line",soltype:"Line", solpoints:[[0,6], [1,10]]}, {eqn:"f(x) \\cap g(x) = ", type:"PointInput", sol:[-1,2]} ] 
+
 Linearni a kvadratická
 Linear
 50

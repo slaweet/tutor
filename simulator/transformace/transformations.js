@@ -3,6 +3,7 @@
 * Year: 2012
 * compatibility: Mozilla Firefox, Opera, Google Chrome, Safari, Microsoft Internet Explorer >6
 */
+(function(window, Raphael, undefined) {
 
 var CONTROLS_WIDTH = 150;
 var CONTROLS_HEIGHT = 440;
@@ -597,3 +598,13 @@ Raphael.fn.button = function (props, x, y, color) {
     return button;
 };
 
+
+window.initTransformations = function (task) {
+    Transformations.init(task);
+    $('#matrix form').submit(function () {
+        Transformations.buttons["m"].onClick();
+        return false;
+    });
+}
+
+})(window, Raphael);

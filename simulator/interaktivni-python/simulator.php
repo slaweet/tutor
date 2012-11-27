@@ -15,7 +15,6 @@
     <script type="text/javascript" src="simulator/interaktivni-python/builtin.js"></script>
 
     <script src="simulator/konecne-automaty/lang.js" type="text/javascript" charset="utf-8"></script>
-    <script src="simulator/interaktivni-python/base64.js" type="text/javascript" charset="utf-8"></script>
     <script src="simulator/interaktivni-python/manager.js" type="text/javascript" charset="utf-8"></script>
 
         <script type='text/javascript'>
@@ -30,7 +29,7 @@
             window.onload = function () {
                 task = task != "" ? task : location.hash.substring(1).replace(/@/g, ' ');
                 Lang.setLang(lang);
-                PythonManager.init(task);
+                initPythonManager(task);
             }
         </script>
 
@@ -56,8 +55,8 @@
     <div id="testing" >
         <textarea cols="50" rows="12" id="testing_code" class="active_code">
         </textarea>
-        <button onclick="PythonManager.run(this)" class="lang">run</button>
-        <button onclick="PythonManager.submit(this);" class="lang">submit</button>
+        <button id="run-button" class="lang">run</button>
+        <button id="submit-button" class="lang">submit</button>
 
     </div>
     <p id="message"></p>

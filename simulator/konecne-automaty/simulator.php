@@ -22,7 +22,7 @@
                 task = task != "" ? task : location.hash.substring(1);
                 task = eval("(" + task.replace(/\n/g, '\\n') + ")");
                 Lang.setLang(lang);
-                AutomataManager.init(task);
+                initAutomataManager(task);
             }
         </script>
 	</head>

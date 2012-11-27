@@ -33,6 +33,10 @@
 #task .error {
  color: red;
 }
+
+.coords input {
+ width: 3em;
+}
         </style>
 
 

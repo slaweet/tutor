@@ -4,6 +4,8 @@
 * compatibility: Mozilla Firefox, Opera, Google Chrome, Safari, Microsoft Internet Explorer >6
 */
 
+(function(window, Raphael, undefined) {
+
 var HOLDER_WIDTH = 580;
 var HOLDER_HEIGHT = 320;
 var BUTTON_WIDTH = 60;
@@ -358,3 +360,9 @@ Raphael.fn.button = function (name, x, y, clickFn, color) {
     return button;
 };
 
+window.initCalculator = function (task) {
+    r = Raphael("holder", HOLDER_WIDTH, HOLDER_HEIGHT);
+    Calculator.init(task);
+}
+
+})(window, Raphael);

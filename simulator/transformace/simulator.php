@@ -21,7 +21,7 @@
             window.onload = function () {
                 task = task != "" ? task : location.hash.substring(1);
                 Lang.setLang(lang);
-                Transformations.init(task);
+                initTransformations(task);
             };
         </script>
 	</head>
@@ -32,7 +32,7 @@
         <span id="matrixwraper" class="matrixwraper"></span>
         <span class="matrixpositioner">
             <span id="matrix" class="matrix">
-                <form onsubmit='Transformations.buttons["m"].onClick(); return false;'>
+                <form>
                     <span>
                         <input type="text" id="m0" value=""/>
                         <input type="text" id="m1" value=""/>

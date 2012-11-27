@@ -38,18 +38,19 @@ var invGrafar = function (spec, my) {
     my = my || {};
     var that = {};
 
+    if (spec.problem.plan.indexOf('"') == -1) {
+        spec.problem.plan = base64_decode(spec.problem.plan);
+    }
+    spec.problem.plan = eval("(" + spec.problem.plan + ")");
+    my.props = spec.problem.plan[0].eqn ? {} : spec.problem.plan.shift();
+
     my.tutor = spec.tutor;
-    my.graph = graphObj(spec.context);
+    my.graph = graphObj(spec.context, my.props);
     my.graph.initialize();
     that.graph = my.graph;
 
     my.functions = [];
     my.solved = [];
-
-    if (spec.problem.plan.indexOf('"') == -1) {
-        spec.problem.plan = base64_decode(spec.problem.plan);
-    }
-    spec.problem.plan = eval("(" + spec.problem.plan + ")");
 
     for (var index in spec.problem.plan) {
         if (!spec.problem.plan.hasOwnProperty(index)) {
@@ -69,16 +70,39 @@ var invGrafar = function (spec, my) {
             input = getSelect(i, f.type);
             $("#rovnice").append("<tr id=\"rce_" + i + "\"><td><code>"+ fce  + "</code></td><td> "+input+"</td></tr>");
         } else if (f.type == "Point") {
+            f.soltype = f.type;
             f.fpoints = f.fpoints || [[5, 5]];
-            fce += f.eqn;
-            $("#rovnice").append("<tr id=\"rce_" + i + "\"><td><code>"+ fce  + "</code></td><td class='coords'> "+input+"</td></tr>");
             (function(i) {
                 f.setCoords = function(p) {
                     $("#rce_" + i + " .coords").text("[" + p[0] + "," + p[1] + "]");
                 };
             }(i));
+            fce += f.eqn;
+            $("#rovnice").append("<tr id=\"rce_" + i + "\"><td><code>"+ fce  + "</code></td><td class='coords'> "+input+"</td></tr>");
+        } else if (f.type == "PointInput") {
+            f.soltype = f.type;
+            f.fpoints = f.fpoints || [];
+            input = "[<input type='text' value='5'/>,<input type='text' value='5'/>]";
+            fce += f.eqn;
+            f.constrains = [function(p){return false;}];
+            $("#rovnice").append("<tr id=\"rce_" + i + "\"><td><code>"+ fce  + "</code></td><td class='coords'> "+input+"</td></tr>");
+            $("#rce_"+i+ " input").keypress(function (e) {
+              if (e.which == 13) {
+                var i = $(this).parents("tr").attr("id").replace("rce_", "").toInt()
+                var func = my.functions[i];
+                func.point = [$(this).parent().children("input:first-child").val(), $(this).parent().children("input:nth-child(2)").val()];
+                var error = '';
+                $("#rce_"+i+ " .error").html(error);
+                if (error != "") {
+                    func.eqn = "1000";
+                }
+                my.graph.redrawFunc(func);
+                func.notify(func.checkSolved());
+              }
+            });
         } else {
             f.type = "Generic";
+            f.soltype = f.type;
             f.fpoints = [];
             input = "<input type='text'/></td><td class='error'>";
             $("#rovnice").append("<tr id=\"rce_" + i + "\"><td><code>"+ fce  + "</code></td><td> "+input+"</td></tr>");

@@ -3,6 +3,7 @@
 * Year: 2012
 * compatibility: Mozilla Firefox, Opera, Google Chrome, Safari, Microsoft Internet Explorer >6
 */
+(function(window, Raphael, undefined) {
 
 var ZOOM_FACTOR = 6;
 var FONT_SIZE = 20/ZOOM_FACTOR;
@@ -99,8 +100,8 @@ var Shapes = {
         return plot;
     },
     preprocess: function(expr) {
-        expr = expr.replace(/([^=<>])=([^=])/,"$1==$2")
-        expr = expr.replace(/([<>])([^=])/,"$1=$2")
+        expr = expr.replace(/([^=<>])=([^=])/g,"$1==$2")
+        expr = expr.replace(/([<>])([^=])/g,"$1=$2")
         expr = expr.replace(/and/g, "&&");
         expr = expr.replace(/or/g, "||");
         expr = expr.replace(/not/g, "!");
@@ -308,7 +309,7 @@ function base64_decode (data) {
     } while (i < data.length);
  
     dec = tmp_arr.join('');
-    dec = this.utf8_decode(dec);
+    dec = utf8_decode(dec);
  
     return dec;
 }
@@ -355,3 +356,9 @@ function utf8_decode (str_data) {
  
     return tmp_arr.join('');
 }
+
+window.initShapes = function (task) {
+    Shapes.init(task);
+}
+
+})(window, Raphael);
