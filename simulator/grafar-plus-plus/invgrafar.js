@@ -209,6 +209,51 @@ var funcObject = function (spec) {
             var solved = compare_linear(x1, y1, x2, y2, x3, y3, x4, y4);
             return solved;
         },
+        redrawAbsolute : function (graph) {
+            'use strict';
+            var wx = graph.range[0][1];
+            var mirrorFpoints = [that.fpoints[0].slice(0), that.fpoints[1].slice(0)];
+            mirrorFpoints[1][1] = mirrorFpoints[1][1] - 2*(mirrorFpoints[1][1] - mirrorFpoints[0][1])
+            var minusSign = (that.fpoints[0][0] - that.fpoints[1][0] > 0) ? -1 : 1;
+            var path = [
+                [
+                    -minusSign*wx,
+                    getPointOn(mirrorFpoints, -minusSign*wx)
+                ],
+                [
+                    that.fpoints[0][0],
+                    that.fpoints[0][1]
+                ],
+                [
+                    minusSign*wx,
+                    getPointOn(that.fpoints, minusSign*wx)
+                ],
+            ];
+            if (that.gobject !== undefined) {
+                that.gobject.remove();
+            }
+
+            graph.style({ stroke: that.color, strokeWidth: 2}, function () {
+                'use strict';
+                that.gobject = graph.path(path);
+            });
+        },
+        checkSolvedAbsolute : function () {
+            var x1 = that.fpoints[0][0];
+            var y1 = that.fpoints[0][1];
+            var x2 = that.fpoints[1][0];
+            var y2 = that.fpoints[1][1];
+            var x3 = spec.solpoints[0][0];
+            var y3 = spec.solpoints[0][1];
+            var x4 = spec.solpoints[1][0];
+            var y4 = spec.solpoints[1][1];
+            var solved = compare_linear(x1, y1, x2, y2, x3, y3, x4, y4);
+            var x2b = x2 - 2*(x2-x1); 
+            solved = solved || compare_linear(x1, y1, x2b, y2, x3, y3, x4, y4);
+            solved = solved && x1 == x3 && y1 == y3; 
+            solved = solved && (y2 > y1 && y4 > y1 || y2 <= y1 && y4 <= y1);
+            return solved;
+        },
         redrawParabola : function (graph) {
             'use strict';
             if (that.gobject !== undefined) {
@@ -372,6 +417,14 @@ var funcObject = function (spec) {
     return that;
 };
 
+var getPointOn = function (points, range) {
+    var x1 = points[0][0] - points[1][0];
+    var y1 = points[0][1] - points[1][1];
+    var x2 = range - points[0][0];
+    var y2 = (x2*y1)/x1;
+    var result = y2 + points[0][1];
+    return result;
+}
 
 var dist = function (point1, point2) {
     'use strict';

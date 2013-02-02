@@ -215,7 +215,7 @@ var funcError = function(func) {
     try {
         var val = eval(func);
     } catch(e) {
-        return "Neplatný formát"//e.message;
+        return "Neplatný formát. (Chyba: " + e.message + ")";
     }
     return "";
 }
@@ -224,7 +224,7 @@ var getSelect = function(id, type) {
     if (type) {
         return ""
     }
-    var options = ["Line", "Parabola", "Sinus", "Tangens"];
+    var options = ["Line", "Absolute", "Parabola", "Sinus", "Tangens"];
     var select = "<select id='select-"+id+"' class='rce-select'>"
     for (var i = 0; i < options.length; i++) {
         select += "<option value='"+options[i]+"' "+(type==options[i] ? "selected='selected'" : "")+">"+options[i]+"</option>"; 

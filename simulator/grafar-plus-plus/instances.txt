@@ -3,6 +3,11 @@ Linear 1
 40
 [ {eqn:"y = -1/2 x", type:"Line",soltype:"Line", solpoints:[[0,0], [2,-1]]} ] 
 
+Absolutni 1
+Absolute 1
+40
+[ {eqn:"y = |-1/2 x|", type:"Absolute",soltype:"Absolute", solpoints:[[0,0], [2,1]]} ] 
+
 Priklad range 
 Range 
 50
