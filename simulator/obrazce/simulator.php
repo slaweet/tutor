@@ -6,10 +6,10 @@
  -->
         <link rel="stylesheet" href="simulator/obrazce/style.css" type="text/css" media="screen">
         <script src="simulator/obrazce/raphael.js" type="text/javascript" charset="utf-8"></script>
+        <script src="simulator/obrazce/jquery.js" type="text/javascript" charset="utf-8"></script>
         <script src="simulator/obrazce/shapes.js" type="text/javascript" charset="utf-8"></script>
         <script src="simulator/obrazce/ASCIIsvg.js" type="text/javascript" charset="utf-8"></script>
         <script src="simulator/obrazce/lang.js" type="text/javascript" charset="utf-8"></script>
-        <script src="simulator/obrazce/jquery.js" type="text/javascript" charset="utf-8"></script>
         <script type='text/javascript'>
 
 			//globalni promenne tutora
@@ -31,8 +31,8 @@
 
     <div id="solution"></div>
     <div id="holder">
-            <form onsubmit='try{Shapes.drawUserInput(document.getElementById("text").value);}catch(e){alert(e)}; return false;'>
-                <input type="text" id="text" maxlength="80" onkeydown="Shapes.setCharCounter(this.value.length)" onkeyup="Shapes.setCharCounter(this.value.length)"/>
+            <form id="expression">
+                <input type="text" id="text" maxlength="80"/>
                 <span id="charcounter">0/80</span>
                 <input type="submit" id="drawbutton" value=""/>
                 <div id="error"></div> 

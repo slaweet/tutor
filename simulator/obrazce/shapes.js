@@ -31,7 +31,6 @@ var BUNDLE = {
 
 //main manager of the whole file
 var Shapes = {
-    maxCharCount: 80,
     moveCount: 0,
     plots: ["goal", "diff", "user"],
     colors: ["#aaaa00", "#00ff00", "#0081FF"],
@@ -44,7 +43,6 @@ var Shapes = {
         }
         var taskArray = task.split(";");
         document.getElementById('text').value = taskArray[1] ? taskArray[1] : "";
-        this.setCharCounter(document.getElementById('text').value.length);
         //document.getElementById('text').setAttribute('autocomplete', 'off');
         this.setLabels();
         for (var i = 0; i < this.plots.length; i++) {
@@ -119,7 +117,7 @@ var Shapes = {
             return mathjs(rawExpr);
         }
         try {
-            this.evalExpr(1,1,expr)
+            getExpressionEvaluator(expr)(1,1);
             return "";
         } catch (e) {
             return "Error: " + e.message;
@@ -162,24 +160,32 @@ var Shapes = {
         var q = "session_id="+id_game+"&session_hash="+check_hash+"&move_number="+this.moveCount+"&move="+moveString;
         sendDataToInterface(q);
         this.moveCount++;
-    },
-    evalExpr: function(x, y, expr) {
-        return eval(expr);
-    },
-    setCharCounter: function(count) {
-        document.getElementById('charcounter').innerHTML = count + "/" + this.maxCharCount;
     }
 }
 
-// Draws shape specified by expesion in expr parameter
+$.fn.charCounter = function() {
+    var MAX_CHAR_COUNT = 80;
+    var input = $(this);
+    input.bind("propertychange keyup input paste", function(event){
+        $('#charcounter').text(input.val().length + "/" + MAX_CHAR_COUNT);
+    });
+    input.keyup();
+}
+
+var getExpressionEvaluator = function(expession) {
+    return new Function('x', 'y', 'return ' + expession);
+}
+
+// Draws shape specified by expession in expr parameter
 Raphael.fn.shape = function (radius, expr, color, step) {
     var startTime = (new Date()).getTime();
     var shape = {points: []}
     var pointsCount = 0;
+    var evaluator = getExpressionEvaluator(expr);
     for (var y = -radius; y <= radius; y += step) {
         for (var x = -radius; x <= radius; x += step) {
             var width = 0;
-            while (Shapes.evalExpr(x+width, y, expr) && x+width <= radius) {
+            while (evaluator(x+width, y) && x+width <= radius) {
                 width += step;
                 pointsCount++;
             }
@@ -359,6 +365,16 @@ function utf8_decode (str_data) {
 
 window.initShapes = function (task) {
     Shapes.init(task);
+    $("#expression").submit(function(){ 
+       try{
+           Shapes.drawUserInput($("#text").val());
+       }catch(e){
+           alert(e)
+       };
+       return false;
+    });
+
+    $("#text").charCounter();
 }
 
 })(window, Raphael);

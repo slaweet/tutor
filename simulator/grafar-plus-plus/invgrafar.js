@@ -17,7 +17,7 @@ var graphObj = function (khanutil, props) {
                 axisArrows: "&lt;-&gt;",
                 tickStep: [Math.round(range[0]/10) , Math.floor(range[1]/10)],
                 labelStep: 1,
-                gridOpacity: 0.05,
+                gridOpacity: 0.1,
                 axisOpacity: 0.2,
                 tickOpacity: 0.4,
                 labelOpacity: 0.5

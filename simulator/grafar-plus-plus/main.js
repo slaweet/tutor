@@ -5,6 +5,7 @@
  * Time: 12:25 PM
  * To change this template use File | Settings | File Templates.
  */
+(function(window, undefined) {
 
 var tutor = function (spec, my) {
     'use strict';
@@ -33,15 +34,16 @@ var tutor = function (spec, my) {
 
 var invGrafar = function (spec, my) {
     'use strict';
-    var colors = [window.KhanUtil.BLUE,window.KhanUtil.GREEN,window.KhanUtil.PINK,window.KhanUtil.YELLOW];
-    var letters = ['f','g','h','i'];
     my = my || {};
+    my.colors = [KhanUtil.BLUE, KhanUtil.GREEN, KhanUtil.PINK, KhanUtil.YELLOW];
+    my.letters = ['f','g','h','i'];
     var that = {};
 
     if (spec.problem.plan.indexOf('"') == -1) {
         spec.problem.plan = base64_decode(spec.problem.plan);
     }
-    spec.problem.plan = eval("(" + spec.problem.plan + ")");
+    var JSON = JSON || {decode: function(json) {return eval("(" + json + ")")}};
+    spec.problem.plan = JSON.decode(spec.problem.plan);
     my.props = spec.problem.plan[0].eqn ? {} : spec.problem.plan.shift();
 
     my.tutor = spec.tutor;
@@ -52,41 +54,47 @@ var invGrafar = function (spec, my) {
     my.functions = [];
     my.solved = [];
 
-    for (var index in spec.problem.plan) {
-        if (!spec.problem.plan.hasOwnProperty(index)) {
-            continue;
-        }
-        var f = spec.problem.plan[index];
+    for (var i = 0; i < spec.problem.plan.length; i++) {
+        var f = spec.problem.plan[i];
+        f.color = my.colors[i % my.colors.length];
+
+        var fob = addFunction(f);
+
+        my.graph.addFunc(fob);
+        my.functions.push(fob);
+        my.solved.push(false);
+    }
+    jQuery("code").tmpl();
+
+    function addFunction (f) {
         var i = my.functions.length;
-        f.color = colors[index % colors.length];
-        var fce = (f.eqn.indexOf("=") == -1 ? letters[i] + "(x) = " : f.eqn.substr(0, f.eqn.indexOf("=")+1));
+        var fce = (f.eqn.indexOf("=") == -1 ? my.letters[i] + "(x) = " : f.eqn.substr(0, f.eqn.indexOf("=")+1));
         f.eqn = f.eqn.substr(f.eqn.indexOf("=")+1);
         var input = ""; 
+        var inputEnterFunction;
+        var className = "";
         if (f.solpoints) {
-            var x = x + 1 || 0;
-            var y = y + 2 || 0;
+            var x = i * 1 || 0;
+            var y = i * 2 || 0;
             f.fpoints = f.fpoints || [[0 + x, 0 - y], [2 + x, 2 - y]];
             fce += f.eqn;
             input = getSelect(i, f.type);
-            $("#rovnice").append("<tr id=\"rce_" + i + "\"><td><code>"+ fce  + "</code></td><td> "+input+"</td></tr>");
         } else if (f.type == "Point") {
             f.soltype = f.type;
             f.fpoints = f.fpoints || [[5, 5]];
-            (function(i) {
-                f.setCoords = function(p) {
-                    $("#rce_" + i + " .coords").text("[" + p[0] + "," + p[1] + "]");
-                };
-            }(i));
+            f.setCoords = function(p) {
+                $("#rce_" + i + " .coords").text("[" + p[0] + "," + p[1] + "]");
+            };
             fce += f.eqn;
-            $("#rovnice").append("<tr id=\"rce_" + i + "\"><td><code>"+ fce  + "</code></td><td class='coords'> "+input+"</td></tr>");
+            className = "coords";
         } else if (f.type == "PointInput") {
             f.soltype = f.type;
             f.fpoints = f.fpoints || [];
             input = "[<input type='text' value='5'/>,<input type='text' value='5'/>]";
             fce += f.eqn;
             f.constrains = [function(p){return false;}];
-            $("#rovnice").append("<tr id=\"rce_" + i + "\"><td><code>"+ fce  + "</code></td><td class='coords'> "+input+"</td></tr>");
-            $("#rce_"+i+ " input").keypress(function (e) {
+            className = "coords";
+            inputEnterFunction = function (e) {
               if (e.which == 13) {
                 var i = $(this).parents("tr").attr("id").replace("rce_", "").toInt()
                 var func = my.functions[i];
@@ -99,14 +107,13 @@ var invGrafar = function (spec, my) {
                 my.graph.redrawFunc(func);
                 func.notify(func.checkSolved());
               }
-            });
+            };
         } else {
             f.type = "Generic";
             f.soltype = f.type;
             f.fpoints = [];
             input = "<input type='text'/></td><td class='error'>";
-            $("#rovnice").append("<tr id=\"rce_" + i + "\"><td><code>"+ fce  + "</code></td><td> "+input+"</td></tr>");
-            $("#rce_"+i+ " input").keypress(function (e) {
+            inputEnterFunction = function (e) {
               if (e.which == 13) {
                 var i = $(this).parents("tr").attr("id").replace("rce_", "").toInt()
                 var func = my.functions[i];
@@ -120,15 +127,13 @@ var invGrafar = function (spec, my) {
                 func.notify(func.checkSolved());
                 //console.log(my.solved[id])
               }
-            });
+            };
         }
+        $("#rovnice").append("<tr id=\"rce_" + i + "\"><td><code>"+ fce  + "</code></td><td class='"+ className + "'> "+input+"</td></tr>");
+        $("#rce_"+i+ " input").keypress(inputEnterFunction);
         var fob = funcObject(f);
         $("#rce_" + i + ", #rce_" + i + " input" + ", #rce_" + i + " select").css({color: f.color});
-        my.functions.push(fob);
-        my.solved.push(false);
         
-        //capture current value of i and color
-        (function(i, c) {
         fob.notify = function(solved) {
             if (my.solved[i] !== solved) {
                 my.solved[i] = solved;
@@ -137,7 +142,7 @@ var invGrafar = function (spec, my) {
                     $("#rce_"+i+ ", #rce_" + i + " input" + ", #rce_" + i + " select").css('color', "#999999");
                     my.functions[i].color = "#999999";
                 } else {
-                    $("#rce_"+i+ ", #rce_" + i + " input" + ", #rce_" + i + " select").css('color', c);
+                    $("#rce_"+i+ ", #rce_" + i + " input" + ", #rce_" + i + " select").css('color', f.color);
                     my.functions[i].color = spec.problem.plan[i].color || KhanUtil.BLUE;
                 }
                 my.graph.redrawFunc(my.functions[i]);
@@ -145,11 +150,9 @@ var invGrafar = function (spec, my) {
             if (my.solved.filter(function(x){return !x}).length == 0) {
                 after_win();
             }
-        };}(i, f.color));
-
-        my.graph.addFunc(fob);
+        };
+        return fob;
     }
-    jQuery("code").tmpl();
 
     $(".rce-select").change(function(){
         var id = $(this).attr("id").replace("select-", "");
@@ -190,6 +193,7 @@ var invGrafar = function (spec, my) {
     };
     return that;
 };
+
 
 var getFuncPoints = function(funcString) {
     var width = 11;
@@ -285,7 +289,7 @@ function base64_decode (data) {
     } while (i < data.length);
  
     dec = tmp_arr.join('');
-    dec = this.utf8_decode(dec);
+    dec = utf8_decode(dec);
  
     return dec;
 }
@@ -333,6 +337,10 @@ function utf8_decode (str_data) {
     return tmp_arr.join('');
 }
 
+window.tutor = tutor;
+window.invGrafar = invGrafar;
+
 // parse old grapher instances from tutor export .txt file opened in browser
 // http://tutor.fi.muni.cz/old/include/a_data_file_instances.php?problem_id=17
 // var i = 1;document.activeElement.innerHTML.match(/plot(.*);/g).map(function(el){return el.replace('plot(',"Puvodni "+(i)+"\nOld "+(i++)+"\n90\n[{eqn:").replace(');',"}]\n")}).join("\n")
+})(window);

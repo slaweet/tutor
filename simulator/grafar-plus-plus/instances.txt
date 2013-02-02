@@ -3,6 +3,16 @@ Linear 1
 40
 [ {eqn:"y = -1/2 x", type:"Line",soltype:"Line", solpoints:[[0,0], [2,-1]]} ] 
 
+Priklad range 
+Range 
+50
+[ {"range" : [11,25]},  {eqn:"y = -1/2 x", type:"Line",soltype:"Line", solpoints:[[0,0], [2,-1]]} ] 
+
+Priklad range 2
+Range 2
+50
+[ {"range" : 25},  {eqn:"y = -1/2 x", type:"Line",soltype:"Line", solpoints:[[0,0], [2,-1]]} ] 
+
 Linearni soustava 1
 Linear system 1
 100
