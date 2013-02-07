@@ -46,7 +46,7 @@ Constrain
 Opačný směr
 Linear
 50
-[ {eqn:"-2x-7"}, {eqn:"1/2x^2"}] 
+[ {eqn:"-2x-7", init:"x"}, {eqn:"1/2x^2", init:"x^2"}] 
 
 Derivace 1
 Derivation 1

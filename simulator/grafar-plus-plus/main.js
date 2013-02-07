@@ -112,7 +112,7 @@ var invGrafar = function (spec, my) {
             f.type = "Generic";
             f.soltype = f.type;
             f.fpoints = [];
-            input = "<input type='text'/></td><td class='error'>";
+            input = "<input type='text' value='"+(f.init||"")+"'/></td><td class='error'>";
             inputEnterFunction = function (e) {
               if (e.which == 13) {
                 var i = $(this).parents("tr").attr("id").replace("rce_", "").toInt()
