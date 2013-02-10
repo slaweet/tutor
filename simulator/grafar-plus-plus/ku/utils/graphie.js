@@ -44,12 +44,16 @@
 				}
 			}
 
+            function isJump (p1, p2) {
+                return Math.abs(p1) > yRange[1]+1 && p1 * p2 < 0;
+            }
+
 			return jQuery.map(points, function( point, i ) {
 				if ( point === true ) {
 					return "z";
 				} else {
 					var scaled = scalePoint( point );
-					return ( i === 0 ? "M" : "L") + boundNumber(scaled[0]) + " " + boundNumber(scaled[1]);
+					return ( i === 0 || isJump(point[1], points[i-1][1])? "M" : "L") + boundNumber(scaled[0]) + " " + boundNumber(scaled[1]);
 				}
 			}).join("");
 		};
@@ -211,7 +215,7 @@
 			},
 
 			path: function( points ) {
-				var p = raphael.path( svgPath( points) );
+				var p = raphael.path( svgPath( points ) );
 				p.graphiePath = points;
 				return p;
 			},
@@ -329,10 +333,12 @@
 				var min = range[0], max = range[1];
 				var step = ( max - min ) / ( currentStyle["plot-points"] || 800 );
 				for ( var t = min; t <= max; t += step ) {
+                    var p = fn(t);
+                    if (!isNaN(p[1]))
 					points.push( fn( t ) );
 				}
 
-				return this.path( points );
+				return this.path( points , true);
 			},
 
 			plotPolar: function( fn, range ) {

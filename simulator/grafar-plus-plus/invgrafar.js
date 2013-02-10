@@ -458,7 +458,7 @@ var tanFunc = function (fpoints) {
 };
 
 var getEvalFunc = function(func) {
-    var ret = eval("(function (x) { return (" + func + ") || 100000; })");
+    var ret = new Function("x", "return (" + func + ");");
     return ret;
 }
 
