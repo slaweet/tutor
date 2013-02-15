@@ -43,9 +43,10 @@
 					return Math.max( 1e-6, Math.min( num, 1e20 ) );
 				}
 			}
+            var isPlot = points.length > 100; 
 
             function isJump (p1, p2) {
-                return Math.abs(p1) > yRange[1]+1 && p1 * p2 < 0;
+                return isPlot && Math.abs(p1) > yRange[1]+1 && p1 * p2 < 0;
             }
 
 			return jQuery.map(points, function( point, i ) {
@@ -334,8 +335,11 @@
 				var step = ( max - min ) / ( currentStyle["plot-points"] || 800 );
 				for ( var t = min; t <= max; t += step ) {
                     var p = fn(t);
-                    if (!isNaN(p[1]))
-					points.push( fn( t ) );
+                    if (!isNaN(p[1])) {
+                        // bound too big numbers
+                        p[1] = Math.max( Math.min( p[1], 2*yRange[1] ), 2*yRange[0] );
+                        points.push( p );
+                    }
 				}
 
 				return this.path( points , true);
