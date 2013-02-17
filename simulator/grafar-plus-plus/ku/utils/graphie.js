@@ -43,6 +43,7 @@
 					return Math.max( 1e-6, Math.min( num, 1e20 ) );
 				}
 			}
+            //isJump and isPlot were added by slaweet: to avoid vertical line in functions like "tan", "1/x"
             var isPlot = points.length > 100; 
 
             function isJump (p1, p2) {
@@ -335,8 +336,9 @@
 				var step = ( max - min ) / ( currentStyle["plot-points"] || 800 );
 				for ( var t = min; t <= max; t += step ) {
                     var p = fn(t);
-                    if (!isNaN(p[1])) {
-                        // bound too big numbers
+                    // edit by slaweet: to draw functions like 'log' correctly
+                    if (!isNaN( p[1] )) {
+                        // edit by slaweet: bound too big numbers to make work functions like 'x^x'
                         p[1] = Math.max( Math.min( p[1], 2*yRange[1] ), 2*yRange[0] );
                         points.push( p );
                     }

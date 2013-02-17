@@ -346,14 +346,15 @@ var funcObject = function (spec) {
                 }); 
                 that.gobject.constraints.fixed = true;
             } else {
-                that.gobject.moveTo(that.point[0], that.point[1]);
+                var x = boundBy(that.point[0], graph.range[0]);
+                var y = boundBy(that.point[1], graph.range[1]);
+                that.gobject.moveTo(x, y);
             }
         },
         checkSolvedPoint : function () {
             return that.fpoints[0][0] == spec.sol[0] && that.fpoints[0][1] == spec.sol[1]; 
         },
         checkSolvedPointInput : function () {
-            console.log(that.point[0]);
             return that.point[0] == spec.sol[0] && that.point[1] == spec.sol[1]; 
         },
         redrawGonio : function (graph) {
@@ -417,6 +418,10 @@ var funcObject = function (spec) {
     return that;
 };
 
+var boundBy = function (x, bounds) {
+    return Math.max(bounds[0] -1 , Math.min(bounds[1] + 1, x));
+}
+
 var getPointOn = function (points, range) {
     var x1 = points[0][0] - points[1][0];
     var y1 = points[0][1] - points[1][1];
@@ -459,6 +464,11 @@ var tanFunc = function (fpoints) {
 
 var getEvalFunc = function(func) {
     var ret = new Function("x", "return (" + func + ");");
+    try {
+        ret(1);
+    } catch (e) {
+        var ret = function (x) { return 10000;};
+    }
     return ret;
 }
 

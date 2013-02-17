@@ -90,7 +90,7 @@ var invGrafar = function (spec, my) {
         } else if (f.type == "PointInput") {
             f.soltype = f.type;
             f.fpoints = f.fpoints || [];
-            input = "[<input type='text' value='5'/>,<input type='text' value='5'/>]";
+            input = "[<input type='text' value='5'/>,<input type='text' value='5'/>]</td><td class='error'>";
             fce += f.eqn;
             f.constrains = [function(p){return false;}];
             className = "coords";
@@ -98,14 +98,24 @@ var invGrafar = function (spec, my) {
               if (e.which == 13) {
                 var i = $(this).parents("tr").attr("id").replace("rce_", "").toInt()
                 var func = my.functions[i];
-                func.point = [$(this).parent().children("input:first-child").val(), $(this).parent().children("input:nth-child(2)").val()];
-                var error = '';
-                $("#rce_"+i+ " .error").html(error);
-                if (error != "") {
-                    func.eqn = "1000";
+                var pointCoord = function (elem, index) {
+                    var input = $(elem).parent().children("input:nth-child("+index+")");
+                    var val = input.val();
+                    var coord = parseFloat(val);
+                    return coord;
                 }
-                my.graph.redrawFunc(func);
-                func.notify(func.checkSolved());
+                func.point = [pointCoord(this, 1), pointCoord(this, 2)];
+                var error = '';
+                for (var i = 0; i < func.point.length; i++) {
+                    if (isNaN(func.point[i])) {
+                        error = "Chyba: " + (i + 1) + ". souřadnice není číslo!";
+                   }
+                };
+                $("#rce_"+i+ " .error").html(error);
+                if (error == "") {
+                    my.graph.redrawFunc(func);
+                    func.notify(func.checkSolved());
+                }
               }
             };
         } else {
@@ -120,12 +130,8 @@ var invGrafar = function (spec, my) {
                 func.eqn = $(this).val();
                 var error = funcError(preprocess(func.eqn));
                 $("#rce_"+i+ " .error").html(error);
-                if (error != "") {
-                    func.eqn = "1000";
-                }
                 my.graph.redrawFunc(func);
                 func.notify(func.checkSolved());
-                //console.log(my.solved[id])
               }
             };
         }
@@ -147,9 +153,11 @@ var invGrafar = function (spec, my) {
                 }
                 my.graph.redrawFunc(my.functions[i]);
             }
-            if (my.solved.filter(function(x){return !x}).length == 0) {
-                after_win();
+            var move = {
+                desc : toLogString(my.functions),
+                winning : (my.solved.filter(function(x){return !x}).length == 0) 
             }
+            that.reportMove(move);
         };
         return fob;
     }
@@ -185,15 +193,29 @@ var invGrafar = function (spec, my) {
      */
     that.reportMove = function (move) {
         // TODO: až to pustí, nevolat při posouvání
-        my.tutor.sendMove(move.move_desc, move.winning);
+        my.tutor.sendMove(move.desc, move.winning);
         if (move.winning) {
-            my.grafar.freeze();
-            tutor.showWin();
+            //my.grafar.freeze();
+            my.tutor.showWin();
         }
     };
     return that;
 };
 
+var toLogString = function(funcs) {
+    var log = funcs.map(function (f) {
+        if (f.fpoints.length != 0) { 
+            return f.fpoints;
+        } else if (f.point) {
+            return f.point;
+        } else if (f.eqn) {
+            return f.eqn;
+        }
+    });
+    log = JSON.encode(log); 
+    return log;
+    
+}
 
 var getFuncPoints = function(funcString) {
     var width = 11;
@@ -215,7 +237,7 @@ var funcError = function(func) {
     try {
         var val = eval(func);
     } catch(e) {
-        return "Neplatný formát. (Chyba: " + e.message + ")";
+        return "Neplatný formát.";// (Chyba: " + e.message + ")";
     }
     return "";
 }
@@ -224,7 +246,7 @@ var getSelect = function(id, type) {
     if (type) {
         return ""
     }
-    var options = ["Line", "Absolute", "Parabola", "Sinus", "Tangens"];
+    var options = ["Line", "Absolute", "Parabola"];//, "Sinus", "Tangens"];
     var select = "<select id='select-"+id+"' class='rce-select'>"
     for (var i = 0; i < options.length; i++) {
         select += "<option value='"+options[i]+"' "+(type==options[i] ? "selected='selected'" : "")+">"+options[i]+"</option>"; 
