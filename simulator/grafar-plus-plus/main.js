@@ -128,7 +128,7 @@ var invGrafar = function (spec, my) {
                 var i = $(this).parents("tr").attr("id").replace("rce_", "").toInt()
                 var func = my.functions[i];
                 func.eqn = $(this).val();
-                var error = funcError(preprocess(func.eqn));
+                var error = funcError((func.eqn));
                 $("#rce_"+i+ " .error").html(error);
                 my.graph.redrawFunc(func);
                 func.notify(func.checkSolved());
@@ -143,7 +143,7 @@ var invGrafar = function (spec, my) {
         fob.notify = function(solved) {
             if (my.solved[i] !== solved) {
                 my.solved[i] = solved;
-                console.log(my.solved);
+                //console.log(my.solved);
                 if (solved) {
                     $("#rce_"+i+ ", #rce_" + i + " input" + ", #rce_" + i + " select").css('color', "#999999");
                     my.functions[i].color = "#999999";
@@ -204,15 +204,10 @@ var invGrafar = function (spec, my) {
 
 var toLogString = function(funcs) {
     var log = funcs.map(function (f) {
-        if (f.fpoints.length != 0) { 
-            return f.fpoints;
-        } else if (f.point) {
-            return f.point;
-        } else if (f.eqn) {
-            return f.eqn;
-        }
+        return f.getLogString();
     });
     log = JSON.encode(log); 
+    log = encodeURIComponent(log);
     return log;
     
 }
@@ -233,7 +228,11 @@ var evalFunc = function(func, x) {
 }
 
 var funcError = function(func) {
+    var func = preprocess(func);
     var x = 10;
+    if (func.trim().length == 0) {
+        return "Prázdný vstup";
+    }
     try {
         var val = eval(func);
     } catch(e) {

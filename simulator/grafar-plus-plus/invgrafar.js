@@ -118,7 +118,7 @@ var funcObject = function (spec) {
     var that = {
         color : spec.color || KhanUtil.BLUE,
         fpoints : spec.fpoints || [[0, 0], [2, 1]],
-        constrains : spec.constrains || [],
+        constrains : (spec.constrains || []).map(function(c){return new Function("p", "return " + c);}),
         type : spec.type || "Line",
         gobject : undefined,
         eqn : spec.eqn,
@@ -150,6 +150,15 @@ var funcObject = function (spec) {
                     that.fpoints[index] = ofpoint;
                     return false;
                 }
+            }
+        },
+        getLogString : function () {
+            if (that.fpoints.length != 0) { 
+                return that.fpoints;
+            } else if (that.point) {
+                return that.point;
+            } else if (that.eqn) {
+                return that.eqn;
             }
         },
         getPoints : function () {
@@ -336,15 +345,13 @@ var funcObject = function (spec) {
         },
         redrawPointInput : function (graph) {
             if (that.gobject === undefined) {
-                var color = spec.color;
-                that.gobject = KhanUtil.addMovablePoint({
+                that.gobject = KhanUtil.addUnmovablePoint({
                     coord : [5,5],
                     normalStyle: {
-                        stroke: color,
-                        fill: color
+                        stroke: spec.color,
+                        fill: spec.color
                     }
                 }); 
-                that.gobject.constraints.fixed = true;
             } else {
                 var x = boundBy(that.point[0], graph.range[0]);
                 var y = boundBy(that.point[1], graph.range[1]);
@@ -373,7 +380,7 @@ var funcObject = function (spec) {
         },
         redrawGeneric : function (graph) {
             'use strict';
-            that.func = getEvalFunc(preprocess(that.eqn));
+            that.func = getEvalFunc((that.eqn));
             if (that.gobject !== undefined) {
                 that.gobject.remove();
             }
@@ -387,8 +394,8 @@ var funcObject = function (spec) {
             var step = 1/8;
             var wx = 11;//graph.range[0][1];
             var wy = 11;//graph.range[1][1];
-            var correct = getEvalFunc(preprocess(spec.eqn));
-            var attempt = getEvalFunc(preprocess(that.eqn));
+            var correct = getEvalFunc((spec.eqn));
+            var attempt = getEvalFunc((that.eqn));
             for (var x = -wx; x < wy; x+= step) {
                 if (Math.abs(correct(x)-attempt(x)) > APPROX_ZERO) {
                     return false;
@@ -399,7 +406,7 @@ var funcObject = function (spec) {
         },
         drawGoal : function (graph) {
             'use strict';
-            that.func = getEvalFunc(preprocess(that.eqn));
+            that.func = getEvalFunc((that.eqn));
             
             var wx = graph.range[0][1];
             var wy = graph.range[1][1];
@@ -417,6 +424,17 @@ var funcObject = function (spec) {
 
     return that;
 };
+
+jQuery.extend( KhanUtil, {
+   addUnmovablePoint : function(options) {
+       options.highlightStyle = options.normalStyle;
+       var point = KhanUtil.addMovablePoint(options);
+       point.constraints.fixed = true;
+       point.highlightStyle.scale = 1;
+       jQuery( point.mouseTarget[0] ).css( "cursor", "auto" );
+       return point;
+   }
+});
 
 var boundBy = function (x, bounds) {
     return Math.max(bounds[0] -1 , Math.min(bounds[1] + 1, x));
@@ -463,6 +481,10 @@ var tanFunc = function (fpoints) {
 };
 
 var getEvalFunc = function(func) {
+    var func = preprocess(func);
+    if (func.trim().length == 0) {
+        func = "10000";
+    }
     var ret = new Function("x", "return (" + func + ");");
     try {
         ret(1);
