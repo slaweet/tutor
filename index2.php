@@ -43,6 +43,12 @@ function processInstances($data) {
             $_POST["initial_mean_time"] = $task[2];
             $_POST["problem_cs"] = $task[3];
             InstanceController::add_instance($key);
+        } else if (count($task) == 2) {
+            $_POST["name_cs"] = $task[0];
+            $_POST["name_en"] = $task[0];
+            $_POST["initial_mean_time"] = 100;
+            $_POST["problem_cs"] = $task[1];
+            InstanceController::add_instance($key);
         }
     }
 }
