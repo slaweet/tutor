@@ -1,349 +1,538 @@
+Kresleni 1
+Drawing 1 
+40
+[{type:"Draw", eqn:"0.5x^2-5", init:"0.1x^3+2"}]
+
+Kresleni 2
+Drawing 2 
+40
+[{type:"Draw", eqn:"x^3-1", init:"0.1x^3+2"}]
+
 Trénink
-100
-100
+Trening
+40
 [{eqn:"2x-1",init:"3x+2"}]
 
 Lineární A0
-10
+Linear A0
 100
 [{eqn:"4x - 4",init:"2x+2"}]
 
 Lineární A1
-10
+Linear A1
 100
 [{eqn:"-x/3 + 2",init:"-x/2 - 1"}]
 
 Lineární A2
-10
+Linear A2
 100
 [{eqn:"2x"}]
 
 Lineární A3
-10
+Linear A3
 100
 [{eqn:"-x/3"}]
 
 Lineární A4
-10
+Linear A4
 100
 [{eqn:"3x-4"}]
 
 Lineární A5
-10
+Linear A5
 100
 [{eqn:"x/4+2"}]
 
 Lineární A6
-10
+Linear A6
 100
 [{eqn:"-x/2+1"}]
 
 Lineární A7
-10
+Linear A7
 100
 [{eqn:"x-3"}]
 
 Lineární A8
-10
+Linear A8
 100
 [{eqn:"5x-9"}]
 
 Lineární A9
-10
+Linear A9
 100
 [{eqn:"x+5"}]
 
-10
+Lineární B0
+Linear B0
 100
 [ {eqn:"y = x + 1", type:"Line", soltype:"Line", solpoints:[[0,1], [1,2]]} ]
 
 Lineární B1
-10
+Linear B1
 100
 [ {eqn:"y = -x/2", type:"Line", soltype:"Line", solpoints:[[0,0], [2,-1]]} ]
 
 Lineární B2
-10
+Linear B2
 100
 [ {eqn:"y = 2x", type:"Line", soltype:"Line", solpoints:[[0,0], [1,2]]} ]
 
 Lineární B3
-10
+Linear B3
 100
 [ {eqn:"y = 3x-3", type:"Line", soltype:"Line", solpoints:[[0,-3], [1,0]]} ]
 
 Lineární B4
-10
+Linear B4
 100
 [ {eqn:"y = 0.2x+1", type:"Line", soltype:"Line", solpoints:[[0,1], [5,2]]} ]
 
 Lineární C1
-10
+Linear C1
 100
-[ {eqn:"1/2x -5", type:"Line", soltype:"Line", solpoints:[[0,-5], [6,-3]], constrains:[function(p){return p[0][0]<=-5 && p[1][0]>=5}], fpoints:[[-6, -6], [6, 8]]}]
+[ {eqn:"1/2x -5", type:"Line", soltype:"Line", solpoints:[[0,-5], [6,-3]], constrains:["p[0][0]<=-5 && p[1][0]>=5"], fpoints:[[-6, -6], [6, 8]]}]
 
 Lineární C2
-10
+Linear C2
 100
-[ {eqn:"3x + 1", type:"Line", soltype:"Line", solpoints:[[0,1], [1,4]], constrains:[function(p){return p[0][1]<=-5 && p[1][1]>=5}], fpoints:[[-6, -6], [6, 8]]}]
+[ {eqn:"3x + 1", type:"Line", soltype:"Line", solpoints:[[0,1], [1,4]], constrains:["p[0][1]<=-5 && p[1][1]>=5"], fpoints:[[-6, -6], [6, 8]]}]
 
 Lineární D0
+Linear D0
+120
 [{eqn:"2x+4",init:"x+1"},{eqn:"-x-2",init:"-x"}]
 
 Lineární D1
+Linear D1
+120
 [{eqn:"2x"}, {eqn:"-x"}]
 
 Lineární D2
+Linear D2
+120
 [{eqn:"x-1"}, {eqn:"x+3"}]
 
 Lineární D3
+Linear D3
+120
 [{eqn:"2x-3"}, {eqn:"-x/2+4"}]
 
 Lineární D4
+Linear D4
+120
 [{eqn:"3x-3"}, {eqn:"-3x+3"}]
 
 Lineární D5
+Linear D5
+120
 [{eqn:"5x+27"}, {eqn:"-x/5+1"}]
 
+Parabola A0
+Parabola A0
+130
 [{eqn:"x^2 - x - 2", init:"x^2 + x + 2"}]
 
 Parabola A1
+Parabola A1
+130
 [{eqn:"x^2 + 3"}]
 
 Parabola A2
+Parabola A2
+130
 [{eqn:"(x+2)*(x-1)"}]
 
 Parabola A3
+Parabola A3
+130
 [{eqn:"x^2 + 2x + 1"}]
 
 Parabola A4
+Parabola A4
+130
 [{eqn:"-x^2 + x"}]
 
 Parabola A5
+Parabola A5
+130
 [{eqn:"(x+5)*(x-3) / 5"}]
 
 Parabola A6
+Parabola A6
+130
 [{eqn:"-x*(x-6)/4.5"}]
 
 Parabola A7
+Parabola A7
+130
 [{eqn:"(x+2)*(x-1)", init:"(x+3)*(x-3)"}]
 
 Parabola A8
+Parabola A8
+130
 [{eqn:"-(x-3)*(x+2)/2", init:"(x+2)*(x-2)"}]
 
 Parabola B1
+Parabola B1
+130
 [ {eqn:"y = x^2 - 9", type:"Parabola", soltype:"Parabola", fpoints:[[-1, -1], [-6, 5]], solpoints:[1,0,-9] } ]
 
 Parabola B2
+Parabola B2
+130
 [ {eqn:"y = -x^2 / 5 + 4", type:"Parabola", soltype:"Parabola", fpoints:[[0, 0], [2, 2]], solpoints:[-0.2,0,4] } ]
 
 Parabola B3
+Parabola B3
+130
 [ {eqn:"y = x^2/2 - 2", type:"Parabola", soltype:"Parabola", fpoints:[[0, 0], [2, 2]], solpoints:[0.5,0,-2] } ]
 
 Parabola B4
+Parabola B4
+130
 [ {eqn:"y = (x+1)*(x+3)", type:"Parabola", soltype:"Parabola", fpoints:[[0, 0], [2, 2]], solpoints:[1,4,3] } ]
 
 Parabola B5
+Parabola B5
+130
 [ {eqn:"y = -x^2 + 4x - 3", type:"Parabola", soltype:"Parabola", fpoints:[[0, 0], [2, 2]], solpoints:[-1,4,-3] } ]
 
+Paraboly C1
+Parabolas C1
+150
 [{eqn:"x^2 + 2"}, {eqn:"-x^2 + 2"}]
 
 Paraboly C2
+Parabolas C1
+150
 [{eqn:"2x^2"}, {eqn:"x^2/2"}]
 
 Paraboly C3
+Parabolas C3
+150
 [{eqn:"x^2+3x"}, {eqn:"-x^2+3x"}]
 
 Paraboly C4
+Parabolas C4
+150
 [{eqn:"x^2/4-4"}, {eqn:"-x^2/4+4"}]
 
 Paraboly C5
+Parabolas C5
+150
 [{eqn:"x^2-9"}, {eqn:"x^2/3-3"}]
 
 Paraboly C6
+Parabolas C6
+150
 [{eqn:"x^2+x+1"}, {eqn:"x^2-x+1"}]
 
 Polynom A1
+Polynom A1
+160
 [{eqn:"x^3-1"}]
 
 Polynom A2
+Polynom A2
+160
 [{eqn:"-x^3/9", init:"x^3"}]
 
 Polynom A3
+Polynom A3
+160
 [{eqn:"x*(x+2)*(x-3)/5", init:"(x+2)*(x-3)"}]
 
 Polynom A4
+Polynom A4
+160
 [{eqn:"x*(x+1)*(x-1)*(x-2)"}]
 
 Polynom A5
+Polynom A5
+160
 [{eqn:"x^4+2x^3"}]
 
 Polynom D1
+Polynom D1
+160
 [{eqn:"x"}, {eqn:"x^2"}, {eqn:"x^3"}]
 
 Absolutní A1
+Absolute A1
+160
 [{eqn:"abs(x) - 2"}]
 
 Absolutní A2
+Absolute A2
+160
 [{eqn:"- abs(x) + 3"}]
 
 Absolutní A3
+Absolute A3
+160
 [{eqn:"- abs(x+2) - 4"}]
 
 Absolutní A4
+Absolute A4
+160
 [{eqn:"abs(x-4) + 1"}]
 
 Absolutní A5
+Absolute A5
+160
 [{eqn:"abs(x/3 + 2) - 4"}]
 
 Absolutní A6
+Absolute A6
+160
 [{eqn:"abs(abs(x)-3)"}]
 
 Absolutní A7
+Absolute A7
+160
 [{eqn:"abs(abs(x-2)-4)"}]
 
 Absolutní A8
+Absolute A8
+160
 [ {eqn:"abs(x)/x"} ]
 
 Absolutní A9
+Absolute A9
+160
 [{eqn:"abs(x)-x"}]
 
 Absolutní B1
+Absolute B1
+170
 [ {eqn:"y = abs(x+2)-3", type:"Absolute",soltype:"Absolute", solpoints:[[-2,-3], [0,-1]]} ] 
 
 Absolutní B2
+Absolute B2
+170
 [ {eqn:"y = -abs(x-3)+1", type:"Absolute",soltype:"Absolute", solpoints:[[3,1], [0,-2]]} ] 
 
 Dvě funkce A1
+TWo functions A1
+180
 [{eqn:"x + 2"}, {eqn:"abs(x) - 2"}]
 
 Dvě funkce A2
+TWo functions A2
+180
 [{eqn:"x^2/4 - 6"}, {eqn:"abs(x) - 6"}]
 
 Dvě funkce A3
+TWo functions A3
+180
 [{eqn:"x^2/4 - 6"}, {eqn:"abs(x) - 6"}]
 
 Dvě funkce A4
+TWo functions A4
+180
 [{eqn:"x^2/3 + 3"}, {eqn:"x + 3"}]
 
 Derivace A1
+Derivation A1
+200
 [ { eqn:"x^2-3x+3"}, {eqn:"f'(x) = 2x-3"}] 
 
-Derivace A1
+Derivace A2
+Derivation A2
+200
 [ { eqn:"x^3/3-4x+2"}, {eqn:"f'(x) = x^2-4"}] 
 
 Gonio A0
+Trigonometry A0
+220
 [ { eqn:"2sin(x)-1", init:"sin(x)"} ]
 
 Gonio A1
+Trigonometry A1
+220
 [ { eqn:"sin(x)-1"} ]
 
 Gonio A2
+Trigonometry A2
+220
 [ { eqn:"3*cos(x)+3"} ]
 
 Gonio A3
+Trigonometry A3
+220
 [ { eqn:"sin(x*pi)+1", init:"pi*sin(x)"} ]
 
 Gonio A4
+Trigonometry A4
+220
 [ { eqn:"2*sin(-x)"} ]
 
 Gonio A5
+Trigonometry A5
+220
 [ { eqn:"-tan(x)"} ]
 
 Gonio A6
+Trigonometry A6
+220
 [ { eqn:"sin(x)^2"} ]
 
 Gonio A7
+Trigonometry A7
+220
 [ { eqn:"6*sin(x)^10"} ]
 
 Gonio A8
+Trigonometry A8
+220
 [ { eqn:"sin(x^2)"} ]
 
 Gonio A9
+Trigonometry A9
+220
 [ { eqn:"sin(sin(sin(sin(2x))))"} ]
 
 Gonio A10
+Trigonometry A10
+220
 [{eqn:"cos(2*pi*x)+1"}]
 
 Gonio D1
+Trigonometry D1
+220
 [ { eqn: "sin(x)"}, { eqn: "cos(x)"} ]
 
 Gonio D2
+Trigonometry D2
+220
 [ { eqn: "sin(x)+1"}, { eqn: "cos(2x)"} ]
 
 Gonio D3
+Trigonometry D3
+220
 [ { eqn: "2*sin(x)"}, { eqn: "sin(2x)"} ]
 
 Gonio B1
+Trigonometry B1
+220
 [ {eqn:"y = sin(x*pi/2)+1", type:"Sinus", soltype:"Sinus", solpoints:[[0,1], [5,2]]} ] TODO doplnit reseni
 
 LogExpPow A1
+LogExpPow A1
+230
 [ { eqn:"sqrt(x+2)-3", init:"sqrt(x)"} ]
 
 LogExpPow A2
+LogExpPow A2
+230
 [ { eqn:"log(x+5)-6", init:"log(x)"} ]
 
 LogExpPow A3
+LogExpPow A3
+230
 [ { eqn:"2^x-3", init:"3^x"} ]
 
 LogExpPow A4
+LogExpPow A4
+230
 [ { eqn:"log(x)/log(2)"} ]
 
 LogExpPow A5
+LogExpPow A5
+230
 [ { eqn:"2^(x-3)-4"} ]
+
 LogExpPow A6
+LogExpPow A6
+230
 [ { eqn:"log(x+3)-1"} ]
 
 LogExpPow D1
+LogExpPow D1
+240
 [ { eqn:"log(x)"}, { eqn:"sqrt(x)"} ]
 
 LogExpPow D2
+LogExpPow D2
+240
 [ { eqn:"log(x)/log(2)"}, { eqn:"2^x"} ]
 
 LogExpPow D3
+LogExpPow D3
+240
 [ { eqn:"x^2"}, { eqn:"sqrt(x)"} ]
 
 Kombinace A1
+Combination A1
+250
 [ { eqn:"x+sin(x)"} ]
 
 Kombinace A2
+Combination A2
+250
 [{eqn:"(x^(-x/abs(x)))/x"}]
 
 Kombinace A3
+Combination A3
+250
 [{eqn:"abs(log(abs(x)))"}]
 
 Kombinace A4
+Combination A4
+250
 [{eqn:"e^(-x^2)"}]
 
 Kombinace A5
+Combination A5
+250
 [{eqn:"2^x-x^2"}]
 
 Kombinace A6
+Combination A6
+250
 [{eqn:"(abs(x)-2)^2*abs(x)/x"}]
 
 Kombinace A7
+Combination A7
+250
 [{eqn:"sin(abs(x))+1"}]
 
 Kombinace A8
+Combination A8
+250
 [{eqn:"-2*2^(-(x/2)^2)"}]
 
 Kombinace A9
+Combination A9
+250
 [{eqn:"abs(sin(x))*5"}]
 
 Kombinace A10
+Combination A10
+250
 [ { eqn:"sqrt(abs(x))-1"]
 
 Kombinace A11
+Combination A11
+250
 [{eqn:"abs(x)+cos(10x)-2"}]
 
-Kombinace A11
+Kombinace A12
+Combination A12
+250
 [{eqn:"sin(x*pi)/abs(sin(x*pi))"}]
 
 Kombinace D1
+Combination D1
+250
 [{eqn:"abs(x)+cos(x)-1"}, {eqn:"-abs(x)-cos(x)+1"}]
 
 Kombinace D2
+Combination D2
+250
 [{eqn:"sqrt(abs(x))"},{eqn:"log(abs(x))"},{eqn:"sqrt(abs(x)) - log(abs(x))-1"}]
+
 Linearni 1
 Linear 1
 40

@@ -75,6 +75,7 @@
         <script src="simulator/grafar-plus-plus/ASCIIsvg.js" charset="utf-8"> </script>
 
         <!-- Inverzní grafar-->
+        <script src="simulator/grafar-plus-plus/lang.js" charset="utf-8"> </script>
         <script src="simulator/grafar-plus-plus/invgrafar.js" charset="utf-8"> </script>
         <script src="simulator/grafar-plus-plus/main.js" charset="utf-8"> </script>
         <script type='text/javascript'>
@@ -89,9 +90,11 @@
                 };
             /////////////////////////////////////////////////////////
 
+            var lang = "<?= LocaleController::get_lang() ?>";
             var p;
             $(document).ready(function () {
                 'use strict';
+                Lang.setLang(lang);
                 tutor_globals.instance_plan = tutor_globals.instance_plan != "" ? tutor_globals.instance_plan : location.hash.substring(1);
                 //kazdý jQuery objekt dostal metodu graphie, která v nem najde div .graphie a inicializuje ho
                 jQuery('#holder').graphie();

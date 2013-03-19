@@ -7,6 +7,21 @@
  */
 (function(window, undefined) {
 
+var BUNDLE = {
+    "cs":{ 
+    "not a number" :  "souřadnice není číslo!", 
+    "error" : "Chyba",
+    "empty input" : "Prázdný vstup",
+    "invalid format" : "Neplatný formát."
+    },
+    "en":{ 
+    "not a number" :  "coordinate is not a number!", 
+    "error" : "Error",
+    "empty input" : "Empty input",
+    "invalid format" : "Invalid format."
+    }
+}
+
 var tutor = function (spec, my) {
     'use strict';
     var my = my || {};
@@ -34,6 +49,10 @@ var tutor = function (spec, my) {
 
 var invGrafar = function (spec, my) {
     'use strict';
+    
+    for (var i in BUNDLE) {
+        Lang.setBundle(i, BUNDLE[i]);
+    }
     my = my || {};
     my.colors = [KhanUtil.BLUE, KhanUtil.GREEN, KhanUtil.PINK, KhanUtil.YELLOW];
     my.letters = ['f','g','h','i'];
@@ -96,7 +115,7 @@ var invGrafar = function (spec, my) {
             className = "coords";
             inputEnterFunction = function (e) {
               if (e.which == 13) {
-                var i = $(this).parents("tr").attr("id").replace("rce_", "").toInt()
+                var i = $(this).parents("tr").attr("id").replace("rce_", "");
                 var func = my.functions[i];
                 var pointCoord = function (elem, index) {
                     var input = $(elem).parent().children("input:nth-child("+index+")");
@@ -108,7 +127,7 @@ var invGrafar = function (spec, my) {
                 var error = '';
                 for (var i = 0; i < func.point.length; i++) {
                     if (isNaN(func.point[i])) {
-                        error = "Chyba: " + (i + 1) + ". souřadnice není číslo!";
+                        error = Lang.get("error") + ": " + (i + 1) + ". " +Lang.get("not a number");
                    }
                 };
                 $("#rce_"+i+ " .error").html(error);
@@ -118,6 +137,11 @@ var invGrafar = function (spec, my) {
                 }
               }
             };
+        } else if (f.type == "Draw") {
+            fce += f.eqn;
+            f.fpoints = getDrawPoints(f.init || "1");
+            f.soltype = f.type;
+
         } else {
             f.type = "Generic";
             f.soltype = f.type;
@@ -125,7 +149,7 @@ var invGrafar = function (spec, my) {
             input = "<input type='text' value='"+(f.init||"")+"'/></td><td class='error'>";
             inputEnterFunction = function (e) {
               if (e.which == 13) {
-                var i = $(this).parents("tr").attr("id").replace("rce_", "").toInt()
+                var i = $(this).parents("tr").attr("id").replace("rce_", "");
                 var func = my.functions[i];
                 func.eqn = $(this).val();
                 var error = funcError((func.eqn));
@@ -206,7 +230,8 @@ var toLogString = function(funcs) {
     var log = funcs.map(function (f) {
         return f.getLogString();
     });
-    log = JSON.encode(log); 
+    JSON.stringify = JSON.stringify || JSON.encode;
+    log = JSON.stringify(log); 
     log = encodeURIComponent(log);
     return log;
     
@@ -231,14 +256,32 @@ var funcError = function(func) {
     var func = preprocess(func);
     var x = 10;
     if (func.trim().length == 0) {
-        return "Prázdný vstup";
+        return Lang.get("empty input");
     }
     try {
         var val = eval(func);
+        console.log(val);
     } catch(e) {
-        return "Neplatný formát.";// (Chyba: " + e.message + ")";
+        return Lang.get("invalid format");// (Chyba: " + e.message + ")";
+    }
+    if(!isFinite(val)) {
+        return Lang.get("invalid format");
     }
     return "";
+}
+
+var getDrawPoints = function(eqn) {
+    var points = [];
+    var fn = getEvalFunc(eqn);
+    var range = [-11, 11];
+    var step = 1;
+    for (var x = range[0]; x <= range[1]; x+= step) {
+        var point = [ x, fn(x)]
+        if (point[1] > range[0] && point[1] < range[1]) {
+            points.push(point);
+        }
+    };
+    return points;
 }
 
 var getSelect = function(id, type) {

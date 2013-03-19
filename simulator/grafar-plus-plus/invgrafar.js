@@ -218,6 +218,33 @@ var funcObject = function (spec) {
             var solved = compare_linear(x1, y1, x2, y2, x3, y3, x4, y4);
             return solved;
         },
+        redrawDraw : function (graph) {
+            'use strict';
+            if (that.gobject !== undefined) {
+                that.gobject.remove();
+            }
+
+            graph.style({ stroke: that.color, strokeWidth: 2}, function () {
+                'use strict';
+                that.gobject = graph.path(that.fpoints);
+            });
+        },
+        checkSolvedDraw : function () {
+            that.func = getEvalFunc((that.eqn));
+            var deltaSum = 0;
+            for (var i = 0; i < that.fpoints.length; i++) {
+                var x = that.fpoints[i][0];
+                var y = that.fpoints[i][1];
+                var expectedY = that.func(x); 
+                deltaSum += Math.abs(y - expectedY);
+            };
+            var delta = deltaSum / that.fpoints.length;
+            var solvedTrashold = 1;
+            var solved = delta < solvedTrashold;
+            console.log(delta);
+            console.log(solved);
+            return solved;
+        },
         redrawAbsolute : function (graph) {
             'use strict';
             var wx = graph.range[0][1];
@@ -487,10 +514,14 @@ var getEvalFunc = function(func) {
     }
     var ret = new Function("x", "return (" + func + ");");
     try {
-        ret(1);
+        var val = ret(1);
     } catch (e) {
         var ret = function (x) { return 10000;};
     }
+    if(!isFinite(val)) {
+        var ret = function (x) { return 10000;};
+    }
+
     return ret;
 }
 
