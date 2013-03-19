@@ -6,6 +6,11 @@ Drawing 1
 Kresleni 2
 Drawing 2 
 40
+[{type:"Draw", eqn:"log(x)", init:"-log(x)"}]
+
+Kresleni 3
+Drawing 3 
+40
 [{type:"Draw", eqn:"x^3-1", init:"0.1x^3+2"}]
 
 Trénink

@@ -228,6 +228,18 @@ var funcObject = function (spec) {
                 'use strict';
                 that.gobject = graph.path(that.fpoints);
             });
+            var solved = that.checkSolved();
+            if (solved) {
+                if (that.solution !== undefined) {
+                    that.solution.remove();
+                }
+                that.func = getEvalFunc((that.eqn));
+                var wx = graph.range[0][1];
+                var wy = graph.range[1][1];
+                graph.style({ stroke: that.color, strokeWidth: 2}, function() {
+                    that.solution = graph.plot(that.func, [-wx, wx]);
+                });
+            }
         },
         checkSolvedDraw : function () {
             that.func = getEvalFunc((that.eqn));
@@ -242,7 +254,6 @@ var funcObject = function (spec) {
             var solvedTrashold = 1;
             var solved = delta < solvedTrashold;
             console.log(delta);
-            console.log(solved);
             return solved;
         },
         redrawAbsolute : function (graph) {

@@ -139,9 +139,8 @@ var invGrafar = function (spec, my) {
             };
         } else if (f.type == "Draw") {
             fce += f.eqn;
-            f.fpoints = getDrawPoints(f.init || "1");
+            f.fpoints = getDrawPoints(f.init || "0.01x^3", f.range || [11,11]);
             f.soltype = f.type;
-
         } else {
             f.type = "Generic";
             f.soltype = f.type;
@@ -237,21 +236,6 @@ var toLogString = function(funcs) {
     
 }
 
-var getFuncPoints = function(funcString) {
-    var width = 11;
-    var step = 1;
-    var points = [];
-    for(var i = -width; i < width; i+= step) {
-        points.push([i,evalFunc(funcString, i)]);
-    }
-    return points;
-}
-
-var evalFunc = function(func, x) {
-    var val = eval(func);
-    return val;
-}
-
 var funcError = function(func) {
     var func = preprocess(func);
     var x = 10;
@@ -270,17 +254,27 @@ var funcError = function(func) {
     return "";
 }
 
-var getDrawPoints = function(eqn) {
+var getDrawPoints = function(eqn, range) {
     var points = [];
     var fn = getEvalFunc(eqn);
-    var range = [-11, 11];
-    var step = 1;
-    for (var x = range[0]; x <= range[1]; x+= step) {
+    var step = 0.1;
+    for (var x = -range[0]; x <= range[0]; x+= step) {
         var point = [ x, fn(x)]
-        if (point[1] > range[0] && point[1] < range[1]) {
+        if (point[1] > -range[1] && point[1] < range[1]) {
             points.push(point);
         }
     };
+    points = myRDP(points, 10);
+    return points;
+}
+
+var myRDP = function(points, requiredLength) {
+    var epsilon = 0.1;
+    while (points.length > requiredLength) {
+        points = properRDP(points, epsilon);
+        epsilon = 1.1 * epsilon;
+        console.log(epsilon, points.length);
+    }
     return points;
 }
 

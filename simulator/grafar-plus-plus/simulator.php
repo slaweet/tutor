@@ -76,6 +76,7 @@
 
         <!-- Inverzní grafar-->
         <script src="simulator/grafar-plus-plus/lang.js" charset="utf-8"> </script>
+        <script src="simulator/grafar-plus-plus/rdp.js" charset="utf-8"> </script>
         <script src="simulator/grafar-plus-plus/invgrafar.js" charset="utf-8"> </script>
         <script src="simulator/grafar-plus-plus/main.js" charset="utf-8"> </script>
         <script type='text/javascript'>
