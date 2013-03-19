@@ -24,7 +24,7 @@ include 'local_settings.php';
 
 function problemList() {
 	$adr = opendir('simulator');
-	$ret = '<div class="resit">';
+	$ret = '<div class="resit problem_list">';
 	while ($file = readdir($adr)) {
 	    if($file != "." and $file != "..") {
 		$ret .= '<div ><a href="index.php?p=problem_map&problem_id='.$file
@@ -42,6 +42,13 @@ function processInstances($data) {
             $_POST["name_en"] = $task[1];
             $_POST["initial_mean_time"] = $task[2];
             $_POST["problem_cs"] = $task[3];
+            InstanceController::add_instance($key);
+        } else if (count($task) == 5) {
+            $_POST["name_cs"] = $task[0];
+            $_POST["name_en"] = $task[1];
+            $_POST["initial_mean_time"] = $task[2];
+            $_POST["problem_cs"] = $task[3];
+            $_POST["problem_en"] = $task[4];
             InstanceController::add_instance($key);
         } else if (count($task) == 2) {
             $_POST["name_cs"] = $task[0];
@@ -256,10 +263,12 @@ function getInstance($problem, $id) {
 /*  PO 5 V �AD� */
 	.resit div{float: left;
 			width: 140px;
-			min-height: 140px;
-			margin-right: 65px;
+			height: 140px;
+			margin-right: 45px;
 			margin-bottom: 25px;
 			border: solid 1px  #EBE1BD;
+            border-radius: 5px;
+            padding: 10px;
 			text-align: center}
 	.resit img{padding: 0px;
 			width: 140px;
@@ -267,6 +276,9 @@ function getInstance($problem, $id) {
 	.resit h1{font-size: 105% !important; 
 			margin-top: 10px !important}
 
+    .problem_list div {
+			height: 200px;
+    }
   /* zblebt pridal pro vypis problemu nadpis typu ulohy (vzdelavaci atp.)) */
 	.resit h2{font-family: Candara, Arial CE, sans-serif;
 			font-size: 120%;
@@ -309,7 +321,8 @@ function getInstance($problem, $id) {
 			padding: 0px}
 
   .doporucena_zadani td{width:69px;}
-	.doporucena_zadani td.vyreseno{background-color: #9CCF31}
+	.doporucena_zadani td.vyreseno{background-color: #9CCF31; padding-top:50px;}
+	.vyreseno{ padding-top:50px;}
 	.doporucena_zadani td.reseno{background-color: #FF9E00}
 	.doporucena_zadani td.nereseno{background-color: #F7D708}
 	.doporucena_zadani a{display:block;
@@ -416,8 +429,8 @@ function getInstance($problem, $id) {
 </a>
 <?= LocaleController::get_flag('cs') . LocaleController::get_flag('en') ?>
 
-<table class="main_menu"><tr><td><a href="index.php?p=main_page">ÚVOD</a><td><a href="index.php?p=about">VÝZKUM</a><td class="last_item" ><a href="index.php?p=contact">KONTAKT</a>
-	</tr></table><table class="second_menu"><tr><td width="20"></td><td><a href="index.php?p=problem_list">Problémy</a></td><td width="20"></td><td><a href="index.php?p=results">Statistiky</a></td><td width="20"></td><td><a href="index.php?p=user_update">Osobní&nbsp;údaje</a></td><td width="20"></td><td><a href="index.php?p=write_us">Napište&nbsp;nám</a></td><td width="100%"></td></tr></table><div class="main"><script type="text/javascript" src="scripts/mootools-1.2.1-core.js"></script><script type="text/javascript" src="scripts/mootools-1.2-more.js"></script>
+<table class="main_menu"><tr><td><td class="last_item" >
+	</tr></table><table class="second_menu"><tr><td width="20"></td><td><a href="index.php?p=problem_list">Problémy</a></td><td width="20"></td><td></td><td width="20"></td><td></td><td width="20"></td><td></td><td width="100%"></td></tr></table><div class="main"><script type="text/javascript" src="scripts/mootools-1.2.1-core.js"></script><script type="text/javascript" src="scripts/mootools-1.2-more.js"></script>
       <script language="JavaScript">
        function zobrazSkryj(idecko){
          el=document.getElementById(idecko).style; 
@@ -525,8 +538,8 @@ function getInstance($problem, $id) {
       </script> 
     <table width="100%"><tr>
   <td rowspan=2 id="levetd" style="width:80px; margin:0px; padding:0px; display:block;" ></td>
-  <td rowspan=2 valign=top width=800px><center><table align="center" class="chybova_dobra" cellpadding="0" cellspacing="0">
-	</table><div id="after_win_div" class="skryvany"><h1>Vyhráli jste!</h1><br /><a href="index.php?p=problem_map&problem_id=<?=$_GET['problem_id']?>">
+  <td rowspan=2 valign=top width=800px><center>
+  <div id="after_win_div" class="skryvany"><h1>Vyhráli jste!</h1><br /><a href="index.php?p=problem_map&problem_id=<?=$_GET['problem_id']?>">
         <input onclick="delayedMap();" class="button" style="font-size:1em; height: 30px; width:250px; " type="submit" value="Pokračovat" /></a></div><br /><div id="div_after_win_stat"></div>
         <?
 
@@ -535,18 +548,18 @@ function getInstance($problem, $id) {
 if (isset($_GET['changelang'])) {
     LocaleController::set_lang($_GET['changelang']);
 }
-if (isset($_GET['p']) and $_GET['p'] == 'problem_list') {
+if ((isset($_GET['p']) and $_GET['p'] == 'problem_list') or count($_GET) == 0) {
     echo problemList();
 } else if (isset($_GET['p']) and $_GET['p'] == 'problem_map' and isset($_GET['problem_id'])) {
    instanceList($_GET['problem_id']);
 } else {
 	if (isset($_GET['p']) and $_GET['p'] == 'instance_solve') {
 	   $instance = getInstance($_GET['problem_id'],$_GET['instance_id']);
-	   $instance_plan = $instance[3];
+	   $instance_plan = $instance[(LocaleController::get_lang() == 'cs' || count($instance) == 4 ? 3 : 4)];
    	   echo "<h1>".$instance[(LocaleController::get_lang() == 'cs' ? 0 : 1)]."</h1>";
 	}
 
-        require 'simulator/'.(getUloha()).'/simulator.php';
+        include 'simulator/'.(getUloha()).'/simulator.php';
 ?>
      <br /><br /><div id="before_win_div" class="zobrazovany"><input class="button" onclick="
       sendDataToInterface('session_id=-1&session_hash=obihixyysllnbtuecmetakwqgilbfzqr&giveUp=1');
@@ -567,7 +580,7 @@ if (isset($_GET['p']) and $_GET['p'] == 'problem_list') {
 
   <table class="footer">
   
-	<tr><td align="left"><a href="./index.php?p=contact">Kontakt</a> | <a href="./index.php?p=acknowledgement">Poděkování</a></td><td align="right">©2011 Proso Tutor</td></tr>
+	<tr><td align="left"></td><td align="right"></td></tr>
 	</table>
 	
 	</div>
